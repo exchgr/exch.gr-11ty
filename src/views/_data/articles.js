@@ -6,6 +6,7 @@ module.exports = async () => {
 			headers: {
 				"Content-Type": "application/json",
 				"Accept": "application/json",
+				"Authorization": `bearer ${process.env['STRAPI_TOKEN']}`
 			},
 			body: JSON.stringify({
 				query: `{
