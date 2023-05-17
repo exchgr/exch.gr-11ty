@@ -1,7 +1,7 @@
 module.exports = async () => {
 	try {
 		const {default: fetch} = await import('node-fetch')
-		const data = await fetch("http://127.0.0.1:1337/graphql", {
+		const data = await fetch(`${process.env['STRAPI_PROTOCOL']}://${process.env['STRAPI_HOST']}:${process.env['STRAPI_PORT']}/graphql`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
