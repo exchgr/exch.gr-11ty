@@ -1,5 +1,5 @@
 resource "cloudflare_pages_project" "cloudflare_pages_project" {
-	account_id        = data.external.env.result["CLOUDFLARE_PAGES_ACCOUNT_ID"]
+	account_id        = data.external.env.result["CLOUDFLARE_ACCOUNT_ID"]
 	name              = data.external.env.result["APP_NAME"]
 	production_branch = data.external.env.result["GITHUB_REF_NAME"]
 
