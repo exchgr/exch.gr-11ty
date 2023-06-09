@@ -1,21 +1,27 @@
 ---
-layout: "main.njk"
-page_title: Articles
+layout: "main.liquid"
+page_title: Home
 ---
 
-# {{ page_title }}
+# {{ blog_title }}
 
-{% for article in articles %}
-<article>
+{% for collection in index.data %}
+  <div class="collection">
+    <h1>{{ collection.attributes.name }}</h1>
+    {% for article in collection.attributes.articles.data %}
+    <article>
+      <h2>{{ article.attributes.title }}</h2>
 
-  ## {{ article.title }}
-  by {{ article.author }} on {{ article.publishedAt }}
+      by {{ article.attributes.author }} on {{ article.attributes.publishedAt }}
 
-  {{ article.body }}
+      {{ article.attributes.body }}
 
-  last updated at {{ article.updatedAt }}
-  {% for tag in article.tags.data %}
-    [{{ tag.attributes.name }}](/tags/{{ tag.attributes.slug }})
-  {% endfor %}
-</article>
+      last updated at {{ article.attributes.updatedAt }}
+
+      {% for tag in article.attributes.tags.data %}
+        [{{ tag.attributes.name }}](/tags/{{ tag.attributes.slug }})
+      {% endfor %}
+    </article>
+    {% endfor %}
+  </div>
 {% endfor %}

@@ -1,4 +1,10 @@
-module.exports = (_) => {
+const markdownIt = require("markdown-it")
+
+module.exports = (eleventyConfig) => {
+	eleventyConfig.setLibrary("md", markdownIt({
+		html: true
+	}))
+
 	return {
 		dir: {
 			input: "src/views",
@@ -6,6 +12,5 @@ module.exports = (_) => {
 			layouts: "_includes/layouts",
 			data: "_data",
 		},
-		markdownTemplateEngine: "njk"
 	}
 }
