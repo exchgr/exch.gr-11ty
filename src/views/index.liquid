@@ -1,0 +1,28 @@
+---
+layout: "main.liquid"
+page_title: Home
+---
+
+<h1>{{ blog_title }}</h1>
+
+<div class="collections">
+	{% for collection in index.data %}
+		<div class="collection">
+			<h1>{{ collection.attributes.name }}</h1>
+			{% for article in collection.attributes.articles.data %}
+        <article>
+          <h1>{{ article.attributes.title }}</h1>
+          <p>by {{ article.attributes.author }}</p>
+          <p>published {{ article.attributes.publishedAt }}</p>
+					<p>last updated at {{ article.attributes.updatedAt }}</p>
+					{{ article.attributes.body | markdown }}
+
+          {% for tag in article.attributes.tags.data %}
+						<a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a>
+          {% endfor %}
+        </article>
+			{% endfor %}
+		</div>
+	{% endfor %}
+</div>
+

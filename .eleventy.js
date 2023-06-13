@@ -1,9 +1,13 @@
-const markdownIt = require("markdown-it")
+const markdownIt = require("markdown-it")({
+	html: true
+})
 
 module.exports = (eleventyConfig) => {
-	eleventyConfig.setLibrary("md", markdownIt({
-		html: true
-	}))
+	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
+	eleventyConfig.setLibrary("md", markdownIt)
+
+	// include assets
+	eleventyConfig.addPassthroughCopy({"src/styles": "styles"})
 
 	return {
 		dir: {
