@@ -58,12 +58,11 @@ p {
 }
 
 .collection {
-	display: inline-block;
 	scroll-snap-align: start;
 }
 
-.collection .body {
-	height: calc(100vh - (min(calc(4vw + 1rem), 6rem) + 6vw + 1rem) - 1.5rem);
+.collection .collection-body {
+	height: calc(100dvh - (min(calc(4vw + 1rem), 6rem) + 6vw + 1rem) - 1.5rem);
 	overflow-y: scroll;
 	padding-bottom: 1rem;
 }
