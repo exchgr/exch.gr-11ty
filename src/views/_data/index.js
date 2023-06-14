@@ -10,7 +10,9 @@ module.exports = async () => {
 			},
 			body: JSON.stringify({
 				query: `{
-					collections {
+					collections(
+						sort: "updatedAt:DESC"
+					) {
 						data {
 							attributes {
 								name
