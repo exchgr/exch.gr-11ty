@@ -8,6 +8,7 @@ module.exports = (eleventyConfig) => {
 
 	// include assets
 	eleventyConfig.addPassthroughCopy({"src/styles": "styles"})
+	eleventyConfig.addPassthroughCopy({"src/fonts": "fonts"})
 
 	return {
 		dir: {

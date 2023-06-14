@@ -1,26 +1,67 @@
-header h1 {
-	text-align: center;
+@font-face {
+	font-family: "onffc";
+	src: url("/fonts/onffc.woff")
+}
+
+h1 {
+	font-family: onffc, serif;
+	font-size: calc(4vw + 1rem);
+	font-weight: normal;
+
+	line-height: 1.1;
+	margin: 0;
+}
+
+h2, h3, h4, h5, h6 {
+	font-family: 'Playfair Display', serif;
+	font-weight: 800;
+}
+
+body > header h1 {
+	font-size: calc(6vw + 1rem);
+}
+
+body > header h1 .site-byline {
+	font-size: calc(1vw + .7rem);
+}
+
+.collection header h1 {
+	margin: 1rem auto 0;
+}
+
+article h1 {
+	font-size: calc(2vw + 1rem);
+}
+
+p {
+	font-family: 'EB Garamond', serif;
+	font-size: calc(0.15vw + 1rem);
+
+	text-align: justify;
+	hyphens: auto;
+	-webkit-hyphens: auto;
 }
 
 .collections {
 	display: grid;
-	grid-template-columns: repeat(4, calc(100%/1));
+	grid-column-gap: 1rem;
+	grid-template-columns: repeat(3, calc(100%/1 - 1rem)) calc(100%/1);
 }
 
 @media screen and (min-width: 640px) {
 	.collections {
-		grid-template-columns: repeat(4, calc(100%/2));
+		grid-template-columns: repeat(3, calc(100%/2 - 1rem)) calc(100%/2);
 	}
 }
 
 @media screen and (min-width: 1028px) {
 	.collections {
-		grid-template-columns: repeat(4, calc(100%/3));
+		grid-template-columns: repeat(3, calc(100%/3 - 1rem)) calc(100%/3);
 	}
 }
 
 @media screen and (min-width: 1280px) {
 	.collections {
-		grid-template-columns: repeat(4, min(calc(100%/4), 420px));
+		grid-template-columns: repeat(3, min(calc(100%/4 - 1rem), 420px)) calc(100%/4);
 	}
 }
