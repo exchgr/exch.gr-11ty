@@ -1,3 +1,7 @@
+header h1 {
+	text-align: center;
+}
+
 .collections {
 	display: grid;
 	grid-template-columns: repeat(4, calc(100%/1));
