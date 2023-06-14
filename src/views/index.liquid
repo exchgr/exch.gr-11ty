@@ -16,19 +16,21 @@ page_title: Home
 			<header>
 				<h1>{{ collection.attributes.name }}</h1>
 			</header>
-			{% for article in collection.attributes.articles.data %}
-        <article>
-          <h1>{{ article.attributes.title }}</h1>
-          <p>by {{ article.attributes.author }}</p>
-          <p>published {{ article.attributes.publishedAt }}</p>
-					<p>updated {{ article.attributes.updatedAt }}</p>
-					{{ article.attributes.body | markdown }}
+			<div class="body">
+				{% for article in collection.attributes.articles.data %}
+					<article>
+						<h1>{{ article.attributes.title }}</h1>
+							<p>by {{ article.attributes.author }}</p>
+							<p>published {{ article.attributes.publishedAt }}</p>
+							<p>updated {{ article.attributes.updatedAt }}</p>
+							{{ article.attributes.body | markdown }}
 
-          {% for tag in article.attributes.tags.data %}
-						<a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a>
-          {% endfor %}
-        </article>
-			{% endfor %}
+							{% for tag in article.attributes.tags.data %}
+								<a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a>
+							{% endfor %}
+					</article>
+				{% endfor %}
+			</div>
 		</div>
 	{% endfor %}
 </div>
