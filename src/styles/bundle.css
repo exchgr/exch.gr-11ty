@@ -11,7 +11,7 @@ body {
 
 h1 {
 	font-family: onffc, serif;
-	font-size: min(calc(4vw + 1rem), 6rem);
+	font-size: min(4rem, calc(4vw + 1rem));
 	font-weight: normal;
 
 	line-height: 1;
@@ -24,7 +24,7 @@ h2, h3, h4, h5, h6 {
 }
 
 body > header h1 {
-	font-size: calc(6vw + 1rem);
+	font-size: min(5rem, calc(6vw + 1rem));
 }
 
 body > header h1 .site-byline {
@@ -36,7 +36,7 @@ body > header h1 .site-byline {
 }
 
 article h1 {
-	font-size: calc(2vw + 1rem);
+	font-size: min(3rem, calc(2vw + 1rem));
 }
 
 p {
@@ -48,39 +48,70 @@ p {
 	-webkit-hyphens: auto;
 }
 
-.collections {
-	display: grid;
-	grid-column-gap: 1rem;
-	grid-template-columns: repeat(3, calc(100%/1 - 1rem)) calc(100%/1);
-	overflow-x: scroll;
-	scroll-snap-type: x mandatory;
-	padding-right: .5rem;
+.collections .collection {
+	margin-bottom: 1rem;
+	overflow-y: hidden;
+	height: 100lvh;
 }
 
-.collection {
+.collections .collection header h1 {
+	position: sticky;
+}
+
+.collections .collection .collection-body {
+	display: flex;
+	flex-wrap: nowrap;
+	column-gap: 1em;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+}
+
+.collections .collection .collection-body article {
+	flex-shrink: 0;
+	width: calc(100vw - 3rem);
 	scroll-snap-align: start;
 }
 
-.collection .collection-body {
-	height: calc(100dvh - (min(calc(4vw + 1rem), 6rem) + 6vw + 1rem) - 1.5rem);
-	overflow-y: scroll;
-	padding-bottom: 1rem;
-}
-
-@media screen and (min-width: 640px) {
-	.collections {
-		grid-template-columns: repeat(3, calc(100%/2 - 1rem)) calc(100%/2);
+@media screen and (min-height: 500px) {
+	.collections .collection {
+		margin-bottom: 1rem;
+		overflow-y: hidden;
+		height: calc(100vh / 1.25 - (4vw + 1rem));
 	}
 }
 
-@media screen and (min-width: 1028px) {
-	.collections {
-		grid-template-columns: repeat(3, calc(100%/3 - 1rem)) calc(100%/3);
+@media screen and (min-height: 1000px) {
+	.collections .collection {
+		height: calc(100vh / 2 - (4vw + 1rem));
 	}
 }
 
-@media screen and (min-width: 1280px) {
-	.collections {
-		grid-template-columns: repeat(3, min(calc(100%/4 - 1rem), 420px)) calc(100%/4);
+@media screen and (min-height: 1500px) {
+	.collections .collection {
+		height: calc(100vh / 3 - (4vw + 1rem));
+	}
+}
+
+@media screen and (min-height: 2000px) {
+	.collections .collection {
+		height: calc(100vh / 4 - (4vw + 1rem));
+	}
+}
+
+@media screen and (min-width: 580px) {
+	.collections .collection .collection-body article {
+		width: calc(100vw/2 - 2rem);
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.collections .collection .collection-body article {
+		width: calc(100vw/3 - 2rem);
+	}
+}
+
+@media screen and (min-width: 1460px) {
+	.collections .collection .collection-body article {
+		width: 30rem;
 	}
 }
