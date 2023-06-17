@@ -2,14 +2,6 @@
 layout: "main.liquid"
 page_title: Home
 ---
-
-<header>
-	<h1>
-		{{ blog_title }}
-		<span class="site-byline">by elle mundy</span>
-	</h1>
-</header>
-
 <div class="collections">
 	{% for collection in index.data %}
 		<div class="collection">
@@ -18,19 +10,7 @@ page_title: Home
 			</header>
 			<div class="collection-body">
 				{% for article in collection.attributes.articles.data %}
-					<article>
-						<h1>{{ article.attributes.title }}</h1>
-							<p>by {{ article.attributes.author }}</p>
-							<p>published {{ article.attributes.publishedAt }}</p>
-							<p>updated {{ article.attributes.updatedAt }}</p>
-							{{ article.attributes.body | markdown }}
-
-							<p>
-								{% for tag in article.attributes.tags.data %}
-									<a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a>
-								{% endfor %}
-							</p>
-					</article>
+          {% render 'article', article: article %}
 				{% endfor %}
 			</div>
 		</div>

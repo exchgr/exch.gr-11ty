@@ -12,3 +12,6 @@ indent_style = space
 [*.md]
 indent_style = space
 trim_trailing_whitespace = false
+
+[*.liquid]
+indent_style = space

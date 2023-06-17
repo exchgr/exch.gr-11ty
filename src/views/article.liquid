@@ -1,0 +1,9 @@
+---
+layout: "main.liquid"
+pagination:
+  data: articles
+  size: 1
+  alias: article
+permalink: "article/{{ article.attributes.slug }}/index.html"
+---
+{% render 'article', article: article %}

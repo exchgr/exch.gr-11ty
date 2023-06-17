@@ -20,6 +20,14 @@ module.exports = async () => {
 								slug
 								publishedAt
 								updatedAt
+								collection {
+									data {
+										attributes {
+											name
+											slug
+										}
+									}
+								}
 								tags(sort: "name:ASC") {
 									data {
 										attributes {
@@ -42,7 +50,7 @@ module.exports = async () => {
 			throw new Error(error.message)
 		})
 
-		return response.data.articles.data.map(article => article.attributes)
+		return response.data.articles.data
 	} catch (error) {
 		console.error(error.message)
 	}
