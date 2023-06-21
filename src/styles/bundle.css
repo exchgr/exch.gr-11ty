@@ -5,9 +5,26 @@
 
 * {box-sizing: border-box;}
 
+html {
+	text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
 body {
 	font-family: 'EB Garamond', serif;
 	margin: 0 0 0 0.5rem;
+
+	text-align: justify;
+	hyphens: auto;
+	-webkit-hyphens: auto;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+.container {
+	max-width: 40rem;
 }
 
 h1 {
@@ -65,7 +82,6 @@ body > header h1 .site-byline {
 }
 
 article {
-	max-width: 35em;
 	margin-right: 0.5em;
 }
 
@@ -89,10 +105,6 @@ article img {
 p {
 	font-size: min(3rem, calc(0.2vw + 1rem));
 	line-height: 1.3;
-
-	text-align: justify;
-	hyphens: auto;
-	-webkit-hyphens: auto;
 }
 
 .left {

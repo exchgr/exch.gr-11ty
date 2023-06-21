@@ -14,14 +14,16 @@ blog_title: Process Things
 	</head>
 	<body>
 	<header>
-		<h1>
+		<div class="{{ extra_classes }}"><h1>
 			<a href="/">
         {{ blog_title }}
         <span class="site-byline">by elle mundy</span>
       </a>
-		</h1>
+		</h1></div>
 	</header>
 
-	{{ content }}
+	<div class="{{ extra_classes }}">
+    {{ content }}
+  </div>
 	</body>
 </html>

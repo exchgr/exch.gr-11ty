@@ -5,5 +5,6 @@ pagination:
   size: 1
   alias: article
 permalink: "article/{{ article.attributes.slug }}/index.html"
+extra_classes: "container center"
 ---
 {% render 'article', article: article %}
