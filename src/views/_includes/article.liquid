@@ -1,6 +1,6 @@
 <h1 class="collection-name">{{ article.attributes.collection.data.attributes.name }}</h1>
 <article>
-  <h1><a href="/article/{{ article.attributes.slug }}">{{ article.attributes.title }}</a></h1>
+  <h1><a href="/article/{{ article.attributes.slug }}/">{{ article.attributes.title }}</a></h1>
   <p class="metadata">
     by {{ article.attributes.author }}<br>
     published {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}<br>

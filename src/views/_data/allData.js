@@ -19,7 +19,8 @@ module.exports = async () => {
 								attributes {
 									name
 									articles(
-										sort: "publishedAt:DESC"
+										sort: "publishedAt:DESC",
+										pagination: { limit: 100000 }
 									) {
 										data {
 											id
@@ -44,7 +45,7 @@ module.exports = async () => {
 								}
 							}
 						}
-						articles(sort: "publishedAt:DESC") {
+						articles(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
 							data {
 								id
 								attributes {
