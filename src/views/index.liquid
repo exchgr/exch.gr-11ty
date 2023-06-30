@@ -3,18 +3,6 @@ layout: "main.liquid"
 data: index
 page_title: Home
 ---
-<div class="collections">
 	{% for collection in index %}
-		<div class="collection">
-			<header>
-				<h1>{{ collection.attributes.name }}</h1>
-			</header>
-			<div class="collection-body">
-				{% for article in collection.attributes.articles.data %}
-          {% render 'article', article: article %}
-				{% endfor %}
-			</div>
-		</div>
+    {% render 'collection', collection: collection, articles: collection.attributes.articles.data, class: "plural" %}
 	{% endfor %}
-</div>
-

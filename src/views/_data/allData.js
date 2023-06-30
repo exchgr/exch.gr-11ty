@@ -18,6 +18,7 @@ module.exports = async () => {
 							data {
 								attributes {
 									name
+									slug
 									articles(
 										sort: "publishedAt:DESC",
 										pagination: { limit: 100000 }

@@ -1,3 +1,11 @@
+:root {
+	--h1-font-size: min(4rem, calc(4vw + 1rem));
+	--collection-article-margin-right: 1rem;
+	--collection-article-margin-bottom: 0rem;
+	--header-h1-font-size: min(5rem, calc(6vw + 1rem));
+	--body-margin: 1rem;
+}
+
 @font-face {
 	font-family: "onffc";
 	src: url("/fonts/onffc.woff")
@@ -12,7 +20,7 @@ html {
 
 body {
 	font-family: 'EB Garamond', serif;
-	margin: 0 0 0 0.5rem;
+	margin: 0 0 0 var(--body-margin);
 
 	text-align: justify;
 	hyphens: auto;
@@ -29,7 +37,7 @@ body {
 
 h1 {
 	font-family: onffc, serif;
-	font-size: min(4rem, calc(4vw + 1rem));
+	font-size: var(--h1-font-size);
 	font-weight: normal;
 
 	line-height: 1;
@@ -53,13 +61,13 @@ h2, h3, h4, h5, h6 {
 body > header {
 	color: white;
 	background-color: black;
-	margin: 0 0 .5rem -.5rem;
-	padding-left: .25rem;
+	margin: 0 0 var(--body-margin) calc(0rem - var(--body-margin));
+	padding-left: calc(var(--body-margin) - .25rem);
 }
 
 body > header h1 {
 	font-family: 'Mrs Sheppards', cursive;
-	font-size: min(5rem, calc(6vw + 1rem));
+	font-size: var(--header-h1-font-size);
 	margin: 0 0 -0.25rem;
 }
 
@@ -82,7 +90,7 @@ body > header h1 .site-byline {
 }
 
 article {
-	margin-right: 0.5em;
+	margin-right: var(--body-margin);
 }
 
 article h1 {
@@ -134,78 +142,87 @@ p {
 figure {
 	background-color: #242424;
 	color: white;
-	padding: 0em 0em 0.5em 0em;
+	padding: 0 0 0.5em 0;
 	margin: 0;
 }
 
 figure figcaption {
-	padding: 0em 0.75em;
+	padding: 0 0.75em;
 }
 
-.collections .collection {
-	margin-bottom: 1rem;
-	overflow-y: hidden;
-	height: 100lvh;
-}
-
-.collections .collection header h1 {
-	position: sticky;
-}
-
-.collections .collection .collection-body {
+.collection-body {
 	display: flex;
+}
+
+.collection-body article {
+	--collection-columns: 1;
+	--collection-rows: 1;
+	--vertical-scroll-hint: 3rem;
+
+	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right));
+	overflow-y: hidden;
+	margin-right: var(--collection-article-margin-right);
+	margin-bottom: var(--collection-article-margin-bottom);
+}
+
+.plural.collection .collection-body {
 	flex-wrap: nowrap;
 	flex-direction: row;
 	overflow-x: auto;
 	scroll-snap-type: x mandatory;
 }
 
-.collections .collection .collection-body article {
+.plural.collection .collection-body article {
+	--horizontal-scroll-hint: calc(1.5rem + var(--body-margin));
+
+	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
 	flex-shrink: 0;
-	width: calc(100vw - 2.5rem);
 	scroll-snap-align: start;
-	margin-right: 1rem;
 }
 
-@media screen and (min-height: 500px) {
-	.collections .collection {
-		overflow-y: hidden;
-		height: calc(100vh / 1.25 - (4vw + 1rem));
-	}
+.single.collection .collection-body {
+	flex-wrap: wrap;
 }
 
-@media screen and (min-height: 1000px) {
-	.collections .collection {
-		height: calc(100vh / 2 - (4vw + 1rem));
+.single.collection .collection-body article {
+	--horizontal-scroll-hint: var(--body-margin);
+	--collection-article-margin-bottom: 1rem;
+
+	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint) - var(--h1-font-size)) / var(--collection-rows) - var(--collection-article-margin-bottom));
+}
+
+@media screen and (min-height: 900px) {
+	.collection-body article {
+		--collection-rows: 2;
 	}
 }
 
 @media screen and (min-height: 1500px) {
-	.collections .collection {
-		height: calc(100vh / 3 - (4vw + 1rem));
+	.collection-body article {
+		--collection-rows: 3;
 	}
 }
 
 @media screen and (min-height: 2000px) {
-	.collections .collection {
-		height: calc(100vh / 4 - (4vw + 1rem));
+	.collection-body article {
+		--collection-rows: 4;
 	}
 }
 
 @media screen and (min-width: 580px) {
-	.collections .collection .collection-body article {
-		width: calc(100vw / 2 - 1.5rem);
+	.collection-body article {
+		--collection-columns: 2;
 	}
 }
 
 @media screen and (min-width: 1024px) {
-	.collections .collection .collection-body article {
-		width: calc(100vw / 3 - 1.5rem);
+	.collection-body article {
+		--collection-columns: 3;
 	}
 }
 
-@media screen and (min-width: 1460px) {
-	.collections .collection .collection-body article {
+@media screen and (min-width: 1518px) {
+	.collection-body article {
 		width: 30rem;
 	}
 }

@@ -1,0 +1,7 @@
+---
+layout: "main.liquid"
+pagination:
+  data: music.attributes.articles.data
+  size: 10
+---
+{% render 'collection', collection: music, articles: pagination.items, class: "single" %}

@@ -1,4 +1,6 @@
-<h1 class="collection-name">{{ article.attributes.collection.data.attributes.name }}</h1>
+{%- if article.attributes.collection %}
+  <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
+{% endif -%}
 <article>
   <h1><a href="/article/{{ article.attributes.slug }}/">{{ article.attributes.title }}</a></h1>
   <p class="metadata">
