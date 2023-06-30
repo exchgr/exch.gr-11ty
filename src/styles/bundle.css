@@ -44,6 +44,10 @@ h1 {
 	margin: 0 0 1rem;
 }
 
+h1.collection-name {
+	font-size: min(1rem, calc(2vw + .5rem));
+}
+
 a {
 	color: #c51600;
 	text-decoration: none;

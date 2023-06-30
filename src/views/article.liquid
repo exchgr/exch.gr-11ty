@@ -7,4 +7,9 @@ pagination:
 permalink: "article/{{ article.attributes.slug }}/index.html"
 extra_classes: "container center"
 ---
+<h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
 {% render 'article', article: article %}
+&mdash;
+<p>
+  <a href="/{{ article.attributes.collection.data.attributes.slug }}">More {{ article.attributes.collection.data.attributes.name }}</a>
+</p>
