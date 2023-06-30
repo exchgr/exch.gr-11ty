@@ -1,0 +1,17 @@
+<nav class="pagination">
+  {%- if pagination.href.previous %}
+    <a href="{{ pagination.href.first }}">&laquo; First</a>
+    <a href="{{ pagination.href.previous }}">&lsaquo; Prev</a>
+    &ndash;
+  {% endif -%}
+
+  {%- if pagination.href.previous or pagination.href.next %}
+    {{ pagination.pageNumber }}
+  {% endif -%}
+
+  {%- if pagination.href.next %}
+    &ndash;
+    <a href="{{ pagination.href.next }}">Next &rsaquo;</a>
+    <a href="{{ pagination.href.last }}">Last &raquo;</a>
+  {% endif -%}
+</nav>

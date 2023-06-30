@@ -3,6 +3,6 @@ layout: "main.liquid"
 data: index
 page_title: Home
 ---
-	{% for collection in index %}
-    {% render 'collection', collection: collection, articles: collection.attributes.articles.data, class: "plural" %}
-	{% endfor %}
+{% for collection in index %}
+  {% render 'collection', collection: collection, articles: collection.attributes.articles.data, count: 10, class: "plural" %}
+{% endfor %}

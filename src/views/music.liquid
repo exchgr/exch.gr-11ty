@@ -4,4 +4,10 @@ pagination:
   data: music.attributes.articles.data
   size: 10
 ---
-{% render 'collection', collection: music, articles: pagination.items, class: "single" %}
+{% render 'collection',
+  collection: music,
+  articles: pagination.items,
+  pagination: pagination,
+  count: pagination.items.size,
+  class: "single"
+%}

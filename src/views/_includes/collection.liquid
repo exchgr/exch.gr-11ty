@@ -3,8 +3,9 @@
     <h1><a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a></h1>
   </header>
   <div class="collection-body">
-    {% for article in articles %}
+    {% for article in articles limit:count %}
       {% render 'article', article: article %}
     {% endfor %}
   </div>
+  {% render 'pagination', pagination: pagination %}
 </div>
