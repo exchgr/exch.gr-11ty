@@ -4,11 +4,11 @@ pagination:
   data: articles
   size: 1
   alias: article
-permalink: "article/{{ article.attributes.slug }}/index.html"
+permalink: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.attributes.slug }}/index.html"
 extra_classes: "container center"
 ---
 <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
-{% render 'article', article: article %}
+{% render 'article', article: article, collection: article.attributes.collection.data %}
 &mdash;
 <p>
   <a href="/{{ article.attributes.collection.data.attributes.slug }}">More {{ article.attributes.collection.data.attributes.name }}</a>

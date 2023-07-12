@@ -4,7 +4,7 @@
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}
-      {% render 'article', article: article %}
+      {% render 'article', article: article, collection: collection %}
     {% endfor %}
   </div>
   {% render 'pagination', pagination: pagination %}
