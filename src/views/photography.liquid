@@ -1,11 +1,11 @@
 ---
 layout: "main.liquid"
 pagination:
-  data: categories.music.attributes.articles.data
+  data: categories.photography.attributes.articles.data
   size: 10
 ---
 {% render 'collection',
-  collection: categories.music,
+  collection: categories.photography,
   articles: pagination.items,
   pagination: pagination,
   count: pagination.items.size,
