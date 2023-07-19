@@ -4,6 +4,9 @@
 	--collection-article-margin-bottom: 0rem;
 	--header-h1-font-size: min(5rem, calc(6vw + 1rem));
 	--body-margin: 1rem;
+	--article-h1-font-size: min(3rem, calc(2vw + 1rem));
+	--h1-font-family: onffc;
+	--h1-font-weight: normal;
 }
 
 @font-face {
@@ -36,9 +39,9 @@ body {
 }
 
 h1 {
-	font-family: onffc, serif;
+	font-family: var(--h1-font-family), serif;
 	font-size: var(--h1-font-size);
-	font-weight: normal;
+	font-weight: var(--h1-font-weight);
 
 	line-height: 1;
 	margin: 0 0 1rem;
@@ -84,7 +87,7 @@ body > header h1 a:hover {
 }
 
 body > header h1 .site-byline {
-	font-family: onffc, serif;
+	font-family: var(--h1-font-family), serif;
 	font-size: calc(1vw + .7rem);
 	margin-left: max(-0.5rem, -1vw);
 }
@@ -98,7 +101,7 @@ article {
 }
 
 article h1 {
-	font-size: min(3rem, calc(2vw + 1rem));
+	font-size: var(--article-h1-font-size);
 	margin-bottom: 0;
 }
 
@@ -172,6 +175,22 @@ figure figcaption {
 	overflow-y: hidden;
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
+}
+
+.plural.collection .collection-body nav.more {
+	font-family: var(--h1-font-family);
+  font-size: var(--article-h1-font-size);
+	font-weight: var(--h1-font-weight);
+
+	writing-mode: vertical-rl;
+	text-orientation: sideways;
+	text-align: right;
+
+	margin-right: var(--collection-article-margin-right);
+}
+
+.single.collection .collection-body nav.more {
+	display: none;
 }
 
 .plural.collection .collection-body {
