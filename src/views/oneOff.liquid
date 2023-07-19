@@ -1,0 +1,13 @@
+---
+layout: "main.liquid"
+pagination:
+  data: oneOffs
+  size: 1
+  alias: oneOff
+permalink: "{{ oneOff.attributes.slug }}/index.html"
+extra_classes: "container center"
+---
+<article>
+  <h1>{{ oneOff.attributes.title }}</h1>
+  {{ oneOff.attributes.body | markdown }}
+</article>

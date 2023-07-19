@@ -75,6 +75,15 @@ module.exports = async () => {
 								}
 							}
 						}
+						oneOffs {
+							data {
+								attributes {
+									title
+									body
+									slug
+								}
+							}
+						}
 					}`
 				})
 			}
