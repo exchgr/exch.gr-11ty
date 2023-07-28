@@ -1,5 +1,6 @@
 const markdownIt = require("markdown-it")({
-	html: true
+	html: true,
+	typographer: true
 })
 
 module.exports = (eleventyConfig) => {
