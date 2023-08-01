@@ -14,5 +14,8 @@
   "author": {
     "name": "Elle Mundy"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.4.1",
+  "devDependencies": {
+    "@11ty/eleventy-plugin-rss": "^1.2.0"
+  }
 }
