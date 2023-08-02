@@ -1,0 +1,27 @@
+---
+permalink: "feed.xml"
+eleventyExcludeFromCollections: true
+data: articles
+metadata:
+  blog_title: "Process Things"
+  subtitle: "The art and work of Elle Mundy"
+  language: "en"
+  url: "https://exch.gr/"
+  author:
+    name: "Elle Mundy"
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="{{ metadata.url }}">
+  <title>{{ metadata.blog_title }}</title>
+  <subtitle>{{ metadata.subtitle }}</subtitle>
+  <link href="{{ permalink | absoluteUrl: metadata.url }}" rel="self"/>
+  <link href="{{ metadata.url }}"/>
+  <updated>{{ articles[0].attributes.updatedAt }}</updated>
+  <id>{{ metadata.url }}</id>
+  <author>
+    <name>{{ metadata.author.name }}</name>
+  </author>
+  {%- for article in articles | reverse %}
+    {% render "entry", article: article, collection: article.attributes.collection.data, metadata: metadata %}
+  {%- endfor %}
+</feed>

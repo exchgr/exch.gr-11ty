@@ -3,20 +3,24 @@ const markdownIt = require("markdown-it")({
 	typographer: true
 })
 const pluginRss = require("@11ty/eleventy-plugin-rss")
-const nunjucks = require("nunjucks")
+const {encode} = require('html-entities')
 
 module.exports = (eleventyConfig) => {
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
-	eleventyConfig.addFilter('interpolate', function(body, article) {
-		return nunjucks.renderString(body, { article })
-	})
+	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)
 
 	// include assets
 	eleventyConfig.addPassthroughCopy({"src/styles": "styles"})
 	eleventyConfig.addPassthroughCopy({"src/fonts": "fonts"})
 
+	// rss plugin
 	eleventyConfig.addPlugin(pluginRss);
+	eleventyConfig.addLiquidFilter("absoluteUrl", pluginRss.absoluteUrl)
+	eleventyConfig.addLiquidFilter("convertHtmlToAbsoluteUrls", pluginRss.convertHtmlToAbsoluteUrls)
+	eleventyConfig.addLiquidFilter("dateToRfc3339", pluginRss.dateToRfc3339)
+	eleventyConfig.addLiquidFilter("dateToRfc822", pluginRss.dateToRfc822)
+	eleventyConfig.addLiquidFilter("getNewestCollectionItemDate", pluginRss.getNewestCollectionItemDate)
 
 	return {
 		dir: {

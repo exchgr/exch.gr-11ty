@@ -1,0 +1,13 @@
+{%- assign absoluteArticleUrl = "/" | append: collection.attributes.slug | append: "/" | append: article.attributes.slug | append: "/" | absoluteUrl: metadata.url %}
+<entry>
+  <title>{{ article.attributes.title }}</title>
+  <author>
+    <name>{{ article.attributes.author }}</name>
+  </author>
+  <link href="{{ absoluteArticleUrl }}"/>
+  <published>{{ article.attributes.publishedAt }}</published>
+  <updated>{{ article.attributes.updatedAt }}</updated>
+  <id>{{ absoluteArticleUrl }}</id>
+  <content xml:lang="{{ metadata.language }}" type="html">{{ article.attributes.body | markdown | convertHtmlToAbsoluteUrls: absoluteArticleUrl | htmlEncode }}</content>
+  <category term="{{ collection.attributes.name }}" />
+</entry>

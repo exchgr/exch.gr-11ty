@@ -902,6 +902,7 @@ __metadata:
     "@11ty/eleventy": ^2.0.1
     "@11ty/eleventy-fetch": ^4.0.0
     "@11ty/eleventy-plugin-rss": ^1.2.0
+    html-entities: ^2.4.0
   languageName: unknown
   linkType: soft
 
@@ -1178,6 +1179,13 @@ __metadata:
   dependencies:
     function-bind: ^1.1.1
   checksum: b9ad53d53be4af90ce5d1c38331e712522417d017d5ef1ebd0507e07c2fbad8686fffb8e12ddecd4c39ca9b9b47431afbb975b8abf7f3c3b82c98e9aad052792
+  languageName: node
+  linkType: hard
+
+"html-entities@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "html-entities@npm:2.4.0"
+  checksum: 25bea32642ce9ebd0eedc4d24381883ecb0335ccb8ac26379a0958b9b16652fdbaa725d70207ce54a51db24103436a698a8e454397d3ba8ad81460224751f1dc
   languageName: node
   linkType: hard
 

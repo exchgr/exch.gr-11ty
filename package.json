@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-fetch": "^4.0.0"
+    "@11ty/eleventy-fetch": "^4.0.0",
+    "html-entities": "^2.4.0"
   },
   "author": {
     "name": "Elle Mundy"
