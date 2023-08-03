@@ -6,6 +6,8 @@ pagination:
   alias: article
 permalink: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.attributes.slug }}/index.html"
 extra_classes: "container center"
+eleventyComputed:
+  page_title: "{{ article.attributes.title }}"
 ---
 <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
 {% render 'article', article: article, collection: article.attributes.collection.data %}
