@@ -8,6 +8,14 @@ permalink: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.
 extra_classes: "container center"
 eleventyComputed:
   page_title: "{{ article.attributes.title }}"
+  og_url: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.attributes.slug }}/"
+  og_type: "{{ article.attributes.og_type | default: 'article' }}"
+  og_image: "{{ article.attributes.og_image.data.attributes.url }}"
+  extra_og_tags:
+    "article:published_time": "{{ article.attributes.publishedAt }}"
+    "article:modified_time": "{{ article.attributes.updatedAt }}"
+    "article:author": "{{ article.attributes.author }}"
+    "article:section": "{{ article.attributes.collection.data.attributes.name }}"
 ---
 <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
 {% render 'article', article: article, collection: article.attributes.collection.data %}

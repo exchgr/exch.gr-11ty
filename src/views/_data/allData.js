@@ -56,6 +56,14 @@ module.exports = async () => {
 									slug
 									publishedAt
 									updatedAt
+									og_image {
+										data {
+											attributes {
+												url
+											}
+										}
+									}
+									og_type
 									collection {
 										data {
 											attributes {

@@ -2,6 +2,8 @@
 layout: "main.liquid"
 data: index
 page_title: Home
+og_type: website
+og_url: /
 ---
 {% for collection in index %}
   {% render 'collection', collection: collection, articles: collection.attributes.articles.data, count: 10, class: "plural" %}

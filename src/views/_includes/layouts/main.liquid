@@ -1,5 +1,6 @@
 ---
 blog_title: Process Things
+base_url: https://exch.gr/
 ---
 <!doctype html>
 <html lang="en">
@@ -14,6 +15,14 @@ blog_title: Process Things
 		<link rel="alternate" type="application/rss+xml" href="/photography/feed.xml" title="Process Things - Photography">
 		<link rel="alternate" type="application/rss+xml" href="/poetry/feed.xml" title="Process Things - Poetry">
 		<link rel="alternate" type="application/rss+xml" href="/code/feed.xml" title="Process Things - Code">
+		<meta property="og:site_name" content="{{ blog_title }}">
+		<meta property="og:title" content="{{ page_title }}">
+		<meta property="og:url" content="{{ og_url | absoluteUrl: base_url }}">
+		<meta property="og:image" content="{{ og_image | default: 'https://imagedelivery.net/o13JSbSZsvRblBQcZyKHpg/7ff49036-7a21-4646-a179-f49aac9d0000/public' }}">
+		<meta property="og:type" content="{{ og_type }}">
+		{%- for extra_og_tag in extra_og_tags %}
+			<meta property="{{ extra_og_tag[0] }}" content="{{ extra_og_tag[1] }}">
+		{% endfor -%}
 		<title>{{ blog_title }} | {{ page_title }}</title>
 	</head>
 	<body>
