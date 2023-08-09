@@ -1,6 +1,9 @@
 <div class="collection {{ class }}">
   <header>
-    <h1><a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a></h1>
+    <h1>
+      <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a
+      ><a href="/{{ collection.attributes.slug }}/feed.xml"><img class="rss" src="/images/rss icon.svg"></a>
+    </h1>
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}
