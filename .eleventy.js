@@ -13,6 +13,7 @@ module.exports = (eleventyConfig) => {
 	// include assets
 	eleventyConfig.addPassthroughCopy({"src/styles": "styles"})
 	eleventyConfig.addPassthroughCopy({"src/fonts": "fonts"})
+	eleventyConfig.addPassthroughCopy({"src/views/robots.txt": "robots.txt"})
 
 	// rss plugin
 	eleventyConfig.addPlugin(pluginRss);
