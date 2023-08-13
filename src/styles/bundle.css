@@ -8,10 +8,11 @@
 	--article-h2-font-size: min(2rem, calc(2vw + 1rem));
 	--h1-font-family: onffc;
 	--h1-font-weight: normal;
-	--hyperlink-color: hsl(6deg 75% 55%);
-	--main-header-background-color: hsl(200deg 66% 49%);
-	--body-background-color: hsl(0, 4%, 95%);
-	--body-color: hsl(300, 1%, 13%);
+	--hyperlink-color: hsl(36 100% 50%);
+	--hover-hyperlink-color: hsl(6 75% 55%);
+	--main-header-background-color: hsl(200 67% 54%);
+	--body-background-color: hsl(0 4% 95%);
+	--body-color: hsl(300 1% 13%);
 }
 
 @font-face {
@@ -69,8 +70,12 @@ body > header img.rss {
 }
 
 .collection header img.rss {
-	filter: invert(42%) sepia(92%) saturate(4014%) hue-rotate(343deg) brightness(94%) contrast(88%);
+	filter: invert(70%) sepia(51%) saturate(3885%) hue-rotate(358deg) brightness(99%) contrast(109%);
 	margin-left: .125rem;
+}
+
+.collection header img.rss:hover {
+	filter: invert(42%) sepia(92%) saturate(4014%) hue-rotate(343deg) brightness(94%) contrast(88%);
 }
 
 a {
@@ -79,7 +84,7 @@ a {
 }
 
 a:hover {
-	text-decoration: underline;
+	color: var(--hover-hyperlink-color)
 }
 
 h2, h3, h4, h5, h6 {
@@ -89,10 +94,13 @@ h2, h3, h4, h5, h6 {
 }
 
 body > header {
-	color: var(--body-background-color);
 	background-color: var(--main-header-background-color);
 	margin: 0 0 var(--body-margin) calc(0rem - var(--body-margin));
 	padding-left: calc(var(--body-margin) - .25rem);
+}
+
+body > header, body > header a:hover {
+	color: var(--body-background-color)
 }
 
 body > header h1 {

@@ -1,10 +1,10 @@
 <article>
   <h1><a href="/{{ collection.attributes.slug }}/{{ article.attributes.slug }}/">{{ article.attributes.title }}</a></h1>
-  <p class="metadata">
+  <div class="metadata">
     by <a href="/about">{{ article.attributes.author }}</a><br>
     published {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}<br>
     updated {{ article.attributes.updatedAt | date: "%a, %b %d, %Y at %l:%M %p" }}<br>
-  </p>
+  </div>
   {{ article.attributes.body | markdown }}
 
   <p>
