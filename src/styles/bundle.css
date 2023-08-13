@@ -8,8 +8,10 @@
 	--article-h2-font-size: min(2rem, calc(2vw + 1rem));
 	--h1-font-family: onffc;
 	--h1-font-weight: normal;
-	--hyperlink-color: #c51600;
-	--main-header-color: white;
+	--hyperlink-color: hsl(6deg 75% 55%);
+	--main-header-background-color: hsl(200deg 66% 49%);
+	--body-background-color: hsl(0, 4%, 95%);
+	--body-color: hsl(300, 1%, 13%);
 }
 
 @font-face {
@@ -25,6 +27,8 @@ html {
 }
 
 body {
+	background-color: var(--body-background-color);
+	color: var(--body-color);
 	font-family: 'EB Garamond', serif;
 	margin: 0 0 0 var(--body-margin);
 
@@ -60,12 +64,12 @@ img.rss {
 }
 
 body > header img.rss {
-	filter: invert(100%) sepia(1%) saturate(6%) hue-rotate(97deg) brightness(105%) contrast(100%);
+	filter: invert(99%) sepia(5%) saturate(429%) hue-rotate(307deg) brightness(119%) contrast(90%);
 	margin-left: .25rem;
 }
 
 .collection header img.rss {
-	filter: invert(12%) sepia(77%) saturate(5504%) hue-rotate(8deg) brightness(100%) contrast(101%);
+	filter: invert(42%) sepia(92%) saturate(4014%) hue-rotate(343deg) brightness(94%) contrast(88%);
 	margin-left: .125rem;
 }
 
@@ -85,8 +89,8 @@ h2, h3, h4, h5, h6 {
 }
 
 body > header {
-	color: var(--main-header-color);
-	background-color: black;
+	color: var(--body-background-color);
+	background-color: var(--main-header-background-color);
 	margin: 0 0 var(--body-margin) calc(0rem - var(--body-margin));
 	padding-left: calc(var(--body-margin) - .25rem);
 }
@@ -148,7 +152,7 @@ article .metadata {
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: calc(0.15vw + 0.75rem);
-	color: #444;
+	color: #666;
 	margin-top: 0;
 }
 
@@ -185,8 +189,8 @@ p, ul {
 }
 
 figure {
-	background-color: #242424;
-	color: white;
+	background-color: var(--body-color);
+	color: var(--body-background-color);
 	padding: 0 0 0.5em 0;
 	margin: 0;
 	margin-block-start: 1em
