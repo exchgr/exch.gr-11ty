@@ -198,8 +198,8 @@ p, ul {
 }
 
 figure {
-	background-color: var(--body-color);
-	color: var(--body-background-color);
+	background-color: hsl(0, 0%, 88%);
+	color: var(--body-color);
 	margin: 0;
 	margin-block-start: 1em
 }
@@ -319,6 +319,5 @@ figure figcaption {
 
 	figure {
 		background-color: hsl(0, 0%, 18%);
-		color: var(--body-color);
 	}
 }
