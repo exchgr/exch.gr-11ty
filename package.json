@@ -5,7 +5,7 @@
   "description": "exch.gr 11ty frontend for Strapi blog",
   "scripts": {
     "11ty": "npx @11ty/eleventy",
-    "11ty-serve": "npx @11ty/eleventy --serve"
+    "11ty-serve": "npx @11ty/eleventy --serve --incremental"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",

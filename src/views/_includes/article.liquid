@@ -2,8 +2,13 @@
   <h1><a href="/{{ collection.attributes.slug }}/{{ article.attributes.slug }}/">{{ article.attributes.title }}</a></h1>
   <div class="metadata">
     by <a href="/about">{{ article.attributes.author }}</a><br>
-    published {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}<br>
-    updated {{ article.attributes.updatedAt | date: "%a, %b %d, %Y at %l:%M %p" }}<br>
+    published
+    <time-stamp data-time="{{ article.attributes.publishedAt }}">
+      {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
+    </time-stamp><br>
+    updated <time-stamp data-time="{{ article.attributes.updatedAt }}">
+      {{ article.attributes.updatedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
+    </time-stamp><br>
   </div>
   {{ article.attributes.body | markdown }}
 
