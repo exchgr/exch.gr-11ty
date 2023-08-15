@@ -200,13 +200,12 @@ p, ul {
 figure {
 	background-color: var(--body-color);
 	color: var(--body-background-color);
-	padding: 0 0 0.5em 0;
 	margin: 0;
 	margin-block-start: 1em
 }
 
 figure figcaption {
-	padding: 0 0.75em;
+	padding: 0 0.75em 0.5em;
 }
 
 .collection-body {
@@ -304,5 +303,22 @@ figure figcaption {
 @media screen and (min-width: 1518px) {
 	.collection-body article {
 		width: 30rem;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--body-background-color: black;
+		--body-color: white;
+		--main-header-background-color: hsl(200 67% 50%);
+	}
+
+	body > header img.rss {
+		filter: invert(0%) sepia(100%) saturate(29%) hue-rotate(250deg) brightness(104%) contrast(102%);
+	}
+
+	figure {
+		background-color: hsl(0, 0%, 18%);
+		color: var(--body-color);
 	}
 }
