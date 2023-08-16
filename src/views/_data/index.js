@@ -1,3 +1,3 @@
 const allData = require("./allData")
 
-module.exports = async () => (await allData()).collections.data
+module.exports = async () => (await allData).data.collections.data

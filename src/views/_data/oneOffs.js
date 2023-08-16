@@ -1,4 +1,4 @@
 const allData = require("./allData")
 
 module.exports = async () =>
-	(await allData()).oneOffs.data
+	(await allData).data.oneOffs.data
