@@ -1,0 +1,43 @@
+---
+pagination:
+  data: collections
+  size: 1
+  alias: category
+  addAllPagesToCollections: true
+  filter:
+    - all
+    - post
+    - posts
+    - tagList
+eleventyComputed:
+  page_title: "{{ collections[category][0].data.article.attributes.collection.data.attributes.name }}"
+  permalink: "/{{ category }}/feed.xml"
+metadata:
+  blog_title: "Process Things"
+  subtitle: "The art and work of Elle Mundy"
+  language: "en"
+  url: "https://exch.gr/"
+  author:
+    name: "Elle Mundy"
+---
+{%- assign collection = collections[ category ] %}
+{%- assign category = collection[0].data.article.attributes.collection.data %}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="{{ metadata.url }}">
+  <title>{{ metadata.blog_title }} - {{ category.attributes.name }}</title>
+  <subtitle>{{ metadata.subtitle }}</subtitle>
+  <link href="{{ permalink | absoluteUrl: metadata.url }}" rel="self"/>
+  <link href="{{ metadata.url }}{{ category.attributes.slug }}/"/>
+  <updated>{{ category.attributes.articles.data[0].attributes.updatedAt }}</updated>
+  <id>{{ metadata.url }}</id>
+  <author>
+    <name>{{ metadata.author.name }}</name>
+  </author>
+    {%- for article in collection %}
+      {% render "entry",
+        collection: collection[0].data.article.attributes.collection.data,
+        article: article.data.article,
+        metadata: metadata
+      %}
+    {%- endfor %}
+</feed>

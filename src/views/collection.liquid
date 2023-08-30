@@ -1,0 +1,23 @@
+---
+layout: "main.liquid"
+pagination:
+  data: collections
+  size: 1
+  alias: slug
+  addAllPagesToCollections: true
+  filter:
+    - all
+    - post
+    - posts
+    - tagList
+eleventyComputed:
+  page_title: "{{ collections[slug][0].data.article.attributes.collection.data.attributes.name }}"
+permalink: "/{{ slug }}/"
+---
+{% assign collection = collections[ slug ] %}
+
+{% render 'collection',
+  collection: collection[0].data.article.attributes.collection.data,
+  articles: collection,
+  class: "single"
+%}

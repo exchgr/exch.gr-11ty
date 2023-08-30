@@ -17,32 +17,7 @@ module.exports = fetch(
 					collections(sort: "updatedAt:DESC") {
 						data {
 							attributes {
-								name
 								slug
-								articles(
-									sort: "publishedAt:DESC",
-									pagination: { limit: 100000 }
-								) {
-									data {
-										id
-										attributes {
-											title
-											body
-											author
-											slug
-											publishedAt
-											updatedAt
-											tags(sort: "name:ASC") {
-												data {
-													attributes {
-														name
-														slug
-													}
-												}
-											}
-										}
-									}
-								}
 							}
 						}
 					}

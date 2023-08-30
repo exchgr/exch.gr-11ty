@@ -7,7 +7,7 @@
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}
-      {% render 'article', article: article, collection: collection %}
+      {% render 'article', article: article.data.article, collection: collection %}
     {% endfor %}
     <nav class="more"><a href="/{{ collection.attributes.slug }}">More {{ collection.attributes.name | downcase }}</a></nav>
   </div>

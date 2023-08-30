@@ -4,6 +4,7 @@ pagination:
   data: articles
   size: 1
   alias: article
+  addAllPagesToCollections: true
 permalink: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.attributes.slug }}/index.html"
 extra_classes: "container center"
 eleventyComputed:
