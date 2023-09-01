@@ -9,11 +9,11 @@
 	--article-h2-font-size: min(2rem, calc(2vw + 1rem));
 	--h1-font-family: onffc;
 	--h1-font-weight: normal;
-	--hyperlink-color: hsl(36 100% 50%);
-	--hover-hyperlink-color: hsl(6 75% 55%);
-	--main-header-background-color: hsl(200 67% 54%);
+	--accent-color: hsl(36 100% 50%);
+	--hover-accent-color: hsl(200 67% 54%);
 	--body-background-color: hsl(0 4% 95%);
 	--body-color: hsl(300 1% 13%);
+	--metadata-color: #666;
 }
 
 @font-face {
@@ -76,16 +76,16 @@ body > header img.rss {
 }
 
 .collection header img.rss:hover {
-	filter: invert(42%) sepia(92%) saturate(4014%) hue-rotate(343deg) brightness(94%) contrast(88%);
+	filter: invert(71%) sepia(59%) saturate(3530%) hue-rotate(170deg) brightness(91%) contrast(85%);
 }
 
 a {
-	color: var(--hyperlink-color);
+	color: var(--accent-color);
 	text-decoration: none;
 }
 
 a:hover {
-	color: var(--hover-hyperlink-color)
+	color: var(--hover-accent-color)
 }
 
 h2, h3, h4, h5, h6 {
@@ -95,7 +95,7 @@ h2, h3, h4, h5, h6 {
 }
 
 body > header {
-	background-color: var(--main-header-background-color);
+	background-color: var(--accent-color);
 	margin: 0 0 var(--header-margin) calc(0rem - var(--body-margin));
 	padding-left: calc(var(--body-margin) - .25rem);
 }
@@ -161,7 +161,7 @@ article .metadata {
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: calc(0.15vw + 0.75rem);
-	color: #666;
+	color: var(--metadata-color);
 	margin-top: 0;
 }
 
@@ -313,11 +313,16 @@ figure figcaption {
 	body {
 		--body-background-color: black;
 		--body-color: white;
-		--main-header-background-color: hsl(200 67% 50%);
+		--hover-accent-color: hsl(200 67% 50%);
+		--metadata-color: #ccc;
 	}
 
 	body > header img.rss {
 		filter: invert(0%) sepia(100%) saturate(29%) hue-rotate(250deg) brightness(104%) contrast(102%);
+	}
+
+	.collection header img.rss:hover {
+		filter: invert(47%) sepia(77%) saturate(473%) hue-rotate(155deg) brightness(100%) contrast(90%);
 	}
 
 	figure {
