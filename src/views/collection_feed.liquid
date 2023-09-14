@@ -28,7 +28,7 @@ metadata:
   <subtitle>{{ metadata.subtitle }}</subtitle>
   <link href="{{ permalink | absoluteUrl: metadata.url }}" rel="self"/>
   <link href="{{ metadata.url }}{{ category.attributes.slug }}/"/>
-  <updated>{{ category.attributes.articles.data[0].attributes.updatedAt }}</updated>
+  <updated>{{ collection[0].data.article.attributes.updatedAt }}</updated>
   <id>{{ metadata.url }}</id>
   <author>
     <name>{{ metadata.author.name }}</name>
