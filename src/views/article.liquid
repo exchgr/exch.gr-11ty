@@ -19,7 +19,7 @@ eleventyComputed:
     "article:section": "{{ article.attributes.collection.data.attributes.name }}"
 ---
 <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
-{% render 'article', article: article, collection: article.attributes.collection.data %}
+{% render 'article', article: article %}
 &mdash;
 <p>
   <a href="/{{ article.attributes.collection.data.attributes.slug }}">More {{ article.attributes.collection.data.attributes.name }}</a>

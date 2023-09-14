@@ -58,6 +58,13 @@ module.exports = fetch(
 							}
 						}
 					}
+					tags(sort: "name:ASC") {
+						data {
+							attributes {
+								slug
+							}
+						}
+					}
 					oneOffs {
 						data {
 							attributes {

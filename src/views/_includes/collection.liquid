@@ -1,13 +1,18 @@
 <div class="collection {{ class }}">
   <header>
     <h1>
-      <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a
-      ><a href="/{{ collection.attributes.slug }}/feed.xml"><img class="rss" src="/images/rss icon.svg"></a>
+      {% assign maybeTag = collection.attributes.slug | extractTag: articles[0].data.article %}
+      {% if maybeTag.attributes.slug == collection.attributes.slug %}
+        <a href="/tags/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
+      {% else %}
+        <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a
+        ><a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss" class="rss" src="/images/rss icon.svg"></a>
+      {% endif %}
     </h1>
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}
-      {% render 'article', article: article.data.article, collection: collection %}
+      {% render 'article', article: article.data.article %}
     {% endfor %}
     <nav class="more"><a href="/{{ collection.attributes.slug }}">More {{ collection.attributes.name | downcase }}</a></nav>
   </div>

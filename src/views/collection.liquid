@@ -14,10 +14,11 @@ eleventyComputed:
   page_title: "{{ collections[slug][0].data.article.attributes.collection.data.attributes.name }}"
 permalink: "/{{ slug }}/"
 ---
-{% assign collection = collections[ slug ] %}
+{% assign articles = collections[ slug ] %}
+{% assign collection = slug | categoryOrTag: articles[0] %}
 
 {% render 'collection',
-  collection: collection[0].data.article.attributes.collection.data,
-  articles: collection,
+  collection: collection,
+  articles: articles,
   class: "single"
 %}

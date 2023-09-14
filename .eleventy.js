@@ -5,6 +5,8 @@ const markdownIt = require("markdown-it")({
 const pluginRss = require("@11ty/eleventy-plugin-rss")
 const {encode} = require('html-entities')
 const allData = require('./src/views/_data/allData')
+const filters = require('./src/lib/filters')
+const shortcodes = require('./src/lib/shortcodes')
 
 module.exports = (eleventyConfig) => {
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
@@ -25,35 +27,37 @@ module.exports = (eleventyConfig) => {
 	eleventyConfig.addLiquidFilter("dateToRfc822", pluginRss.dateToRfc822)
 	eleventyConfig.addLiquidFilter("getNewestCollectionItemDate", pluginRss.getNewestCollectionItemDate)
 
-	eleventyConfig.addShortcode("inspect", (thing) => {
-		return ""
+	Object.keys(shortcodes).forEach((key) => {
+			eleventyConfig.addShortcode(key, shortcodes[key])
+		})
+
+	Object.keys(filters).forEach((key) => {
+		eleventyConfig.addFilter(key, filters[key])
 	})
 
-	eleventyConfig.addFilter("noAll", (collections) => (
-		Object.keys(collections).filter((slug) => (
-			slug !== "all"
-		)).reduce(
-			(accumulator, slug) => (
-				accumulator[slug] = collections[slug], accumulator
-			),
-			{}
-		)
-	))
-
 	eleventyConfig.on('eleventy.before', async () => {
-		try {
-			(await allData).data.collections.data.map((collection) =>
-				collection.attributes.slug
-			).forEach((collectionSlug) =>
-				eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
-					collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((item) =>
-						item.data.article.attributes.collection.data.attributes.slug === collectionSlug
-					)
+		const resolvedAllData = (await allData).data;
+		resolvedAllData.collections.data.map((collection) =>
+			collection.attributes.slug
+		).forEach((collectionSlug) =>
+			eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
+				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
+					article.data.article.attributes.collection.data.attributes.slug === collectionSlug
 				)
 			)
-		} catch(e) {
-			console.error(e)
-		}
+		)
+
+		resolvedAllData.tags.data.map((tag) =>
+			tag.attributes.slug
+		).forEach((tagSlug) =>
+			eleventyConfig.addCollection(`tags/${tagSlug}`, (collectionApi) =>
+				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
+					article.data.article.attributes.tags.data.filter((tag) =>
+						tag.attributes.slug === tagSlug
+					).length > 0
+				)
+			)
+		)
 	})
 
 	return {
