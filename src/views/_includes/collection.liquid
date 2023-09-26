@@ -6,7 +6,7 @@
         <a href="/tags/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
       {% else %}
         <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a
-        ><a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss" class="rss" src="/images/rss icon.svg"></a>
+        ><a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"></a>
       {% endif %}
     </h1>
   </header>

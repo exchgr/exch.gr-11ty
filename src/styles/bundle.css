@@ -14,6 +14,7 @@
 	--body-background-color: hsl(0 4% 95%);
 	--body-color: hsl(300 1% 13%);
 	--metadata-color: #666;
+	--h1-line-height: 1;
 }
 
 @font-face {
@@ -52,7 +53,7 @@ h1 {
 	font-size: var(--h1-font-size);
 	font-weight: var(--h1-font-weight);
 
-	line-height: 1;
+	line-height: var(--h1-line-height);
 	margin: 0 0 1rem;
 }
 
@@ -213,12 +214,12 @@ figure figcaption {
 
 .collection-body {
 	display: flex;
+	--vertical-scroll-hint: 3rem;
+	--collection-rows: 1;
 }
 
 .collection-body article {
 	--collection-columns: 1;
-	--collection-rows: 1;
-	--vertical-scroll-hint: 3rem;
 
 	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right));
 	overflow-y: hidden;
@@ -230,11 +231,13 @@ figure figcaption {
 	font-family: var(--h1-font-family);
   font-size: var(--article-h1-font-size);
 	font-weight: var(--h1-font-weight);
+	line-height: var(--h1-line-height);
 
 	writing-mode: vertical-rl;
 	text-orientation: sideways;
 	text-align: right;
 
+	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
 }
@@ -270,19 +273,19 @@ figure figcaption {
 }
 
 @media screen and (min-height: 900px) {
-	.collection-body article {
+	.collection-body {
 		--collection-rows: 2;
 	}
 }
 
 @media screen and (min-height: 1500px) {
-	.collection-body article {
+	.collection-body {
 		--collection-rows: 3;
 	}
 }
 
 @media screen and (min-height: 2000px) {
-	.collection-body article {
+	.collection-body {
 		--collection-rows: 4;
 	}
 }
