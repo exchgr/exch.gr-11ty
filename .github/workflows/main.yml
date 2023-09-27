@@ -17,6 +17,7 @@ env:
   STRAPI_HOST: ${{ vars.STRAPI_HOST }}
   STRAPI_PORT: ${{ vars.STRAPI_PORT }}
   STRAPI_PROTOCOL: ${{ vars.STRAPI_PROTOCOL }}
+  STRAPI_TOKEN: ${{ secrets.STRAPI_TOKEN }}
 jobs:
   deploy-infra:
     runs-on: ubuntu-latest
@@ -50,14 +51,59 @@ jobs:
       - name: "terraform apply"
         if: steps.cache.outputs.cache-hit != 'true'
         run: terraform apply -auto-approve
-  run-tests:
+  test-build:
+    needs:
+      - deploy-infra
     runs-on: ubuntu-latest
     container:
       image: node:18-alpine
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
+      - name: "cache packages"
+        id: cache-packages
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('package.json') }}
+          path: |
+            .yarn/cache
       - name: yarn
+        if: steps.cache-packages.outputs.cache-hit != 'true'
         run: yarn
       - name: mocha test
-        run: npx mocha
+        run: "npx mocha"
+      - name: "cache 11ty src"
+        id: cache-11ty-src
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('src/') }}
+          path: |
+            _site/**
+      - name: "11ty build"
+        if: steps.cache-11ty-src.outputs.cache-hit != 'true'
+        run: "npx @11ty/eleventy"
+      - name: "upload artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: "11ty-output"
+          path: "_site/"
+  deploy:
+    needs:
+      - test-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v3
+      - name: "download artifact"
+        uses: actions/download-artifact@v3
+        with:
+          name: "11ty-output"
+          path: "_site/"
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ vars.APP_NAME }}
+          directory: "_site"
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
