@@ -1,5 +1,5 @@
 const {expect}= require('chai')
-const {noTags, noAll, categoryOrTag} = require('../lib/filters')
+const {noTags, noAll, categoryOrTag} = require('../src/lib/filters')
 
 describe('filters', () => {
 	describe('noTags', () => {

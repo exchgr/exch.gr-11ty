@@ -1,5 +1,5 @@
 const {expect} = require('chai')
-const {isTag, stripTagsPrefix} = require("../lib/util");
+const {isTag, stripTagsPrefix} = require("../src/lib/util");
 
 describe('util', () => {
 	describe('isTag', () => {
