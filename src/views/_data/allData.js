@@ -74,6 +74,28 @@ module.exports = fetch(
 							}
 						}
 					}
+					redirects {
+						data {
+							attributes {
+								from
+								httpCode
+								to {
+									data {
+										attributes {
+											slug
+											collection {
+												data {
+													attributes {
+														slug
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}`
 			})
 		}
