@@ -15,6 +15,7 @@
 	--body-color: hsl(300 1% 13%);
 	--metadata-color: #666;
 	--h1-line-height: 1;
+	--container-width: 40rem;
 }
 
 @font-face {
@@ -45,7 +46,7 @@ body {
 }
 
 .container {
-	max-width: 40rem;
+	max-width: var(--container-width);
 }
 
 h1 {
@@ -303,6 +304,31 @@ figure figcaption {
 @media screen and (min-width: 1024px) {
 	.collection-body article {
 		--collection-columns: 3;
+	}
+
+	.container {
+		& article {
+			position: relative;
+		}
+
+		& .right, & .left {
+			position: absolute;
+			max-width: calc(50vw - var(--container-width) / 2 - var(--body-margin) * 1.5);
+		}
+
+		& .third {
+			width: 66%;
+		}
+
+		& .right {
+			left: var(--container-width);
+			margin-left: 0;
+		}
+
+		& .left {
+			right: var(--container-width);
+			margin-right: 0;
+		}
 	}
 }
 
