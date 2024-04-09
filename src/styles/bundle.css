@@ -258,7 +258,7 @@ figure figcaption {
 	text-orientation: sideways;
 	text-align: right;
 
-	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
+	height: 100%;
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
 }
@@ -277,7 +277,7 @@ figure figcaption {
 .plural.collection .collection-body article {
 	--horizontal-scroll-hint: calc(1.5rem + var(--body-margin));
 
-	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
+	height: 100svh;
 	flex-shrink: 0;
 	scroll-snap-align: start;
 }
@@ -290,7 +290,23 @@ figure figcaption {
 	--horizontal-scroll-hint: var(--body-margin);
 	--collection-article-margin-bottom: 1rem;
 
-	height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint) - var(--h1-font-size)) / var(--collection-rows) - var(--collection-article-margin-bottom));
+	height: 100svh;
+}
+
+@media screen and (min-height: 500px) {
+	.plural.collection .collection-body {
+		& article {
+			height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
+		}
+
+		& nav.more {
+			height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint)) / var(--collection-rows) - var(--body-margin) - var(--h1-font-size) - var(--collection-article-margin-bottom));
+		}
+	}
+
+	.single.collection .collection-body article {
+		height: calc((100svh - var(--header-h1-font-size) - var(--vertical-scroll-hint) - var(--h1-font-size)) / var(--collection-rows) - var(--collection-article-margin-bottom));
+	}
 }
 
 @media screen and (min-height: 900px) {
