@@ -12,10 +12,9 @@
     </time-stamp><br>
   </div>
   {{ article.attributes.body | markdown }}
-
-  <p>
+  <ul class="tags">
     {% for tag in article.attributes.tags.data %}
-      <a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a>
+      <li><a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a></li>
     {% endfor %}
-  </p>
+  </ul>
 </article>
