@@ -227,6 +227,11 @@ figure figcaption {
 		margin-block-start: .67rem;
 	}
 
+	& > a {
+		margin-block-start: .67rem;
+		line-height: 0;
+	}
+
 	.collection-body & {
 		width: initial;
 		margin-left: initial;
