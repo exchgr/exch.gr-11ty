@@ -14,7 +14,7 @@ module.exports = fetch(
 			},
 			body: JSON.stringify({
 				query: `{
-					collections(sort: "updatedAt:DESC") {
+					collections(sort: "updatedAt:DESC", pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								slug
@@ -47,7 +47,7 @@ module.exports = fetch(
 										}
 									}
 								}
-								tags(sort: "name:ASC") {
+								tags(sort: "name:ASC", pagination: { limit: 100000 }) {
 									data {
 										attributes {
 											name
@@ -58,14 +58,14 @@ module.exports = fetch(
 							}
 						}
 					}
-					tags(sort: "name:ASC") {
+					tags(sort: "name:ASC", pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								slug
 							}
 						}
 					}
-					oneOffs {
+					oneOffs(pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								title
@@ -74,7 +74,7 @@ module.exports = fetch(
 							}
 						}
 					}
-					redirects {
+					redirects(pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								from
