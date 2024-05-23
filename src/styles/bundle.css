@@ -1,7 +1,7 @@
 :root {
 	--h1-font-size: min(5rem, calc(5vw + 1.5rem));
 	--collection-article-margin-right: 2rem;
-	--collection-article-margin-bottom: 3rem;
+	--collection-article-margin-bottom: 1rem;
 	--header-h1-font-size: min(5rem, calc(6vw + 1rem));
 	--header-margin: 2rem;
 	--body-margin: 1rem;
@@ -282,6 +282,23 @@ figure figcaption {
 	overflow-y: hidden;
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
+	position: relative;
+
+	&:after {
+		content: "";
+		height: 6rem;
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		background-image: linear-gradient(
+			to bottom, hsla(0, 4%, 95%, 0%), hsla(0, 4%, 95%, 100%)
+		);
+	}
+
+	& * {
+		max-width: 100%;
+	}
 }
 
 .plural.collection .collection-body nav.more {
