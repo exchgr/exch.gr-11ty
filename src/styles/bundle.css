@@ -266,6 +266,7 @@ figure figcaption {
 	.collection-body & {
 		width: initial;
 		margin-left: initial;
+		--grid-gallery-columns: 1;
 	}
 }
 
