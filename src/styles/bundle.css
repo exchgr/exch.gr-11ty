@@ -278,7 +278,7 @@ figure figcaption {
 .collection-body article {
 	--collection-columns: 1;
 
-	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right));
+	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right) - 1px);
 	overflow-y: hidden;
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
