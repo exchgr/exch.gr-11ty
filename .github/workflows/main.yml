@@ -101,10 +101,8 @@ jobs:
           name: "11ty-output"
           path: "_site/"
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ vars.APP_NAME }}
-          directory: "_site"
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy _site --project-name=${{ vars.APP_NAME }} --commit-dirty=true
