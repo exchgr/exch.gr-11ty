@@ -2,7 +2,7 @@ const fetch = require("@11ty/eleventy-fetch");
 
 module.exports = async () => {
 	try {
-		return await fetch("https://fonts.googleapis.com/css2?family=Mrs+Sheppards&family=EB+Garamond&family=Playfair+Display:wght@800&display=swap", {
+		return await fetch("https://fonts.googleapis.com/css2?family=Mrs+Sheppards&family=Playfair+Display:wght@800&display=swap", {
 			duration: "1y",
 			type: "text",
 		})
