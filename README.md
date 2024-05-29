@@ -1,4 +1,7 @@
-# exch.gr 11ty frontend
+# exch.gr-11ty
+
+## What It Is
+exch.gr-11ty is the front-end web portion of the blog hosted at https://exch.gr/. Using [11ty](https://www.11ty.dev), it pulls data from the [strapi backend](https://github.com/exchgr/exch.gr-strapi) and generates static HTML pages, stylesheets, RSS feeds, and minimal javascript.
 
 ## Developing
 
