@@ -7,7 +7,7 @@
 	--body-margin: 1rem;
 	--article-h1-font-size: min(3rem, calc(3.5vw + 1rem));
 	--article-h2-font-size: min(2rem, calc(2vw + 1rem));
-	--h1-font-family: onffc;
+	--h1-font-family: onffc, -apple-system-ui-serif, ui-serif, serif;
 	--h1-font-weight: normal;
 	--hover-accent-color: hsl(36 100% 50%);
 	--accent-color: hsl(200 67% 54%);
@@ -20,7 +20,8 @@
 
 @font-face {
 	font-family: "onffc";
-	src: url("/fonts/onffc.woff")
+	src: url("/fonts/onffc.woff");
+	font-display: swap;
 }
 
 * {box-sizing: border-box;}
