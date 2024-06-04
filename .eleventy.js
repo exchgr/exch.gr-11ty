@@ -17,6 +17,7 @@ module.exports = (eleventyConfig) => {
 	eleventyConfig.addPassthroughCopy({"src/styles": "styles"})
 	eleventyConfig.addPassthroughCopy({"src/fonts": "fonts"})
 	eleventyConfig.addPassthroughCopy({"src/scripts": "scripts"})
+	eleventyConfig.addPassthroughCopy({"src/images": "images"})
 	eleventyConfig.addPassthroughCopy({"src/views/robots.txt": "robots.txt"})
 
 	// rss plugin
