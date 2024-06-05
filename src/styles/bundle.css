@@ -69,7 +69,7 @@ img.rss {
 }
 
 body > header img.rss {
-	filter: invert(99%) sepia(5%) saturate(429%) hue-rotate(307deg) brightness(119%) contrast(90%);
+	filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
 	margin-left: .25rem;
 }
 
