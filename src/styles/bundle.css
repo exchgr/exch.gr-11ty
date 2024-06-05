@@ -176,7 +176,7 @@ article img {
 	max-width: 100%;
 }
 
-p, ul {
+p, ul, ol {
 	font-size: 1.12rem;
 	line-height: 1.4;
 }
