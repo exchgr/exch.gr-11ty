@@ -44,6 +44,8 @@ module.exports = fetch(
 										attributes {
 											name
 											slug
+											mailName
+											mailUrl
 										}
 									}
 								}
