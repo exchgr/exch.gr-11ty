@@ -194,6 +194,7 @@ pre, code {
 
 pre {
 	white-space: pre-wrap;
+	word-wrap: break-word;
 	hyphens: none;
 }
 
