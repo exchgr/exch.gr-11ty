@@ -66,11 +66,11 @@ h1.collection-name {
 img.rss {
 	width: calc(.4vw + .6rem);
 	height: calc(.4vw + .6rem);
-}
 
-body > header img.rss {
-	filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
-	margin-left: .25rem;
+	body > header & {
+		filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
+		margin-left: .25rem;
+	}
 }
 
 .collection header {
@@ -111,30 +111,32 @@ body > header {
 	background-color: var(--accent-color);
 	margin: 0 0 var(--header-margin) calc(0rem - var(--body-margin));
 	padding-left: calc(var(--body-margin) - .25rem);
-}
 
-body > header, body > header a:hover {
-	color: var(--body-background-color)
-}
+	&, & a:hover {
+		color: var(--body-background-color)
+	}
 
-body > header h1 {
-	font-family: 'Mrs Sheppards', cursive;
-	font-size: var(--header-h1-font-size);
-	margin: 0 0 -0.25rem;
-}
+	& h1 {
+		display: flex;
+		align-items: baseline;
+		font-family: 'Mrs Sheppards', cursive;
+		font-size: var(--header-h1-font-size);
+		margin: 0 0 -0.25rem;
+	}
 
-body > header h1 a {
-	color: inherit;
-}
+	& h1 a {
+		color: inherit;
+	}
 
-body > header h1 a:hover {
-	text-decoration: none;
-}
+	& h1 a:hover {
+		text-decoration: none;
+	}
 
-body > header h1 .site-byline {
-	font-family: var(--h1-font-family), serif;
-	font-size: calc(1vw + .7rem);
-	margin-left: max(-0.5rem, -1vw);
+	& h1 .site-byline {
+		font-family: var(--h1-font-family), serif;
+		font-size: calc(1vw + .7rem);
+		margin-left: min(0.75rem, 2vw);
+	}
 }
 
 .collection header h1, h1.collection-name {
