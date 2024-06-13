@@ -20,8 +20,8 @@ metadata:
   author:
     name: "Elle Mundy"
 ---
-{%- assign collection = collections[ category ] %}
-{%- assign category = collection[0].data.article.attributes.collection.data %}
+{%- assign collection = collections[ category ] -%}
+{%- assign category = collection[0].data.article.attributes.collection.data -%}
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="{{ metadata.url }}">
   <title>{{ metadata.blog_title }} - {{ category.attributes.name }}</title>
