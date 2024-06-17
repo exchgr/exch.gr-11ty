@@ -995,6 +995,7 @@ __metadata:
     "@11ty/eleventy-plugin-rss": ^1.2.0
     chai: ^4.3.8
     html-entities: ^2.4.0
+    markdown-it-footnote: ^4.0.0
     mocha: ^10.2.0
   languageName: unknown
   linkType: soft
@@ -1778,6 +1779,13 @@ __metadata:
     socks-proxy-agent: ^7.0.0
     ssri: ^9.0.0
   checksum: 2332eb9a8ec96f1ffeeea56ccefabcb4193693597b132cd110734d50f2928842e22b84cfa1508e921b8385cdfd06dda9ad68645fed62b50fff629a580f5fb72c
+  languageName: node
+  linkType: hard
+
+"markdown-it-footnote@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "markdown-it-footnote@npm:4.0.0"
+  checksum: 75543f8c81d7ba9620f5b2bc3fcbb5130ad7b4e3afbec19da3bdf3417dfb885582c66ccb0b39e3847bdf2876a110378095260477084fe0e7c29a887b4404401e
   languageName: node
   linkType: hard
 

@@ -2,6 +2,7 @@ const markdownIt = require("markdown-it")({
 	html: true,
 	typographer: true
 })
+const markdownItFootnote = require("markdown-it-footnote")
 const pluginRss = require("@11ty/eleventy-plugin-rss")
 const {encode} = require('html-entities')
 const allData = require('./src/views/_data/allData')
@@ -9,6 +10,7 @@ const filters = require('./src/lib/filters')
 const shortcodes = require('./src/lib/shortcodes')
 
 module.exports = (eleventyConfig) => {
+	markdownIt.use(markdownItFootnote)
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
 	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)

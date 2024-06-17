@@ -200,6 +200,17 @@ pre {
 	hyphens: none;
 }
 
+sup {
+	font-size: .8rem;
+	line-height: 1
+}
+
+hr {
+	border-style: solid;
+	border-color: var(--body-color);
+	border-width: 1px 0 0 0;
+}
+
 ul.tags {
 	padding: 0;
 
