@@ -8,9 +8,12 @@ const {encode} = require('html-entities')
 const allData = require('./src/views/_data/allData')
 const filters = require('./src/lib/filters')
 const shortcodes = require('./src/lib/shortcodes')
+const markdownItHighlightjs = require("markdown-it-highlightjs")
+const c = require('highlight.js/lib/languages/c');
 
 module.exports = (eleventyConfig) => {
 	markdownIt.use(markdownItFootnote)
+	markdownIt.use(markdownItHighlightjs, {register: {c}})
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
 	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)

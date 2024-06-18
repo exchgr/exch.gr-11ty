@@ -16,6 +16,8 @@
 	--metadata-color: #666;
 	--h1-line-height: 1;
 	--container-width: 40rem;
+	--code-background-light: #f8f8f8;
+	--code-background-dark: #23241f;
 }
 
 @font-face {
@@ -149,6 +151,13 @@ article {
 
 article h1, article h2, article h3, article h4, article h5, article h6 {
 	margin-block-end: 0;
+
+	& code {
+		font-size: inherit;
+		padding: .125em .25em;
+		border-radius: .25em;
+		background-color: var(--code-background-light);
+	}
 }
 
 article h2, article h3, article h4, article h5, article h6 {
@@ -194,10 +203,37 @@ pre, code {
 	font-size: initial;
 }
 
+p > code {
+	background-color: var(--code-background-light);
+	padding: 3px 5px;
+	border-radius: 5px;
+}
+
 pre {
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	hyphens: none;
+	text-align: left;
+	tab-size: 2;
+
+	& code {
+		border-radius: calc(var(--body-margin)/2);
+		margin: 0 calc(var(--body-margin)/-2);
+		padding: calc(var(--body-margin)/2) !important;
+	}
+}
+
+blockquote {
+	margin: 1rem 0 1rem .5rem;
+	border-left: 2px #ddd solid;
+	padding: .5rem 0 .5rem 1rem;
+
+	& > *:first-child {
+		margin-top: 0;
+	}
+	&> *:last-child {
+		margin-bottom: 0;
+	}
 }
 
 sup {
@@ -492,6 +528,20 @@ figure figcaption {
 
 	figure {
 		background-color: hsl(0, 0%, 18%);
+	}
+
+	article h1, article h2, article h3, article h4, article h5, article h6 {
+		& code {
+			background-color: var(--code-background-dark);
+		}
+	}
+
+	p > code {
+		background-color: var(--code-background-dark);
+	}
+
+	blockquote {
+		border-color: #555;
 	}
 
 	.collection-body article:after {
