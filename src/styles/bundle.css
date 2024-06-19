@@ -23,7 +23,7 @@
 @font-face {
 	font-family: "onffc";
 	src: url("/fonts/onffc.woff");
-	font-display: swap;
+	font-display: block;
 }
 
 * {box-sizing: border-box;}
