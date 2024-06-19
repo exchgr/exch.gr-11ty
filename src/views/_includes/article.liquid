@@ -7,7 +7,7 @@
       {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
     </time-stamp><br>
   </div>
-  {{ article.attributes.body | markdown }}
+  {{ article.attributes.body | markdown | clip: clip }}
   <ul class="tags">
     {% for tag in article.attributes.tags.data %}
       <li><a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a></li>

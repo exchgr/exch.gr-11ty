@@ -10,11 +10,21 @@ const filters = require('./src/lib/filters')
 const shortcodes = require('./src/lib/shortcodes')
 const markdownItHighlightjs = require("markdown-it-highlightjs")
 const c = require('highlight.js/lib/languages/c');
+const clip = require('text-clipper').default
 
 module.exports = (eleventyConfig) => {
 	markdownIt.use(markdownItFootnote)
 	markdownIt.use(markdownItHighlightjs, {register: {c}})
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
+
+	eleventyConfig.addFilter('clip', (body, maxLength) => {
+		if (maxLength === undefined || maxLength < 0) {
+			return body
+		}
+
+		return clip(body, maxLength, {html: true, imageWeight: 500});
+	})
+
 	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)
 

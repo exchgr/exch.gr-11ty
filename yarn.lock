@@ -998,6 +998,7 @@ __metadata:
     markdown-it-footnote: ^4.0.0
     markdown-it-highlightjs: ^4.1.0
     mocha: ^10.2.0
+    text-clipper: ^2.2.0
   languageName: unknown
   linkType: soft
 
@@ -2929,6 +2930,13 @@ __metadata:
     mkdirp: ^1.0.3
     yallist: ^4.0.0
   checksum: 8a278bed123aa9f53549b256a36b719e317c8b96fe86a63406f3c62887f78267cea9b22dc6f7007009738509800d4a4dccc444abd71d762287c90f35b002eb1c
+  languageName: node
+  linkType: hard
+
+"text-clipper@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "text-clipper@npm:2.2.0"
+  checksum: f2b53c93d8fa8857d1567fb1cf89398de4de2e839be3fb0f18673f724a167ba90e50f844bf8bb738d179428f4f55d952f40ba2cf84e4efcce7324d0a7f233b6c
   languageName: node
   linkType: hard
 
