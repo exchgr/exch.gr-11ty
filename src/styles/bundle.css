@@ -307,7 +307,7 @@ figure figcaption {
 	grid-template-columns: repeat(var(--grid-gallery-columns), 1fr);
 	column-gap: .67rem;
 	margin-block-start: 1rem;
-	align-items: end;
+	align-items: start;
 	width: calc(100vw - 2*var(--body-margin));
 	margin-left: initial;
 
