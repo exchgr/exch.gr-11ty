@@ -37,7 +37,8 @@ base_url: https://exch.gr/
 		<title>{{ blog_title }} | {{ page_title }}</title>
     <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ env.CLOUDFLARE_WEB_ANALYTICS_TOKEN }}"}'></script><!-- End Cloudflare Web Analytics -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
-    <meta name="theme-color" content="hsl(200 67% 54%)" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="hsl(200 67% 54%)" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="hsl(36 100% 50%)" />
   </head>
 	<body>
 	<header>
