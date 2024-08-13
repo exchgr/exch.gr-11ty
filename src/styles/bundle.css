@@ -334,8 +334,13 @@ figure {
 		}
 
 		& figure {
-			display: inline-block;
+			display: inline-table;
 			text-align: left;
+
+			& figcaption {
+				display: table-caption;
+				caption-side: bottom;
+			}
 		}
 	}
 
