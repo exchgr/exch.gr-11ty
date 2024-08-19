@@ -1,0 +1,8 @@
+{%- assign category = article | extractCategory %}
+<h1><a href="/{{ category.attributes.slug }}/{{ article.attributes.slug }}/">{{ article.attributes.title }}</a></h1>
+<div class="metadata">
+  by <a href="/about">{{ article.attributes.author }}</a><br>
+  <time-stamp data-time="{{ article.attributes.publishedAt }}">
+    {{ article.attributes.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
+  </time-stamp><br>
+</div>

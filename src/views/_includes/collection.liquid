@@ -15,7 +15,11 @@
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}
-      {% render 'article', article: article.data.article, clip: 1000 %}
+      {% if article.data.article.attributes.og_image.data %}
+        {% render 'ogPreview', article: article.data.article, clip: 1000 %}
+      {% else %}
+        {% render 'article', article: article.data.article, clip: 1000 %}
+      {% endif %}
     {% endfor %}
     <nav class="more"><a href="/{{ collection.attributes.slug }}">More {{ collection.attributes.name | downcase }}</a></nav>
   </div>

@@ -1,0 +1,8 @@
+<article>
+  {% render 'articleHeader', article: article %}
+  <p>
+    <img src="{{ article.attributes.og_image.data.attributes.url }}">
+  </p>
+  {{ article.attributes.body | markdown | textClip: clip }}
+  {% render 'articleFooter', article: article %}
+</article>

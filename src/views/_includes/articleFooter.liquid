@@ -1,0 +1,5 @@
+<ul class="tags">
+  {% for tag in article.attributes.tags.data %}
+    <li><a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a></li>
+  {% endfor %}
+</ul>

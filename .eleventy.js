@@ -25,6 +25,14 @@ module.exports = (eleventyConfig) => {
 		return clip(body, maxLength, {html: true, imageWeight: 500});
 	})
 
+	eleventyConfig.addFilter('textClip', (body, maxLength) => {
+		if (maxLength === undefined || maxLength < 0) {
+			return body
+		}
+
+		return clip(body, maxLength, {html: true, stripTags: ['img', 'figure']})
+	})
+
 	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)
 
