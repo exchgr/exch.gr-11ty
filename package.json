@@ -12,6 +12,7 @@
     "@11ty/eleventy-fetch": "^4.0.0",
     "chai": "^4.3.8",
     "html-entities": "^2.4.0",
+    "html-to-text": "^9.0.5",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-highlightjs": "^4.1.0",
     "text-clipper": "^2.2.0"

@@ -11,27 +11,63 @@ const shortcodes = require('./src/lib/shortcodes')
 const markdownItHighlightjs = require("markdown-it-highlightjs")
 const c = require('highlight.js/lib/languages/c');
 const clip = require('text-clipper').default
+const { htmlToText } = require('html-to-text')
 
 module.exports = (eleventyConfig) => {
 	markdownIt.use(markdownItFootnote)
 	markdownIt.use(markdownItHighlightjs, {register: {c}})
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
 
-	eleventyConfig.addFilter('clip', (body, maxLength) => {
-		if (maxLength === undefined || maxLength < 0) {
-			return body
+	eleventyConfig.addFilter('clip', (body, maxLength = 0) =>
+		clip(body, maxLength, {
+			html: true,
+			imageWeight: 500
+		})
+	)
+
+	eleventyConfig.addFilter('minimalHtmlClip', (body, maxLength = 0) =>
+		clip(body, maxLength, {
+			html: true,
+			stripTags: ['img', 'figure']
+		})
+	)
+
+	eleventyConfig.addFilter('textClip', (body, maxLength = 0) => {
+		const options = {
+			html: false
 		}
 
-		return clip(body, maxLength, {html: true, imageWeight: 500});
+		return clip(body, maxLength, options)
 	})
 
-	eleventyConfig.addFilter('textClip', (body, maxLength) => {
-		if (maxLength === undefined || maxLength < 0) {
-			return body
-		}
-
-		return clip(body, maxLength, {html: true, stripTags: ['img', 'figure']})
-	})
+	eleventyConfig.addFilter('htmlToText', (body) => (
+		htmlToText(body, {
+			selectors: [
+				{
+					selector: 'a',
+					options: {
+						ignoreHref: true
+					}
+				},
+				{
+					selector: 'img',
+					format: 'skip'
+				},
+				{
+					selector: 'iframe',
+					format: 'skip'
+				},
+				{
+					selector: 'figure',
+					format: 'skip'
+				},
+				{
+					selector: 'blockquote',
+					format: 'skip'
+				}
+			]
+		})
+	))
 
 	eleventyConfig.addFilter('htmlEncode', encode)
 	eleventyConfig.setLibrary("md", markdownIt)

@@ -1,5 +1,0 @@
-<article>
-  {% render 'articleHeader', article: article %}
-  {{ article.attributes.body | markdown | clip: clip }}
-  {% render 'articleFooter', article: article %}
-</article>

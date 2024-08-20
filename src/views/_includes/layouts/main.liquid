@@ -29,6 +29,7 @@ base_url: https://exch.gr/
 		<meta property="og:title" content="{{ page_title }} | {{ blog_title }}">
 		<meta property="og:url" content="{{ og_url | absoluteUrl: base_url }}">
 		<meta property="og:image" content="{{ og_image | default: 'https://imagedelivery.net/o13JSbSZsvRblBQcZyKHpg/7ff49036-7a21-4646-a179-f49aac9d0000/public' }}">
+    <meta property="og:description" content="{{ og_description }}">
 		<meta property="og:type" content="{{ og_type }}">
 		{%- for extra_og_tag in extra_og_tags %}
 			<meta property="{{ extra_og_tag[0] }}" content="{{ extra_og_tag[1] }}">

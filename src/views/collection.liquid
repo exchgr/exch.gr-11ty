@@ -12,6 +12,7 @@ pagination:
     - tagList
 eleventyComputed:
   page_title: "{{ collections[slug][0].data.article.attributes.collection.data.attributes.name }}"
+  og_description: "Elle Mundy's {{ collections[slug][0].data.article.attributes.collection.data.attributes.name | downcase }}"
 permalink: "/{{ slug }}/"
 ---
 {% assign articles = collections[ slug ] %}

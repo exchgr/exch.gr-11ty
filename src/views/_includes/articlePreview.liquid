@@ -1,0 +1,12 @@
+<article>
+  {% render 'articleHeader', article: article %}
+  {% if article.attributes.og_image.data %}
+    <p>
+      <img src="{{ article.attributes.og_image.data.attributes.url }}">
+    </p>
+    {{ article.attributes.body | markdown | minimalHtmlClip: clip }}
+  {% else %}
+    {{ article.attributes.body | markdown | clip: clip }}
+  {% endif %}
+  {% render 'articleFooter', article: article %}
+</article>

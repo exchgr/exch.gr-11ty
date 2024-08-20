@@ -12,6 +12,7 @@ eleventyComputed:
   og_url: "{{ article.attributes.collection.data.attributes.slug }}/{{ article.attributes.slug }}/"
   og_type: "{{ article.attributes.og_type | default: 'article' }}"
   og_image: "{{ article.attributes.og_image.data.attributes.url }}"
+  og_description: "{{ article.attributes.body | markdown | htmlToText | textClip: 300 }}"
   extra_og_tags:
     "article:published_time": "{{ article.attributes.publishedAt }}"
     "article:modified_time": "{{ article.attributes.updatedAt }}"
@@ -19,7 +20,11 @@ eleventyComputed:
     "article:section": "{{ article.attributes.collection.data.attributes.name }}"
 ---
 <h1 class="collection-name"><a href="/{{ article.attributes.collection.data.attributes.slug }}">{{ article.attributes.collection.data.attributes.name }}</a></h1>
-{% render 'article', article: article %}
+<article>
+  {% render 'articleHeader', article: article %}
+  {{ article.attributes.body | markdown }}
+  {% render 'articleFooter', article: article %}
+</article>
 &mdash;
 <p>
   <a href="/{{ article.attributes.collection.data.attributes.slug }}">More {{ article.attributes.collection.data.attributes.name }}</a>
