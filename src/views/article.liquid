@@ -23,9 +23,5 @@ eleventyComputed:
 <article>
   {% render 'articleHeader', article: article %}
   {{ article.attributes.body | markdown }}
-  {% render 'articleFooter', article: article %}
 </article>
-&mdash;
-<p>
-  <a href="/{{ article.attributes.collection.data.attributes.slug }}">More {{ article.attributes.collection.data.attributes.name }}</a>
-</p>
+{% render 'articleFooter', article: article %}

@@ -1,3 +1,17 @@
+{%- assign category = article | extractCategory %}
+&mdash;
+<p>
+  Check out the rest of my <a href="/{{ collection.attributes.slug }}">{{ category.attributes.name | downcase }}</a> posts.
+</p>
+<p>
+  Want to keep up with all my {{ category.attributes.name | downcase }} posts? Subscribe to the <a href="/{{ category.attributes.slug }}/feed.xml">RSS feed</a>. Or, if you want all my posts, subscribe to the <a href="/feed.xml">main RSS feed</a>.
+</p>
+{% if category.attributes.mailUrl %}
+  <p>
+    Want it in your inbox instead? Subscribe to the <a href="{{ category.attributes.mailUrl }}">email newsletter</a>.
+  </p>
+{% endif %}
+&mdash;
 <ul class="tags">
   {% for tag in article.attributes.tags.data %}
     <li><a href="/tags/{{ tag.attributes.slug }}">{{ tag.attributes.name }}</a></li>
