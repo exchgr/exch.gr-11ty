@@ -91,6 +91,10 @@ img.rss {
 	}
 }
 
+footer {
+	margin-right: var(--body-margin)
+}
+
 a {
 	color: var(--accent-color);
 	text-decoration: none;
@@ -310,6 +314,7 @@ figure {
 	grid-template-columns: repeat(var(--grid-gallery-columns), 1fr);
 	column-gap: .67rem;
 	margin-block-start: 1rem;
+	margin-block-end: 1rem;
 	align-items: start;
 	width: calc(100vw - 2*var(--body-margin));
 	margin-left: initial;
