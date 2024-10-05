@@ -312,12 +312,17 @@ figure {
 	--grid-gallery-columns: 2;
 	display: grid;
 	grid-template-columns: repeat(var(--grid-gallery-columns), 1fr);
-	grid-gap: .67rem;
+	grid-gap: 10px; /* needs to be in px for masonry js */
 	margin-block-start: 1rem;
 	margin-block-end: 1rem;
 	align-items: start;
 	width: calc(100vw - 2*var(--body-margin));
 	margin-left: initial;
+	grid-auto-rows: 0;
+
+	figure {
+		margin-block-start: 0;
+	}
 
 	& > a {
 		line-height: 0;
