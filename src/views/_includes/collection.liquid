@@ -12,6 +12,11 @@
         {% endif %}
       {% endif %}
     </h1>
+    {% if collection.attributes.blurb %}
+      <section class="blurb">
+        {{ collection.attributes.blurb | markdown }}
+      </section>
+    {% endif %}
   </header>
   <div class="collection-body">
     {% for article in articles limit:count %}

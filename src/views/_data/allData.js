@@ -18,6 +18,7 @@ module.exports = fetch(
 						data {
 							attributes {
 								slug
+								blurb
 							}
 						}
 					}
@@ -46,6 +47,7 @@ module.exports = fetch(
 											slug
 											mailName
 											mailUrl
+											blurb
 										}
 									}
 								}

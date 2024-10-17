@@ -77,6 +77,9 @@ img.rss {
 }
 
 .collection header {
+	margin-right: var(--body-margin);
+	max-width: var(--container-width);
+
 	& h1 {
 		display: flex;
 	}
