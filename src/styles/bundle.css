@@ -366,7 +366,6 @@ figure {
 .collection-body article {
 	--collection-columns: 1;
 
-	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right) - 1px);
 	overflow-y: hidden;
 	margin-right: var(--collection-article-margin-right);
 	margin-bottom: var(--collection-article-margin-bottom);
@@ -414,10 +413,6 @@ figure {
 	margin-bottom: var(--collection-article-margin-bottom);
 }
 
-.single.collection .collection-body nav.more {
-	display: none;
-}
-
 .plural.collection .collection-body {
 	flex-wrap: nowrap;
 	flex-direction: row;
@@ -428,6 +423,7 @@ figure {
 .plural.collection .collection-body article {
 	--horizontal-scroll-hint: calc(1.5rem + var(--body-margin));
 
+	width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right) - 1px);
 	height: 100svh;
 	flex-shrink: 0;
 	scroll-snap-align: start;
@@ -435,13 +431,21 @@ figure {
 
 .single.collection .collection-body {
 	flex-wrap: wrap;
-}
+	justify-content: space-between;
+	margin-right: var(--body-margin);
 
-.single.collection .collection-body article {
-	--horizontal-scroll-hint: var(--body-margin);
-	--collection-article-margin-bottom: 1rem;
+	& nav.more {
+		display: none;
+	}
 
-	height: 100svh;
+	& article {
+		--horizontal-scroll-hint: var(--body-margin);
+		margin-right: 0rem;
+		--collection-article-margin-bottom: 1rem;
+
+		width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right) - 1px + var(--body-margin) / var(--collection-columns));
+		height: 100svh;
+	}
 }
 
 @media screen and (min-height: 500px) {
