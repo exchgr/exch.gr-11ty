@@ -11,7 +11,9 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  CLOUDFLARE_AUTH_EMAIL: ${{ secrets.CLOUDFLARE_AUTH_EMAIL }}
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_CLEAR_CACHE_API_TOKEN: ${{ secrets.CLOUDFLARE_CLEAR_CACHE_API_TOKEN }}
   GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
   NODE_VERSION: ${{ vars.NODE_VERSION }}
   STRAPI_HOST: ${{ vars.STRAPI_HOST }}
@@ -108,3 +110,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy _site --project-name=${{ vars.APP_NAME }} --commit-dirty=true
+      - name: clear cloudflare cache
+        run: "curl -X POST --header \"X-Auth-Email: ${{ env.CLOUDFLARE_AUTH_EMAIL }}\" --header \"Authorization: Bearer ${{ env.CLOUDFLARE_CLEAR_CACHE_API_TOKEN }}\" https://api.cloudflare.com/client/v4/zones/${{ env.CLOUDFLARE_ZONE_ID }}/purge_cache --data '{\"purge_everything\": true}'"
