@@ -37,7 +37,7 @@ html {
 body {
 	background-color: var(--body-background-color);
 	color: var(--body-color);
-	font-family: -apple-system-ui-serif, ui-serif, serif;
+	font-family: "Hoefler Text", -apple-system-ui-serif, ui-serif, serif;
 	margin: 0 0 0 var(--body-margin);
 
 	text-align: justify;
@@ -205,7 +205,7 @@ article img {
 }
 
 p, ul, ol {
-	font-size: 1.12rem;
+	font-size: 19px;
 	line-height: 1.4;
 }
 
@@ -311,6 +311,7 @@ figure {
 		background-color: var(--figure-background-color);
 		padding: 0.25em 0.75em 0.5em;
 		font-size: 90%;
+		line-height: 1.4;
 	}
 }
 
