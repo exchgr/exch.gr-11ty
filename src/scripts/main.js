@@ -51,13 +51,12 @@ const resizeMasonryItem = (item) => {
 }
 
 const resizeAllMasonryItems = () => {
-	document.querySelectorAll('.grid-gallery > *').forEach(resizeMasonryItem)
+	Array.from(document.querySelectorAll('.grid-gallery > *')).forEach(resizeMasonryItem)
 }
 
 const waitForImages = () => {
-	document.querySelectorAll('.grid-gallery > *').forEach(async (item) => {
-		const instance = await imagesLoaded(item)
-		resizeMasonryItem(instance.elements[0])
+	Array.from(document.querySelectorAll('.grid-gallery > *')).forEach((item) => {
+		imagesLoaded(item).on('progress', (instance) => resizeMasonryItem(instance.elements[0]))
 	})
 }
 
