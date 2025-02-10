@@ -1,6 +1,6 @@
 {%- assign absoluteArticleUrl = "/" | append: collection.attributes.slug | append: "/" | append: article.attributes.slug | append: "/" | absoluteUrl: metadata.url %}
 <entry>
-  <title>{{ article.attributes.title }}</title>
+  <title>{{ article.attributes.title | htmlEncode }}</title>
   <author>
     <name>{{ article.attributes.author }}</name>
   </author>
