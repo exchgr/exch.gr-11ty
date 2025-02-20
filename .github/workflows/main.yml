@@ -110,7 +110,10 @@ jobs:
         with:
           key: ${{ hashFiles('yarn.lock') }}
           path: |
+            .yarn/cache
             node_modules/
+      - name: yarn
+        run: "yarn"
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3.14.0
         with:

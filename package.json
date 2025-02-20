@@ -23,6 +23,7 @@
   "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "@11ty/eleventy-plugin-rss": "^2.0.2",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "wrangler": "^3.109.2"
   }
 }
