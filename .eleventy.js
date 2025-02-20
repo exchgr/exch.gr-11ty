@@ -28,7 +28,7 @@ module.exports = (eleventyConfig) => {
 	eleventyConfig.addFilter('minimalHtmlClip', (body, maxLength = 0) =>
 		clip(body, maxLength, {
 			html: true,
-			stripTags: ['img', 'figure']
+			stripTags: ['img', 'figure', 'lite-youtube']
 		})
 	)
 
