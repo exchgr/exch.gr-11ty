@@ -104,8 +104,8 @@ jobs:
         with:
           name: "11ty-output"
           path: "_site/"
-      - name: "cache wrangler yarn"
-        id: cache
+      - name: "cache yarn"
+        id: cache-yarn
         uses: actions/cache@v4
         with:
           key: ${{ hashFiles('yarn.lock') }}
@@ -113,6 +113,7 @@ jobs:
             .yarn/cache
             node_modules/
       - name: yarn
+        if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: "yarn"
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3.14.0
