@@ -1,16 +1,18 @@
 <div class="collection {{ class }}">
   <header>
-    <h1 class="collection-header">
+    <h1>
       {% assign maybeTag = collection.attributes.slug | extractTag: articles[0].data.article %}
       {% if maybeTag.attributes.slug == collection.attributes.slug %}
         <a href="/tags/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
       {% else %}
         <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
-        <a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"></a>
-        {% if collection.attributes.mailUrl != null and collection.attributes.mailUrl != "" %}
-          <a href="{{ collection.attributes.mailUrl }}"><img alt="mail - {{ collection.attributes.mailName }}" class="rss" src="/images/mail icon.svg"></a>
-        {% endif %}
       {% endif %}
+      <nav>
+        <a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"> Subscribe on RSS</a>
+        {% if collection.attributes.mailUrl != null and collection.attributes.mailUrl != "" %}
+          <a href="{{ collection.attributes.mailUrl }}"><img alt="mail - {{ collection.attributes.mailName }}" class="rss" src="/images/mail icon.svg"> Subscribe to newsletter</a>
+        {% endif %}
+      </nav>
     </h1>
     {% if collection.attributes.blurb %}
       <section class="blurb">
