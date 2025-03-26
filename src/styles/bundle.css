@@ -77,6 +77,15 @@ img.rss {
 	}
 }
 
+header {
+	nav {
+		font-size: 14px;
+		font-family: "Avenir Next Condensed", "Helvetica Neue", Helvetica, sans-serif;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 .collection {
 	header {
 		margin-right: var(--body-margin);
@@ -99,10 +108,6 @@ img.rss {
 		}
 
 		nav {
-			font-size: 16px;
-			font-family: var(--body-font-family);
-			display: flex;
-			flex-direction: column;
 			margin-left: .25rem;
 		}
 
@@ -151,24 +156,28 @@ body > header {
 
 	& h1 {
 		display: flex;
-		align-items: baseline;
+		align-items: last baseline;
 		font-family: 'Mrs Sheppards', cursive;
 		font-size: var(--header-h1-font-size);
-		margin: 0 0 -0.25rem;
+		margin: 0 0 -.25em;
 	}
 
-	& h1 a {
+	& a {
 		color: inherit;
 	}
 
-	& h1 a:hover {
+	& a:hover {
 		text-decoration: none;
 	}
 
-	& h1 .site-byline {
+	& .site-byline {
 		font-family: var(--h1-font-family), serif;
 		font-size: calc(1vw + .7rem);
-		margin-left: min(0.75rem, 2vw);
+		margin-left: 1.12em;
+	}
+
+	nav {
+		margin-left: 1em;
 	}
 }
 
@@ -213,8 +222,7 @@ article h2 {
 }
 
 article .metadata {
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-weight: bold;
+	font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 	font-size: calc(0.15vw + 0.75rem);
 	color: var(--metadata-color);
 	margin-top: 0;
@@ -430,6 +438,7 @@ figure {
 			max-height: 4rem;
 			overflow: hidden;
 			position: relative;
+			margin-bottom: 1em;
 
 			:first-child {
 				margin-top: 0;
