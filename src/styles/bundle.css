@@ -3,7 +3,7 @@
 	--collection-article-margin-right: 2rem;
 	--collection-article-margin-bottom: 1rem;
 	--header-h1-font-size: min(5rem, calc(6vw + 1rem));
-	--header-margin: 2rem;
+	--header-margin: 1.5rem;
 	--body-margin: 1rem;
 	--article-h1-font-size: min(3rem, calc(3.5vw + 1rem));
 	--article-h2-font-size: min(2rem, calc(2vw + 1rem));
@@ -76,13 +76,12 @@ header {
 	nav {
 		font-size: 15px;
 		font-family: "Avenir Next Condensed", "Helvetica Neue", Helvetica, sans-serif;
-		display: flex;
-		flex-direction: column;
 
 		a {
 			display: flex;
 			align-items: baseline;
 			margin-top: .12em;
+			margin-right: .5em;
 
 			span {
 				margin-left: .25em;
@@ -113,6 +112,8 @@ header {
 		}
 
 		nav {
+			display: flex;
+			flex-direction: column;
 			margin-left: .25rem;
 		}
 
@@ -164,6 +165,7 @@ body > header {
 		font-family: 'Mrs Sheppards', cursive;
 		font-size: var(--header-h1-font-size);
 		margin: 0 0 -.25em;
+		white-space: nowrap;
 	}
 
 	& a {
@@ -181,7 +183,17 @@ body > header {
 	}
 
 	nav {
+		--nav-grid-rows: 2;
+
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-rows: repeat(var(--nav-grid-rows), 1fr);
 		margin-left: 1em;
+		overflow-x: scroll;
+
+		a {
+			white-space: nowrap;
+		}
 
 		img.rss {
 			filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
@@ -564,6 +576,14 @@ figure {
 
 	.grid-gallery {
 		--grid-gallery-columns: 3;
+	}
+}
+
+@media screen and (min-width: 800px) {
+	body > header {
+		nav {
+			--nav-grid-rows: 3;
+		}
 	}
 }
 
