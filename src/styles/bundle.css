@@ -433,8 +433,8 @@ figure {
 }
 
 .plural.collection {
-	& header {
-		& .blurb {
+	header {
+		.blurb {
 			max-height: 4rem;
 			overflow: hidden;
 			position: relative;
@@ -623,6 +623,18 @@ figure {
 
 	body > header img.rss {
 		filter: invert(0%) sepia(100%) saturate(29%) hue-rotate(250deg) brightness(104%) contrast(102%);
+	}
+
+	.plural.collection {
+		header {
+			.blurb {
+				&:after {
+					background-image: linear-gradient(
+						to bottom, hsla(0, 4%, 0%, 0%), hsla(0, 4%, 0%, 100%)
+					);
+				}
+			}
+		}
 	}
 
 	.collection header img.rss {
