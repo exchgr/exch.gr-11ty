@@ -115,7 +115,7 @@ header {
 			vertical-align: baseline;
 			filter: invert(71%) sepia(59%) saturate(3530%) hue-rotate(170deg) brightness(91%) contrast(85%);
 
-			&:hover {
+			a:hover & {
 				filter: invert(70%) sepia(51%) saturate(3885%) hue-rotate(358deg) brightness(99%) contrast(109%);
 			}
 		}
