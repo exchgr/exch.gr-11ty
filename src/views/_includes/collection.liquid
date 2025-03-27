@@ -8,9 +8,9 @@
         <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
       {% endif %}
       <nav>
-        <a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"> Subscribe on RSS</a>
+        <a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"><span>Subscribe on RSS</span></a>
         {% if collection.attributes.mailUrl != null and collection.attributes.mailUrl != "" %}
-          <a href="{{ collection.attributes.mailUrl }}"><img alt="mail - {{ collection.attributes.mailName }}" class="rss" src="/images/mail icon.svg"> Subscribe to newsletter</a>
+          <a href="{{ collection.attributes.mailUrl }}"><img alt="mail - {{ collection.attributes.mailName }}" class="rss" src="/images/mail icon.svg"><span>Subscribe to newsletter</span></a>
         {% endif %}
       </nav>
     </h1>

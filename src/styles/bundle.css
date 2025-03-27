@@ -68,21 +68,26 @@ h1.collection-name {
 }
 
 img.rss {
-	width: calc(.4vw + .6rem);
-	height: calc(.4vw + .6rem);
-
-	body > header & {
-		filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
-		margin-left: .25rem;
-	}
+	width:  1.25cap;
+	height: 1.25cap;
 }
 
 header {
 	nav {
-		font-size: 14px;
+		font-size: 15px;
 		font-family: "Avenir Next Condensed", "Helvetica Neue", Helvetica, sans-serif;
 		display: flex;
 		flex-direction: column;
+
+		a {
+			display: flex;
+			align-items: baseline;
+			margin-top: .12em;
+
+			span {
+				margin-left: .25em;
+			}
+		}
 	}
 }
 
@@ -112,7 +117,6 @@ header {
 		}
 
 		img.rss {
-			vertical-align: baseline;
 			filter: invert(71%) sepia(59%) saturate(3530%) hue-rotate(170deg) brightness(91%) contrast(85%);
 
 			a:hover & {
@@ -178,6 +182,10 @@ body > header {
 
 	nav {
 		margin-left: 1em;
+
+		img.rss {
+			filter: invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);
+		}
 	}
 }
 
