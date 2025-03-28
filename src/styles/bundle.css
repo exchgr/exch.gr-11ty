@@ -455,28 +455,7 @@ figure {
 .plural.collection {
 	header {
 		.blurb {
-			max-height: 4rem;
-			overflow: hidden;
-			position: relative;
-			margin-bottom: 1em;
-
-			:first-child {
-				margin-top: 0;
-			}
-
-			&:after {
-				content: "";
-				height: 50%;
-				max-height: var(--h1-font-size);
-				width: 100%;
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				background-image: linear-gradient(
-					to bottom, hsla(0, 4%, 100%, 0%), hsla(0, 4%, 100%, 100%)
-				);
-				pointer-events: none;
-			}
+			display: none;
 		}
 	}
 
