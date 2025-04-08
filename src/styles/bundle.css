@@ -628,7 +628,7 @@ figure {
 		--metadata-color: #ccc;
 	}
 
-	body > header img.rss {
+	body > header nav img.rss {
 		filter: invert(0%) sepia(100%) saturate(29%) hue-rotate(250deg) brightness(104%) contrast(102%);
 	}
 
