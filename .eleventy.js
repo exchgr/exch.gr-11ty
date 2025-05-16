@@ -100,23 +100,21 @@ module.exports = (eleventyConfig) => {
 		resolvedAllData.collections.data.map((collection) =>
 			collection.attributes.slug
 		).forEach((collectionSlug) =>
-			// CAUTION: overwrites existing collections
-			eleventyConfig.getCollections()[collectionSlug] = (collectionApi) =>
+			eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
 				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
 					article.data.article.attributes.collection.data.attributes.slug === collectionSlug
-				)
+				))
 		)
 
 		resolvedAllData.tags.data.map((tag) =>
 			tag.attributes.slug
 		).forEach((tagSlug) =>
-			// CAUTION: overwrites existing collections
-			eleventyConfig.getCollections()[`tags/${tagSlug}`] = (collectionApi) =>
+			eleventyConfig.addCollection(`tags/${tagSlug}`, (collectionApi) =>
 				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
 					article.data.article.attributes.tags.data.filter((tag) =>
 						tag.attributes.slug === tagSlug
 					).length > 0
-				)
+				))
 		)
 	})
 
