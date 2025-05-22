@@ -13,7 +13,7 @@ const c = require('highlight.js/lib/languages/c');
 const clip = require('text-clipper').default
 const { htmlToText } = require('html-to-text')
 
-module.exports = (eleventyConfig) => {
+module.exports = async (eleventyConfig) => {
 	markdownIt.use(markdownItFootnote)
 	markdownIt.use(markdownItHighlightjs, {register: {c}})
 	eleventyConfig.addFilter('markdown', body => markdownIt.render(body))
@@ -95,28 +95,26 @@ module.exports = (eleventyConfig) => {
 		eleventyConfig.addFilter(key, filters[key])
 	})
 
-	eleventyConfig.on('eleventy.before', async () => {
-		const resolvedAllData = (await allData).data;
-		resolvedAllData.collections.data.map((collection) =>
-			collection.attributes.slug
-		).forEach((collectionSlug) =>
-			eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
-				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
-					article.data.article.attributes.collection.data.attributes.slug === collectionSlug
-				))
-		)
+	const resolvedAllData = (await allData).data;
+	resolvedAllData.collections.data.map((collection) =>
+		collection.attributes.slug
+	).forEach((collectionSlug) =>
+		eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
+			collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
+				article.data.article.attributes.collection.data.attributes.slug === collectionSlug
+			))
+	)
 
-		resolvedAllData.tags.data.map((tag) =>
-			tag.attributes.slug
-		).forEach((tagSlug) =>
-			eleventyConfig.addCollection(`tags/${tagSlug}`, (collectionApi) =>
-				collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
-					article.data.article.attributes.tags.data.filter((tag) =>
-						tag.attributes.slug === tagSlug
-					).length > 0
-				))
-		)
-	})
+	resolvedAllData.tags.data.map((tag) =>
+		tag.attributes.slug
+	).forEach((tagSlug) =>
+		eleventyConfig.addCollection(`tags/${tagSlug}`, (collectionApi) =>
+			collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
+				article.data.article.attributes.tags.data.filter((tag) =>
+					tag.attributes.slug === tagSlug
+				).length > 0
+			))
+	)
 
 	return {
 		dir: {
