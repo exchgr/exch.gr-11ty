@@ -1,0 +1,10 @@
+---
+permalink: "/_headers"
+data: collections
+---
+/feed.xml
+  Content-Type: application/rss+xml
+{% for key in collections %}
+/{{ key[0] }}/feed.xml
+  Content-Type: application/rss+xml
+{% endfor %}
