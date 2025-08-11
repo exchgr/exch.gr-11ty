@@ -493,8 +493,9 @@ figure {
 
 .single.collection .collection-body {
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-start;
 	margin-right: var(--body-margin);
+	gap: 0 var(--collection-article-margin-right);
 
 	& nav.more {
 		display: none;
@@ -502,7 +503,7 @@ figure {
 
 	& article {
 		--horizontal-scroll-hint: var(--body-margin);
-		margin-right: 0rem;
+		margin-right: 0;
 		--collection-article-margin-bottom: 1rem;
 
 		width: calc((100vw - var(--horizontal-scroll-hint)) / var(--collection-columns) - var(--collection-article-margin-right) - 1px + var(--body-margin) / var(--collection-columns));
