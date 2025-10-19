@@ -58,7 +58,7 @@ jobs:
       - deploy-infra
     runs-on: ubuntu-latest
     container:
-      image: node:18-bookworm-slim
+      image: node:22-trixie-slim
     env:
       CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
     steps:
