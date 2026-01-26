@@ -32,6 +32,10 @@
         border-radius: 50%;
         width: 2rem;
         height: 2rem;
+
+        &[disabled] {
+          background: #eee;
+        }
       }
 
       & slot[name=image] {
@@ -67,6 +71,11 @@
           & button {
             color: white;
             background: #666;
+
+            &[disabled] {
+              color: black;
+              background: #333;
+            }
           }
         }
       }

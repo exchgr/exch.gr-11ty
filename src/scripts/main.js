@@ -86,8 +86,6 @@ class Lightbox extends HTMLElement {
 
 		this.currentPhoto = 0
 
-		// this.updateCurrentPhoto("none")
-
 		this.photos.forEach((photo) => {
 			photo.addEventListener("click", this.openLightbox)
 		})
@@ -163,6 +161,7 @@ class Lightbox extends HTMLElement {
 			slot.removeChild(img)
 		}, 187)
 	}
+
 	updateCurrentPhoto = (direction) => {
 		let oldClass
 		let newClass
@@ -176,6 +175,21 @@ class Lightbox extends HTMLElement {
 				oldClass = "out-right"
 				newClass = "out-left"
 				break
+		}
+
+		const previous = this.shadowRoot.querySelector("button[name=previous]");
+		const next = this.shadowRoot.querySelector("button[name=next]")
+
+		if (this.currentPhoto <= 0) {
+			previous.setAttribute("disabled", "true")
+		} else {
+			previous.removeAttribute("disabled")
+		}
+
+		if (this.currentPhoto >= this.photos.length - 1) {
+			next.setAttribute("disabled", true)
+		} else {
+			next.removeAttribute("disabled")
 		}
 
 		const newImgContainer = document.createElement("div")
@@ -208,7 +222,6 @@ class Lightbox extends HTMLElement {
 			this.touchEndY = event.changedTouches[0].screenY
 			this.handleSwipe(event)
 		})
-
 	}
 
 	handleSwipe = (event) => {
