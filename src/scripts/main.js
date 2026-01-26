@@ -221,7 +221,7 @@ class Lightbox extends HTMLElement {
 			} else {
 				this.previous(event)
 			}
-		} else {
+		} else if (xDelta !== 0 && yDelta !== 0) {
 			console.log("HERE")
 			this.closeLightboxUnsafe()
 		}
