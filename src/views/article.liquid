@@ -23,5 +23,6 @@ eleventyComputed:
 <article>
   {% render 'articleHeader', article: article %}
   {{ article.attributes.body | markdown }}
+  {% render 'light-box' %}
 </article>
 {% render 'articleFooter', article: article %}

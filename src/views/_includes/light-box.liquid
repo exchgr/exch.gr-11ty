@@ -1,0 +1,82 @@
+<template id="light-box">
+  <style>
+    * {box-sizing: border-box;}
+
+    .modal {
+      background: rgb(255, 255, 255);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      gap: 1rem;
+      padding: 1rem;
+      /*backdrop-filter: blur(0.5rem);*/
+
+      transition: opacity 0.187s, visibility 0.187s;
+
+      &.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      & button {
+        font-size: 1rem;
+        font-weight: bold;
+        background: #999;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+      }
+
+      & slot[name=image] {
+        & img {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, calc(-50% - 1.5rem));
+          max-width: calc(100vw - 2rem);
+          max-height: calc(100dvh - 5rem);
+          transition-property: opacity, transform, visibility;
+          transition-behavior: allow-discrete;
+          transition-duration: 0.187s;
+
+          &.out-left {
+            visibility: hidden;
+            opacity: 0;
+            transform: translate(-100%, calc(-50% - 1.5rem));
+          }
+
+          &.out-right {
+            visibility: hidden;
+            opacity: 0;
+            transform: translate(0, calc(-50% - 1.5rem));
+          }
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        & {
+          background: rgb(0, 0, 0);
+
+          & button {
+            color: white;
+            background: #666;
+          }
+        }
+      }
+    }
+  </style>
+  <div class="modal hidden">
+  <slot name="image"></slot>
+  <button name="previous">←</button>
+  <button name="next">→</button>
+  </div>
+</template>
+
+<light-box></light-box>
