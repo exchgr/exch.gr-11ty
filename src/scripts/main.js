@@ -109,8 +109,6 @@ class Lightbox extends HTMLElement {
 		this.modal.addEventListener("click", this.closeLightbox)
 	}
 
-	disconnectedCallback() {}
-
 	next = (event) => {
 		event.preventDefault()
 
