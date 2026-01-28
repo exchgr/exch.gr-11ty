@@ -161,7 +161,7 @@ class Lightbox extends HTMLElement {
 		const img = this.imageSlot.querySelector("img")
 		setTimeout(() => {
 			this.imageSlot.removeChild(img)
-		}, 187)
+		}, 250)
 	};
 
 	updateCurrentPhoto = (direction) => {
@@ -205,7 +205,7 @@ class Lightbox extends HTMLElement {
 		}, 1)
 		setTimeout(() => {
 			oldImg && this.imageSlot.removeChild(oldImg)
-		}, 187)
+		}, 250)
 
 		newImg.addEventListener('touchstart', (event) => {
 			event.preventDefault()
