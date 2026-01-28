@@ -196,10 +196,9 @@ class Lightbox extends HTMLElement {
 
 		const newImg = newImgContainer.querySelector("img");
 		newClass && newImg.classList.add(newClass)
-
-		const oldImg = this.imageSlot.querySelector("img");
-
 		this.imageSlot.appendChild(newImg)
+
+		const oldImg = Array.from(this.imageSlot.querySelectorAll("img")).at(-2)
 		oldClass && oldImg && oldImg.classList.add(oldClass)
 		setTimeout(() => {
 			newImg.classList.remove(newClass)
