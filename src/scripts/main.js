@@ -119,8 +119,7 @@ class Lightbox extends HTMLElement {
 			return
 		}
 
-		this.currentPhoto++
-		this.updateCurrentPhoto("next")
+		this.updateCurrentPhoto(this.currentPhoto + 1)
 	}
 
 	previous = (event) => {
@@ -131,8 +130,7 @@ class Lightbox extends HTMLElement {
 			return
 		}
 
-		this.currentPhoto--
-		this.updateCurrentPhoto("previous")
+		this.updateCurrentPhoto(this.currentPhoto - 1)
 	}
 
 	isLastPhoto = () => {
@@ -146,12 +144,13 @@ class Lightbox extends HTMLElement {
 	openLightbox = (event) => {
 		event.preventDefault()
 
-		this.currentPhoto = Array.from(this.photos).findIndex((photo) =>
-			getImgSrc(photo) ===
-			getImgSrc(event.target)
-		)
-
-		this.updateCurrentPhoto("none");
+		this.updateCurrentPhoto(
+			Array.from(this.photos).findIndex((photo) =>
+				getImgSrc(photo) ===
+				getImgSrc(event.target)
+			),
+			false
+		);
 
 		this.modal.classList.remove("hidden")
 	};
@@ -164,20 +163,23 @@ class Lightbox extends HTMLElement {
 		}, 250)
 	};
 
-	updateCurrentPhoto = (direction) => {
+	updateCurrentPhoto = (index, animate = true) => {
 		let oldClass
 		let newClass
 
-		switch (direction) {
-			case "next":
+		if (animate) {
+			if (index > this.currentPhoto) {
 				oldClass = "out-left"
 				newClass = "out-right"
-				break
-			case "previous":
+			}
+
+			if (index < this.currentPhoto) {
 				oldClass = "out-right"
 				newClass = "out-left"
-				break
+			}
 		}
+
+		this.currentPhoto = index
 
 		if (this.isFirstPhoto()) {
 			this.previousButton.setAttribute("disabled", "true")
@@ -186,7 +188,7 @@ class Lightbox extends HTMLElement {
 		}
 
 		if (this.isLastPhoto()) {
-			this.nextButton.setAttribute("disabled", true)
+			this.nextButton.setAttribute("disabled", "true")
 		} else {
 			this.nextButton.removeAttribute("disabled")
 		}
@@ -200,6 +202,7 @@ class Lightbox extends HTMLElement {
 
 		const oldImg = Array.from(this.imageSlot.querySelectorAll("img")).at(-2)
 		oldClass && oldImg && oldImg.classList.add(oldClass)
+
 		setTimeout(() => {
 			newImg.classList.remove(newClass)
 		}, 1)
