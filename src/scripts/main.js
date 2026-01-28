@@ -90,10 +90,11 @@ class Lightbox extends HTMLElement {
 			photo.addEventListener("click", this.openLightbox)
 		})
 
-		this.shadowRoot.querySelector("button[name=next]").addEventListener("click", this.next)
-		this.shadowRoot.querySelector("button[name=previous]").addEventListener("click", this.previous)
+		this.nextButton = this.shadowRoot.querySelector("button[name=next]")
+		this.previousButton = this.shadowRoot.querySelector("button[name=previous]")
 
-		this.shadowRoot
+		this.nextButton.addEventListener("click", this.next)
+		this.previousButton.addEventListener("click", this.previous)
 
 		document.addEventListener("keydown", (event) => {
 			const callback = {
@@ -146,7 +147,7 @@ class Lightbox extends HTMLElement {
 		this.modal.classList.remove("hidden")
 	};
 
-	closeLightbox = (event) => {
+	closeLightbox = () => {
 		this.modal.classList.add("hidden")
 		const slot = this.shadowRoot.querySelector("slot[name=image]")
 		const img = slot.querySelector("img")
@@ -170,19 +171,16 @@ class Lightbox extends HTMLElement {
 				break
 		}
 
-		const previous = this.shadowRoot.querySelector("button[name=previous]");
-		const next = this.shadowRoot.querySelector("button[name=next]")
-
 		if (this.currentPhoto <= 0) {
-			previous.setAttribute("disabled", "true")
+			this.previousButton.setAttribute("disabled", "true")
 		} else {
-			previous.removeAttribute("disabled")
+			this.previousButton.removeAttribute("disabled")
 		}
 
 		if (this.currentPhoto >= this.photos.length - 1) {
-			next.setAttribute("disabled", true)
+			this.nextButton.setAttribute("disabled", true)
 		} else {
-			next.removeAttribute("disabled")
+			this.nextButton.removeAttribute("disabled")
 		}
 
 		const newImgContainer = document.createElement("div")
