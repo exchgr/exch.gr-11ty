@@ -106,15 +106,16 @@ class Lightbox extends HTMLElement {
 		})
 
 		this.modal = this.shadowRoot.querySelector(".modal")
-
 		this.modal.addEventListener("click", this.closeLightbox)
+
+		this.imageSlot = this.shadowRoot.querySelector("slot[name=image]");
 	}
 
 	next = (event) => {
 		event.preventDefault()
 		event.stopPropagation()
 
-		if (this.currentPhoto >= this.photos.length - 1) {
+		if (this.isLastPhoto()) {
 			return
 		}
 
@@ -126,12 +127,20 @@ class Lightbox extends HTMLElement {
 		event.preventDefault()
 		event.stopPropagation()
 
-		if (this.currentPhoto <= 0) {
+		if (this.isFirstPhoto()) {
 			return
 		}
 
 		this.currentPhoto--
 		this.updateCurrentPhoto("previous")
+	}
+
+	isLastPhoto = () => {
+		return this.currentPhoto >= this.photos.length - 1;
+	}
+
+	isFirstPhoto = () => {
+		return this.currentPhoto <= 0;
 	}
 
 	openLightbox = (event) => {
@@ -149,10 +158,9 @@ class Lightbox extends HTMLElement {
 
 	closeLightbox = () => {
 		this.modal.classList.add("hidden")
-		const slot = this.shadowRoot.querySelector("slot[name=image]")
-		const img = slot.querySelector("img")
+		const img = this.imageSlot.querySelector("img")
 		setTimeout(() => {
-			slot.removeChild(img)
+			this.imageSlot.removeChild(img)
 		}, 187)
 	};
 
@@ -171,13 +179,13 @@ class Lightbox extends HTMLElement {
 				break
 		}
 
-		if (this.currentPhoto <= 0) {
+		if (this.isFirstPhoto()) {
 			this.previousButton.setAttribute("disabled", "true")
 		} else {
 			this.previousButton.removeAttribute("disabled")
 		}
 
-		if (this.currentPhoto >= this.photos.length - 1) {
+		if (this.isLastPhoto()) {
 			this.nextButton.setAttribute("disabled", true)
 		} else {
 			this.nextButton.removeAttribute("disabled")
@@ -189,16 +197,15 @@ class Lightbox extends HTMLElement {
 		const newImg = newImgContainer.querySelector("img");
 		newClass && newImg.classList.add(newClass)
 
-		const slot = this.shadowRoot.querySelector("slot[name=image]");
-		const oldImg = slot.querySelector("img");
+		const oldImg = this.imageSlot.querySelector("img");
 
-		slot.appendChild(newImg)
+		this.imageSlot.appendChild(newImg)
 		oldClass && oldImg && oldImg.classList.add(oldClass)
 		setTimeout(() => {
 			newImg.classList.remove(newClass)
 		}, 1)
 		setTimeout(() => {
-			oldImg && slot.removeChild(oldImg)
+			oldImg && this.imageSlot.removeChild(oldImg)
 		}, 187)
 
 		newImg.addEventListener('touchstart', (event) => {
