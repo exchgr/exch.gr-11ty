@@ -111,6 +111,7 @@ class Lightbox extends HTMLElement {
 
 	next = (event) => {
 		event.preventDefault()
+		event.stopPropagation()
 
 		if (this.currentPhoto >= this.photos.length - 1) {
 			return
@@ -122,6 +123,7 @@ class Lightbox extends HTMLElement {
 
 	previous = (event) => {
 		event.preventDefault()
+		event.stopPropagation()
 
 		if (this.currentPhoto <= 0) {
 			return
@@ -145,20 +147,13 @@ class Lightbox extends HTMLElement {
 	};
 
 	closeLightbox = (event) => {
-		if (event.target !== this.modal) {
-			return
-		}
-		this.closeLightboxUnsafe();
-	};
-
-	closeLightboxUnsafe = () => {
 		this.modal.classList.add("hidden")
 		const slot = this.shadowRoot.querySelector("slot[name=image]")
 		const img = slot.querySelector("img")
 		setTimeout(() => {
 			slot.removeChild(img)
 		}, 187)
-	}
+	};
 
 	updateCurrentPhoto = (direction) => {
 		let oldClass
@@ -210,15 +205,22 @@ class Lightbox extends HTMLElement {
 
 		newImg.addEventListener('touchstart', (event) => {
 			event.preventDefault()
+			event.stopPropagation()
 			this.touchStartX = event.changedTouches[0].screenX
 			this.touchStartY = event.changedTouches[0].screenY
 		})
 
 		newImg.addEventListener('touchend', (event) => {
 			event.preventDefault()
+			event.stopPropagation()
 			this.touchEndX = event.changedTouches[0].screenX
 			this.touchEndY = event.changedTouches[0].screenY
 			this.handleSwipe(event)
+		})
+
+		newImg.addEventListener('click', (event) => {
+			event.preventDefault()
+			event.stopPropagation()
 		})
 	}
 
@@ -233,8 +235,7 @@ class Lightbox extends HTMLElement {
 				this.previous(event)
 			}
 		} else if (xDelta !== 0 && yDelta !== 0) {
-			console.log("HERE")
-			this.closeLightboxUnsafe()
+			this.closeLightbox()
 		}
 	}
 }
