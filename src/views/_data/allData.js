@@ -1,4 +1,5 @@
 const fetch = require("@11ty/eleventy-fetch");
+const normalizeResponse = require("../../lib/normalizeResponse");
 
 module.exports = fetch(
 	`${process.env['STRAPI_PROTOCOL']}://${process.env['STRAPI_HOST']}:${process.env['STRAPI_PORT']}/graphql`,
@@ -14,7 +15,7 @@ module.exports = fetch(
 			},
 			body: JSON.stringify({
 				query: `{
-					collections(sort: "updatedAt:DESC", pagination: { limit: 100000 }) {
+					collections_connection(sort: "updatedAt:DESC", pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								slug
@@ -22,7 +23,7 @@ module.exports = fetch(
 							}
 						}
 					}
-					articles(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
+					articles_connection(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
 						data {
 							id
 							attributes {
@@ -51,7 +52,7 @@ module.exports = fetch(
 										}
 									}
 								}
-								tags(sort: "name:ASC", pagination: { limit: 100000 }) {
+								tags_connection(sort: "name:ASC", pagination: { limit: 100000 }) {
 									data {
 										attributes {
 											name
@@ -62,14 +63,14 @@ module.exports = fetch(
 							}
 						}
 					}
-					tags(sort: "name:ASC", pagination: { limit: 100000 }) {
+					tags_connection(sort: "name:ASC", pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								slug
 							}
 						}
 					}
-					oneOffs(pagination: { limit: 100000 }) {
+					oneOffs_connection(pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								title
@@ -78,7 +79,7 @@ module.exports = fetch(
 							}
 						}
 					}
-					redirects(pagination: { limit: 100000 }) {
+					redirects_connection(pagination: { limit: 100000 }) {
 						data {
 							attributes {
 								from
@@ -103,4 +104,4 @@ module.exports = fetch(
 				}`
 			})
 		}
-	})
+	}).then(normalizeResponse);
