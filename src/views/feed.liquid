@@ -16,12 +16,12 @@ metadata:
   <subtitle>{{ metadata.subtitle }}</subtitle>
   <link href="{{ permalink | absoluteUrl: metadata.url }}" rel="self"/>
   <link href="{{ metadata.url }}"/>
-  <updated>{{ articles[0].attributes.updatedAt }}</updated>
+  <updated>{{ articles[0].updatedAt }}</updated>
   <id>{{ metadata.url }}</id>
   <author>
     <name>{{ metadata.author.name }}</name>
   </author>
   {%- for article in articles | reverse %}
-    {% render "entry", article: article, collection: article.attributes.collection.data, metadata: metadata %}
+    {% render "entry", article: article, collection: article.collection, metadata: metadata %}
   {%- endfor %}
 </feed>

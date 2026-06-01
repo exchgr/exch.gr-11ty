@@ -10,7 +10,7 @@ pagination:
     - posts
     - tagList
 eleventyComputed:
-  page_title: "{{ collections[category][0].data.article.attributes.collection.data.attributes.name }}"
+  page_title: "{{ collections[category][0].data.article.collection.name }}"
   permalink: "/{{ category }}/feed.xml"
 metadata:
   blog_title: "Process Things"
@@ -21,21 +21,21 @@ metadata:
     name: "Elle Mundy"
 ---
 {%- assign collection = collections[ category ] -%}
-{%- assign category = collection[0].data.article.attributes.collection.data -%}
+{%- assign category = collection[0].data.article.collection -%}
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="{{ metadata.url }}">
-  <title>{{ metadata.blog_title }} - {{ category.attributes.name }}</title>
+  <title>{{ metadata.blog_title }} - {{ category.name }}</title>
   <subtitle>{{ metadata.subtitle }}</subtitle>
   <link href="{{ permalink | absoluteUrl: metadata.url }}" rel="self"/>
-  <link href="{{ metadata.url }}{{ category.attributes.slug }}/"/>
-  <updated>{{ collection[0].data.article.attributes.updatedAt }}</updated>
+  <link href="{{ metadata.url }}{{ category.slug }}/"/>
+  <updated>{{ collection[0].data.article.updatedAt }}</updated>
   <id>{{ metadata.url }}</id>
   <author>
     <name>{{ metadata.author.name }}</name>
   </author>
     {%- for article in collection %}
       {% render "entry",
-        collection: collection[0].data.article.attributes.collection.data,
+        collection: collection[0].data.article.collection,
         article: article.data.article,
         metadata: metadata
       %}

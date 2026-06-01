@@ -1,5 +1,4 @@
 const fetch = require("@11ty/eleventy-fetch");
-const normalizeResponse = require("../../lib/normalizeResponse");
 
 module.exports = fetch(
 	`${process.env['STRAPI_PROTOCOL']}://${process.env['STRAPI_HOST']}:${process.env['STRAPI_PORT']}/graphql`,
@@ -15,93 +14,57 @@ module.exports = fetch(
 			},
 			body: JSON.stringify({
 				query: `{
-					collections_connection(sort: "updatedAt:DESC", pagination: { limit: 100000 }) {
-						data {
-							attributes {
-								slug
-								blurb
-							}
+					collections(sort: "updatedAt:DESC", pagination: { limit: 100000 }) {
+						slug
+						blurb
+						name
+						mailName
+						mailUrl
+					}
+					articles(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
+						documentId
+						title
+						body
+						author
+						slug
+						publishedAt
+						updatedAt
+						og_image {
+							url
+						}
+						og_type
+						collection {
+							name
+							slug
+							mailName
+							mailUrl
+							blurb
+						}
+						tags(sort: "name:ASC", pagination: { limit: 100000 }) {
+							name
+							slug
 						}
 					}
-					articles_connection(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
-						data {
-							id
-							attributes {
-								title
-								body
-								author
-								slug
-								publishedAt
-								updatedAt
-								og_image {
-									data {
-										attributes {
-											url
-										}
-									}
-								}
-								og_type
-								collection {
-									data {
-										attributes {
-											name
-											slug
-											mailName
-											mailUrl
-											blurb
-										}
-									}
-								}
-								tags_connection(sort: "name:ASC", pagination: { limit: 100000 }) {
-									data {
-										attributes {
-											name
-											slug
-										}
-									}
-								}
-							}
-						}
+					tags(sort: "name:ASC", pagination: { limit: 100000 }) {
+						slug
+						name
 					}
-					tags_connection(sort: "name:ASC", pagination: { limit: 100000 }) {
-						data {
-							attributes {
-								slug
-							}
-						}
+					oneOffs(pagination: { limit: 100000 }) {
+						title
+						body
+						slug
 					}
-					oneOffs_connection(pagination: { limit: 100000 }) {
-						data {
-							attributes {
-								title
-								body
+					redirects(pagination: { limit: 100000 }) {
+						from
+						httpCode
+						to {
+							slug
+							collection {
 								slug
-							}
-						}
-					}
-					redirects_connection(pagination: { limit: 100000 }) {
-						data {
-							attributes {
-								from
-								httpCode
-								to {
-									data {
-										attributes {
-											slug
-											collection {
-												data {
-													attributes {
-														slug
-													}
-												}
-											}
-										}
-									}
-								}
 							}
 						}
 					}
 				}`
 			})
 		}
-	}).then(normalizeResponse);
+	});

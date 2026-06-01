@@ -38,48 +38,39 @@ describe('filters', () => {
 
 	describe('categoryOrTag', () => {
 		const category = {
-			data: {}
-		}
-		const tags = {
-			data: [
-				{
-					attributes: {
-						name: "bad stuff",
-						slug: "bad-stuff"
-					}
-				},
-				{
-					attributes: {
-						name: "cool stuff",
-						slug: "cool-stuff"
-					}
-				},
-				{
-					attributes: {
-						name: "extra-cool stuff 2",
-						slug: "extra-cool-stuff-2"
-					}
-				}
-			]
-		}
+			name: "photography",
+			slug: "photography"
+		};
+		const tags = [
+			{
+				name: "bad stuff",
+				slug: "bad-stuff"
+			},
+			{
+				name: "cool stuff",
+				slug: "cool-stuff"
+			},
+			{
+				name: "extra-cool stuff 2",
+				slug: "extra-cool-stuff-2"
+			}
+		];
 
 		const article = {
 			data: {
 				article: {
-					attributes: {
-						collection: category,
-						tags
-					}
+					collection: category,
+					tags
 				}
 			}
-		}
+		};
 
 		it('extracts a category when the slug is a category', () => {
-			expect(categoryOrTag("not_a_tags/", article)).to.deep.equal(category.data)
+			expect(categoryOrTag("not_a_tags/", article)).to.deep.equal(category)
 		})
 
 		it('extracts a tag when the slug is a tag', () => {
-			expect(categoryOrTag("tags/cool-stuff", article)).to.deep.equal(tags.data[1])
+			expect(categoryOrTag("tags/cool-stuff", article)).to.deep.equal(tags[1])
 		})
 	})
 })

@@ -4,15 +4,15 @@ pagination:
   data: oneOffs
   size: 1
   alias: oneOff
-permalink: "{{ oneOff.attributes.slug }}/index.html"
+permalink: "{{ oneOff.slug }}/index.html"
 extra_classes: "container center"
 og_type: article
 og_url: /about/
 eleventyComputed:
-  page_title: "{{ oneOff.attributes.title }}"
-  og_description: "{{ oneOff.attributes.body | markdown | htmlToText | textClip: 300 }}"
+  page_title: "{{ oneOff.title }}"
+  og_description: "{{ oneOff.body | markdown | htmlToText | textClip: 300 }}"
 ---
 <article>
-  <h1>{{ oneOff.attributes.title }}</h1>
-  {{ oneOff.attributes.body | markdown }}
+  <h1>{{ oneOff.title }}</h1>
+  {{ oneOff.body | markdown }}
 </article>

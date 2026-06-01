@@ -7,13 +7,13 @@ const categoryOrTag = (collectionSlug, article) => (
 );
 
 const extractTag = (collectionSlug, article) => (
-	article?.attributes.tags.data.filter(
-		tag => tag.attributes.slug === stripTagsPrefix(collectionSlug)
+	article?.tags?.filter(
+		tag => tag.slug === stripTagsPrefix(collectionSlug)
 	)[0]
 );
 
 const extractCategory = article =>
-	article?.attributes.collection.data;
+	article?.collection;
 
 const noTags = (collections) => (
 	Object.keys(collections).filter(slug => !isTag(slug))

@@ -96,22 +96,22 @@ module.exports = async (eleventyConfig) => {
 	})
 
 	const resolvedAllData = (await allData).data;
-	resolvedAllData.collections.data.map((collection) =>
-		collection.attributes.slug
+	resolvedAllData.collections.map((collection) =>
+		collection.slug
 	).forEach((collectionSlug) =>
 		eleventyConfig.addCollection(collectionSlug, (collectionApi) =>
 			collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
-				article.data.article.attributes.collection.data.attributes.slug === collectionSlug
+				article.data.article.collection?.slug === collectionSlug
 			))
 	)
 
-	resolvedAllData.tags.data.map((tag) =>
-		tag.attributes.slug
+	resolvedAllData.tags.map((tag) =>
+		tag.slug
 	).forEach((tagSlug) =>
 		eleventyConfig.addCollection(`tags/${tagSlug}`, (collectionApi) =>
 			collectionApi.getFilteredByGlob("./src/views/article.liquid").filter((article) =>
-				article.data.article.attributes.tags.data.filter((tag) =>
-					tag.attributes.slug === tagSlug
+				article.data.article.tags?.filter((tag) =>
+					tag.slug === tagSlug
 				).length > 0
 			))
 	)

@@ -1,22 +1,22 @@
 <div class="collection {{ class }}">
   <header>
     <h1>
-      {% assign maybeTag = collection.attributes.slug | extractTag: articles[0].data.article %}
-      {% if maybeTag.attributes.slug == collection.attributes.slug %}
-        <a href="/tags/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
+      {% assign maybeTag = collection.slug | extractTag: articles[0].data.article %}
+      {% if maybeTag.slug == collection.slug %}
+        <a href="/tags/{{ collection.slug }}">{{ collection.name }}</a>
       {% else %}
-        <a href="/{{ collection.attributes.slug }}">{{ collection.attributes.name }}</a>
+        <a href="/{{ collection.slug }}">{{ collection.name }}</a>
       {% endif %}
       <nav>
-        <a href="/{{ collection.attributes.slug }}/feed.xml"><img alt="rss - {{ collection.attributes.name }}" class="rss" src="/images/rss icon.svg"><span>Subscribe on RSS</span></a>
-        {% if collection.attributes.mailUrl != null and collection.attributes.mailUrl != "" %}
-          <a href="{{ collection.attributes.mailUrl }}"><img alt="mail - {{ collection.attributes.mailName }}" class="rss" src="/images/mail icon.svg"><span>Subscribe to newsletter</span></a>
+        <a href="/{{ collection.slug }}/feed.xml"><img alt="rss - {{ collection.name }}" class="rss" src="/images/rss icon.svg"><span>Subscribe on RSS</span></a>
+        {% if collection.mailUrl != null and collection.mailUrl != "" %}
+          <a href="{{ collection.mailUrl }}"><img alt="mail - {{ collection.mailName }}" class="rss" src="/images/mail icon.svg"><span>Subscribe to newsletter</span></a>
         {% endif %}
       </nav>
     </h1>
-    {% if collection.attributes.blurb %}
+    {% if collection.blurb %}
       <section class="blurb">
-        {{ collection.attributes.blurb | markdown }}
+        {{ collection.blurb | markdown }}
       </section>
     {% endif %}
   </header>
@@ -24,7 +24,7 @@
     {% for article in articles limit:count %}
       {% render 'articlePreview', article: article.data.article, clip: 1000 %}
     {% endfor %}
-    <nav class="more"><a href="/{{ collection.attributes.slug }}">More {{ collection.attributes.name | downcase }}</a></nav>
+    <nav class="more"><a href="/{{ collection.slug }}">More {{ collection.name | downcase }}</a></nav>
   </div>
   {% render 'pagination', pagination: pagination %}
 </div>
