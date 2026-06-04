@@ -3,5 +3,5 @@ permalink: "/_redirects"
 data: redirects
 ---
 {% for redirect in redirects %}
-{{ redirect.attributes.from }} /{{ redirect.attributes.to.data.attributes.collection.data.attributes.slug }}/{{ redirect.attributes.to.data.attributes.slug }} {{ redirect.attributes.httpCode }}
+{{ redirect.from }} /{{ redirect.to.collection.slug }}/{{ redirect.to.slug }} {{ redirect.httpCode }}
 {% endfor %}
