@@ -14,7 +14,7 @@ eleventyComputed:
   og_image: "{{ article.og_image.url }}"
   og_description: "{{ article.body | markdown | htmlToText | textClip: 300 }}"
   extra_og_tags:
-    "article:published_time": "{{ article.publishedAt }}"
+    "article:published_time": "{{ article.firstPublishedAt }}"
     "article:modified_time": "{{ article.updatedAt }}"
     "article:author": "{{ article.author }}"
     "article:section": "{{ article.collection.name }}"

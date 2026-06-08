@@ -2,7 +2,7 @@
 <h1><a href="/{{ category.slug }}/{{ article.slug }}/">{{ article.title }}</a></h1>
 <div class="metadata">
   by <a href="/about">{{ article.author }}</a><br>
-  <time-stamp data-time="{{ article.publishedAt }}">
-    {{ article.publishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
+  <time-stamp data-time="{{ article.firstPublishedAt }}">
+    {{ article.firstPublishedAt | date: "%a, %b %d, %Y at %l:%M %p" }}
   </time-stamp><br>
 </div>

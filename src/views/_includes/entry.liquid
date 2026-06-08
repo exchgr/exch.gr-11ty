@@ -5,7 +5,7 @@
     <name>{{ article.author }}</name>
   </author>
   <link href="{{ absoluteArticleUrl }}"/>
-  <published>{{ article.publishedAt }}</published>
+  <published>{{ article.firstPublishedAt }}</published>
   <updated>{{ article.updatedAt }}</updated>
   <id>{{ absoluteArticleUrl }}</id>
   <content xml:lang="{{ metadata.language }}" type="html">{{ article.body | markdown | convertHtmlToAbsoluteUrls: absoluteArticleUrl | htmlEncode }}</content>

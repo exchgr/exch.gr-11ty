@@ -21,13 +21,13 @@ module.exports = fetch(
 						mailName
 						mailUrl
 					}
-					articles(sort: "publishedAt:DESC", pagination: { limit: 100000 }) {
+					articles(sort: "firstPublishedAt:DESC", pagination: { limit: 100000 }) {
 						documentId
 						title
 						body
 						author
 						slug
-						publishedAt
+						firstPublishedAt
 						updatedAt
 						og_image {
 							url
