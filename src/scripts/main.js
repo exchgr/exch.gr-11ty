@@ -33,9 +33,19 @@ customElements.define(
 // end Timestamp
 
 // masonry
+const supportsGridLanes = CSS.supports('display', 'grid-lanes')
+
+const parseGap = (gapString) => {
+	const value = parseFloat(gapString)
+	if (gapString.includes('rem')) {
+		return value * parseFloat(getComputedStyle(document.documentElement).fontSize)
+	}
+	return value
+}
+
 const resizeMasonryItem = (item) => {
 	const grid = document.getElementsByClassName('grid-gallery')[0]
-	const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'))
+	const rowGap = parseGap(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'))
 	const itemStyle = window.getComputedStyle(item)
 
 	const itemHeight = Array.from(item.querySelectorAll('img, figcaption')).reduce((sum, content) => {
@@ -48,7 +58,7 @@ const resizeMasonryItem = (item) => {
 		+ parseInt(itemStyle.getPropertyValue('margin-bottom'))
 		+ rowGap
 
-	const rowSpan = Math.ceil((itemHeight)/(rowGap))
+	const rowSpan = Math.ceil((itemHeight) / (rowGap))
 
 	item.style.gridRowEnd = 'span ' + rowSpan
 }
@@ -58,12 +68,14 @@ const resizeAllMasonryItems = () => {
 }
 
 const waitForImages = () => {
+	if (supportsGridLanes) return
 	Array.from(document.querySelectorAll('.grid-gallery > *')).forEach((item) => {
 		imagesLoaded(item).on('progress', (instance) => resizeMasonryItem(instance.elements[0]))
 	})
 }
 
 ['load', 'resize'].forEach((event) => {
+	if (supportsGridLanes) return
 	window.addEventListener(event, resizeAllMasonryItems)
 })
 
