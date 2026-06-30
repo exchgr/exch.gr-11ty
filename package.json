@@ -23,6 +23,7 @@
   "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "@11ty/eleventy-plugin-rss": "^2.0.2",
+    "eslint": "^10.6.0",
     "mocha": "^10.2.0",
     "wrangler": "^4.43.0"
   },
