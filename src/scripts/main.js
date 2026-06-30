@@ -155,7 +155,7 @@ class Lightbox extends HTMLElement {
 
 		this.track = this.shadowRoot.querySelector(".track")
 		this.imageSlot = this.shadowRoot.querySelector("slot[name=image]")
-		this.track.addEventListener("scroll", this.syncCurrentPhotoFromScroll)
+		this.track.addEventListener("scroll", this.onScroll)
 	}
 
 	next = (event) => {
@@ -296,6 +296,13 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--drag-opacity", "0")
 		this.closeLightbox()
 		this.gestureDirection = "undecided"
+	}
+
+	onScroll = () => {
+		clearTimeout(this.scrollSyncTimeoutId)
+		this.scrollSyncTimeoutId = setTimeout(() => {
+			this.syncCurrentPhotoFromScroll()
+		}, 100)
 	}
 
 	syncCurrentPhotoFromScroll = () => {
