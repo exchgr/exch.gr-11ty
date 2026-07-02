@@ -326,10 +326,10 @@ const getLargeUrl = (photo) => {
 	return photo.querySelector('a')?.href || null
 }
 
-const isLargeViewport = () => window.matchMedia('(min-width: 768px)').matches
+const LARGE_VIEWPORT_BREAKPOINT = 600
 
 const loadLargeImage = (slide, photo) => {
-	if (!isLargeViewport()) return
+	if (!window.matchMedia(`(min-width: ${LARGE_VIEWPORT_BREAKPOINT}px)`).matches) return
 	const largeUrl = getLargeUrl(photo)
 	if (largeUrl) slide.querySelector('img')?.setAttribute('src', largeUrl)
 }
