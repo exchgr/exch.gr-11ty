@@ -200,6 +200,7 @@ class Lightbox extends HTMLElement {
 		)
 
 		this.modal.classList.remove("hidden")
+		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
 	}
 
 	closeLightbox = () => {
@@ -306,8 +307,9 @@ class Lightbox extends HTMLElement {
 	}
 
 	syncCurrentPhotoFromScroll = () => {
-		this.currentPhoto = Math.round(this.track.scrollLeft / window.innerWidth)
+		this.currentPhoto = Math.max(0, Math.min(this.photos.length - 1, Math.round(this.track.scrollLeft / window.innerWidth)))
 		this.updateButtonStates()
+		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
 	}
 }
 
@@ -317,6 +319,19 @@ const getImg = (photo) => {
 
 const getImgSrc = (photo) => {
 	return getImg(photo).getAttribute('src');
+}
+
+const getLargeUrl = (photo) => {
+	if (photo.tagName === 'A') return photo.href
+	return photo.querySelector('a')?.href || null
+}
+
+const isLargeViewport = () => window.matchMedia('(min-width: 768px)').matches
+
+const loadLargeImage = (slide, photo) => {
+	if (!isLargeViewport()) return
+	const largeUrl = getLargeUrl(photo)
+	if (largeUrl) slide.querySelector('img')?.setAttribute('src', largeUrl)
 }
 
 customElements.define("light-box", Lightbox)
