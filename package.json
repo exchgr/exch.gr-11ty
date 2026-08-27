@@ -20,7 +20,7 @@
   "author": {
     "name": "Elle Mundy"
   },
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@4.18.0",
   "devDependencies": {
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "eslint": "^10.6.0",
