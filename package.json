@@ -8,13 +8,13 @@
     "11ty-serve": "npx @11ty/eleventy --serve --incremental"
   },
   "dependencies": {
-    "@11ty/eleventy": "^3.1.5",
+    "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-fetch": "^5.1.2",
     "chai": "^4.3.8",
-    "html-entities": "^2.4.0",
-    "html-to-text": "^9.0.5",
+    "html-entities": "^2.6.0",
+    "html-to-text": "^10.0.1",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-highlightjs": "^4.1.0",
+    "markdown-it-highlightjs": "^4.3.0",
     "text-clipper": "^2.2.0"
   },
   "author": {
