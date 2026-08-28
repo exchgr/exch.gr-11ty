@@ -80,7 +80,7 @@ module.exports = async (eleventyConfig) => {
 	eleventyConfig.addPassthroughCopy({"src/views/robots.txt": "robots.txt"})
 
 	// rss plugin
-	eleventyConfig.addPlugin(pluginRss);
+	eleventyConfig.addPlugin(pluginRss.default);
 	eleventyConfig.addLiquidFilter("absoluteUrl", pluginRss.absoluteUrl)
 	eleventyConfig.addLiquidFilter("convertHtmlToAbsoluteUrls", pluginRss.convertHtmlToAbsoluteUrls)
 	eleventyConfig.addLiquidFilter("dateToRfc3339", pluginRss.dateToRfc3339)
