@@ -31,9 +31,7 @@ resource "cloudflare_pages_project" "cloudflare_pages_project" {
 		config {
 			owner                   = data.external.env.result["GITHUB_REPOSITORY_OWNER"]
 			production_deployment_enabled = false
-			preview_branch_includes = [
-				"*",
-			]
+			preview_branch_includes = []
 			production_branch       = data.external.env.result["GITHUB_REF_NAME"]
 			repo_name               = data.external.env.result["GITHUB_REPOSITORY_NAME"]
 		}
