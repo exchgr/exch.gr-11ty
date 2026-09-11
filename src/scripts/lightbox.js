@@ -222,15 +222,18 @@ class Lightbox extends HTMLElement {
 
 	verticalGestureCloseLightbox = (event) => {
 		if (this.gestureDirection !== "vertical") return
+		const img = this.getCurrentImg()
+		img.style.transition = "transform 0.33s ease-out, opacity 0.33s ease-out"
 		const dy = event.changedTouches[0].clientY - this.touchStart.y
 
 		if (Math.abs(dy) < Math.min(window.innerHeight * 0.3, 150)) {
-			this.resetGestureState()
+			img.style.setProperty("--drag-y", "0")
+			img.style.setProperty("--drag-opacity", "1")
+			img.addEventListener("transitionend", this.resetGestureState)
+
 			return
 		}
 
-		const img = this.getCurrentImg()
-		img.style.transition = "transform 0.25s ease-out, opacity 0.25s ease-out"
 		img.style.setProperty("--drag-y", `${dy > 0 ? dy + 200 : dy - 200}px`)
 		img.style.setProperty("--drag-opacity", "0")
 		this.closeLightbox()
