@@ -84,7 +84,10 @@ class Lightbox extends HTMLElement {
 
 	closeLightbox = () => {
 		this.modal.classList.add("hidden")
-		this.resetGestureState()
+		this.getCurrentImg().addEventListener(
+			"transitionend",
+			this.resetGestureState
+		)
 	}
 
 	updateButtonStates = () => {
