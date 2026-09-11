@@ -11,22 +11,6 @@ class Lightbox extends HTMLElement {
 			)
 	}
 
-	getCurrentImg = () =>
-		this.slides[this.currentPhoto]?.querySelector("img")
-
-	resetGestureState = () => {
-		const img = this.getCurrentImg()
-		if (!img) return
-
-		img.classList.remove("dragging")
-		img.style.removeProperty("--drag-y")
-		img.style.removeProperty("--drag-opacity")
-		img.style.removeProperty("transition")
-
-		this.track.style.scrollSnapType = ""
-		this.track.style.overflowX = ""
-	}
-
 	connectedCallback() {
 		this.photos = document.querySelectorAll(".grid-gallery > *")
 
@@ -35,22 +19,6 @@ class Lightbox extends HTMLElement {
 		this.bindEvents()
 		this.buildSlides()
 		this.updateButtonStates()
-	}
-
-	buildSlides = () => {
-		this.photos.forEach((photo) => {
-			const slide = document.createElement("div")
-			slide.className = "slide"
-			const img = getImg(photo).cloneNode(true)
-			img.addEventListener("click", (event) => event.stopPropagation())
-			img.addEventListener("touchstart", this.resetScrollDirection, {passive: false})
-			img.addEventListener("touchmove", this.maybeApplyVerticalDrag, {passive: false})
-			img.addEventListener("touchend", this.verticalGestureCloseLightbox)
-			slide.appendChild(img)
-			this.imageSlot.appendChild(slide)
-		})
-
-		this.slides = this.imageSlot.querySelectorAll(".slide")
 	}
 
 	bindEvents = () => {
@@ -83,6 +51,59 @@ class Lightbox extends HTMLElement {
 		this.track.addEventListener("scroll", this.onScroll)
 	}
 
+	buildSlides = () => {
+		this.photos.forEach((photo) => {
+			const slide = document.createElement("div")
+			slide.className = "slide"
+			const img = getImg(photo).cloneNode(true)
+			img.addEventListener("click", (event) => event.stopPropagation())
+			img.addEventListener("touchstart", this.resetScrollDirection, {passive: false})
+			img.addEventListener("touchmove", this.maybeApplyVerticalDrag, {passive: false})
+			img.addEventListener("touchend", this.verticalGestureCloseLightbox)
+			slide.appendChild(img)
+			this.imageSlot.appendChild(slide)
+		})
+
+		this.slides = this.imageSlot.querySelectorAll(".slide")
+	}
+
+	openLightbox = (event) => {
+		event.preventDefault()
+
+		this.updateCurrentPhoto(
+			Array.from(this.photos).findIndex((photo) =>
+				getImgSrc(photo) ===
+				getImgSrc(event.target)
+			),
+			"auto"
+		)
+
+		this.modal.classList.remove("hidden")
+		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
+	}
+
+	closeLightbox = () => {
+		this.modal.classList.add("hidden")
+		this.resetGestureState()
+	}
+
+	updateButtonStates = () => {
+		if (this.isFirstPhoto()) {
+			this.previousButton.setAttribute("disabled", "true")
+		} else {
+			this.previousButton.removeAttribute("disabled")
+		}
+
+		if (this.isLastPhoto()) {
+			this.nextButton.setAttribute("disabled", "true")
+		} else {
+			this.nextButton.removeAttribute("disabled")
+		}
+	}
+
+	getCurrentImg = () =>
+		this.slides[this.currentPhoto]?.querySelector("img")
+
 	next = (event) => {
 		event.preventDefault()
 		event.stopPropagation()
@@ -113,26 +134,6 @@ class Lightbox extends HTMLElement {
 		return this.currentPhoto <= 0;
 	}
 
-	openLightbox = (event) => {
-		event.preventDefault()
-
-		this.updateCurrentPhoto(
-			Array.from(this.photos).findIndex((photo) =>
-				getImgSrc(photo) ===
-				getImgSrc(event.target)
-			),
-			"auto"
-		)
-
-		this.modal.classList.remove("hidden")
-		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
-	}
-
-	closeLightbox = () => {
-		this.modal.classList.add("hidden")
-		this.resetGestureState()
-	}
-
 	updateCurrentPhoto = (index, behavior = "smooth") => {
 		this.currentPhoto = index
 
@@ -144,50 +145,52 @@ class Lightbox extends HTMLElement {
 		this.updateButtonStates()
 	}
 
-	updateButtonStates = () => {
-		if (this.isFirstPhoto()) {
-			this.previousButton.setAttribute("disabled", "true")
-		} else {
-			this.previousButton.removeAttribute("disabled")
-		}
-
-		if (this.isLastPhoto()) {
-			this.nextButton.setAttribute("disabled", "true")
-		} else {
-			this.nextButton.removeAttribute("disabled")
-		}
+	// TODO: figure out if timeout is necessary; if not, rename & inline
+	onScroll = () => {
+		clearTimeout(this.scrollSyncTimeoutId)
+		this.scrollSyncTimeoutId = setTimeout(() => {
+			this.syncCurrentPhotoFromScroll()
+		}, 100)
 	}
+
+	syncCurrentPhotoFromScroll = () => {
+		this.currentPhoto = Math.max(0, Math.min(this.photos.length - 1, Math.round(this.track.scrollLeft / window.innerWidth)))
+		this.updateButtonStates()
+		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
+	}
+
+	resolveGestureDirection = (currentX, currentY) => {
+		if (this.gestureDirection) return
+
+		const dx = Math.abs(currentX - this.touchStartX)
+		const dy = Math.abs(currentY - this.touchStartY)
+
+		if (this.euclideanDistance([
+			{
+				x: this.touchStartX,
+				y: this.touchStartY
+			},
+			{
+				x: currentX,
+				y: currentY
+			}
+		]) < 10) return
+
+		this.gestureDirection = dx > dy ? "horizontal" : "vertical"
+	}
+
+	euclideanDistance = (points) =>
+		Math.sqrt(
+			(points[1].x - points[0].x) ^ 2 +
+			(points[1].y + points[0].y) ^ 2
+		)
 
 	resetScrollDirection = (event) => {
 		if (event.touches.length !== 1) return
 
 		this.touchStartX = event.touches[0].clientX
 		this.touchStartY = event.touches[0].clientY
-		this.gestureDirection = "undecided"
-	}
-
-	resolveGestureDirection = (currentX, currentY) => {
-		const dx = Math.abs(currentX - this.touchStartX)
-		const dy = Math.abs(currentY - this.touchStartY)
-
-		if (this.thresholdExceedsGestureDistance(dx, dy)) return
-
-		this.gestureDirection = dx > dy ? "horizontal" : "vertical"
-	}
-
-	thresholdExceedsGestureDistance = (dx, dy) => dx < 10 && dy < 10
-
-	applyVerticalDrag = (dy) => {
-		const img = this.getCurrentImg()
-		if (!img) return
-
-		img.classList.add("dragging")
-
-		const maxDrag = window.innerHeight * 0.5
-		const opacity = Math.max(0, Math.min(1, 1 - (Math.abs(dy) / maxDrag)))
-
-		img.style.setProperty("--drag-y", `${dy}px`)
-		img.style.setProperty("--drag-opacity", opacity)
+		this.gestureDirection = undefined
 	}
 
 	maybeApplyVerticalDrag = (event) => {
@@ -207,6 +210,19 @@ class Lightbox extends HTMLElement {
 		this.applyVerticalDrag(currentY - this.touchStartY)
 	}
 
+	applyVerticalDrag = (dy) => {
+		const img = this.getCurrentImg()
+		if (!img) return
+
+		img.classList.add("dragging")
+
+		const maxDrag = window.innerHeight * 0.5
+		const opacity = Math.max(0, Math.min(1, 1 - (Math.abs(dy) / maxDrag)))
+
+		img.style.setProperty("--drag-y", `${dy}px`)
+		img.style.setProperty("--drag-opacity", opacity)
+	}
+
 	verticalGestureCloseLightbox = (event) => {
 		if (this.gestureDirection !== "vertical") return
 		const dy = event.changedTouches[0].clientY - this.touchStartY
@@ -221,20 +237,20 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--drag-y", `${dy > 0 ? dy + 200 : dy - 200}px`)
 		img.style.setProperty("--drag-opacity", "0")
 		this.closeLightbox()
-		this.gestureDirection = "undecided"
+		this.gestureDirection = undefined
 	}
 
-	onScroll = () => {
-		clearTimeout(this.scrollSyncTimeoutId)
-		this.scrollSyncTimeoutId = setTimeout(() => {
-			this.syncCurrentPhotoFromScroll()
-		}, 100)
-	}
+	resetGestureState = () => {
+		const img = this.getCurrentImg()
+		if (!img) return
 
-	syncCurrentPhotoFromScroll = () => {
-		this.currentPhoto = Math.max(0, Math.min(this.photos.length - 1, Math.round(this.track.scrollLeft / window.innerWidth)))
-		this.updateButtonStates()
-		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
+		img.classList.remove("dragging")
+		img.style.removeProperty("--drag-y")
+		img.style.removeProperty("--drag-opacity")
+		img.style.removeProperty("transition")
+
+		this.track.style.scrollSnapType = ""
+		this.track.style.overflowX = ""
 	}
 }
 
