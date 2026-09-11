@@ -159,24 +159,15 @@ class Lightbox extends HTMLElement {
 		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
 	}
 
-	resolveGestureDirection = (currentX, currentY) => {
+	resolveGestureDirection = (currentPoint) => {
 		if (this.gestureDirection) return
+		if (this.euclideanDistance([this.touchStart, currentPoint]) < 10)
+			return
 
-		const dx = Math.abs(currentX - this.touchStartX)
-		const dy = Math.abs(currentY - this.touchStartY)
-
-		if (this.euclideanDistance([
-			{
-				x: this.touchStartX,
-				y: this.touchStartY
-			},
-			{
-				x: currentX,
-				y: currentY
-			}
-		]) < 10) return
-
-		this.gestureDirection = dx > dy ? "horizontal" : "vertical"
+		this.gestureDirection =
+			Math.abs(currentPoint.x - this.touchStart.x) >
+			Math.abs(currentPoint.y - this.touchStart.y)
+				? "horizontal" : "vertical"
 	}
 
 	euclideanDistance = (points) =>
@@ -188,18 +179,21 @@ class Lightbox extends HTMLElement {
 	resetScrollDirection = (event) => {
 		if (event.touches.length !== 1) return
 
-		this.touchStartX = event.touches[0].clientX
-		this.touchStartY = event.touches[0].clientY
+		this.touchStart = {
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY
+		}
+
 		this.gestureDirection = undefined
 	}
 
 	maybeApplyVerticalDrag = (event) => {
 		if (event.touches.length !== 1) return
 
-		const currentX = event.touches[0].clientX
-		const currentY = event.touches[0].clientY
-
-		this.resolveGestureDirection(currentX, currentY)
+		this.resolveGestureDirection({
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY
+		})
 
 		if (this.gestureDirection !== "vertical") return
 
@@ -207,7 +201,7 @@ class Lightbox extends HTMLElement {
 		this.track.style.overflowX = "hidden"
 
 		event.preventDefault()
-		this.applyVerticalDrag(currentY - this.touchStartY)
+		this.applyVerticalDrag(event.touches[0].clientY - this.touchStart.y)
 	}
 
 	applyVerticalDrag = (dy) => {
@@ -225,7 +219,7 @@ class Lightbox extends HTMLElement {
 
 	verticalGestureCloseLightbox = (event) => {
 		if (this.gestureDirection !== "vertical") return
-		const dy = event.changedTouches[0].clientY - this.touchStartY
+		const dy = event.changedTouches[0].clientY - this.touchStart.y
 
 		if (Math.abs(dy) < Math.min(window.innerHeight * 0.3, 150)) {
 			this.resetGestureState()
