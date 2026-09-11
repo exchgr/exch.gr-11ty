@@ -1,16 +1,18 @@
 class Lightbox extends HTMLElement {
 	constructor() {
 		super();
-		let template = document.getElementById("light-box")
-		let templateContent = template.content
-
-		const shadowRoot = this.attachShadow({mode: "open"})
-		shadowRoot.appendChild(document.importNode(templateContent, true))
+		this
+			.attachShadow({mode: "open"})
+			.appendChild(
+				document.importNode(
+					document.getElementById("light-box").content,
+					true
+				)
+			)
 	}
 
-	getCurrentImg = () => {
-		return this.slides[this.currentPhoto]?.querySelector("img")
-	}
+	getCurrentImg = () =>
+		this.slides[this.currentPhoto]?.querySelector("img")
 
 	resetGestureState = () => {
 		const img = this.getCurrentImg()
