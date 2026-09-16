@@ -6,6 +6,8 @@ const categoryOrTag = (collectionSlug, article) => (
 	isTag(collectionSlug) ? extractTag(collectionSlug, article?.data.article) : extractCategory(article?.data.article)
 );
 
+const categoryOrTagName = (collectionSlug, article) => categoryOrTag(collectionSlug, article)?.name;
+
 const extractTag = (collectionSlug, article) => (
 	article?.tags?.filter(
 		tag => tag.slug === stripTagsPrefix(collectionSlug)
@@ -33,6 +35,7 @@ module.exports = {
 	noTags,
 	noAll,
 	categoryOrTag,
+	categoryOrTagName,
 	extractTag,
 	extractCategory
 }
