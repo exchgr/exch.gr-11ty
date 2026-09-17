@@ -1,14 +1,15 @@
 <div class="collection {{ class }}">
   <header>
     <h1>
-      {% assign maybeTag = collection.slug | extractTag: articles[0].data.article %}
-      {% if maybeTag.slug == collection.slug %}
+      {% if isTagPage %}
         <a href="/tags/{{ collection.slug }}">{{ collection.name }}</a>
       {% else %}
         <a href="/{{ collection.slug }}">{{ collection.name }}</a>
       {% endif %}
       <nav>
-        <a href="/{{ collection.slug }}/feed.xml"><img alt="rss - {{ collection.name }}" class="rss" src="/images/rss icon.svg"><span>Subscribe on RSS</span></a>
+        {% unless isTagPage %}
+          <a href="/{{ collection.slug }}/feed.xml"><img alt="rss - {{ collection.name }}" class="rss" src="/images/rss icon.svg"><span>Subscribe on RSS</span></a>
+        {% endunless %}
         {% if collection.mailUrl != null and collection.mailUrl != "" %}
           <a href="{{ collection.mailUrl }}"><img alt="mail - {{ collection.mailName }}" class="rss" src="/images/mail icon.svg"><span>Subscribe to newsletter</span></a>
         {% endif %}

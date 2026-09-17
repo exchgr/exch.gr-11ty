@@ -1,24 +1,34 @@
----
-pagination:
-  data: collections
-  size: 1
-  alias: category
-  addAllPagesToCollections: true
-  filter:
-    - all
-    - post
-    - posts
-    - tagList
-eleventyComputed:
-  page_title: "{{ collections[category][0].data.article.collection.name }}"
-  permalink: "/{{ category }}/feed.xml"
-metadata:
-  blog_title: "Process Things"
-  subtitle: "The art and work of Elle Mundy"
-  language: "en"
-  url: "https://exch.gr/"
-  author:
-    name: "Elle Mundy"
+---js
+{
+  pagination: {
+    data: "collections",
+    before: function(paginationData) {
+      return paginationData.filter(slug => !this.isTag(slug))
+    },
+    size: 1,
+    alias: "category",
+    addAllPagesToCollections: true,
+    filter: [
+			"all",
+      "post",
+      "posts",
+      "tagList"
+    ]
+  },
+  eleventyComputed: {
+    page_title: "{{ collections[category][0].data.article.collection.name }}",
+    permalink: "/{{ category }}/feed.xml"
+  },
+  metadata: {
+    blog_title: "Process Things",
+    subtitle: "The art and work of Elle Mundy",
+    language: "en",
+    url: "https://exch.gr/",
+    author: {
+      name: "Elle Mundy"
+    }
+  }
+}
 ---
 {%- assign collection = collections[ category ] -%}
 {%- assign category = collection[0].data.article.collection -%}

@@ -4,7 +4,8 @@ data: collections
 ---
 /feed.xml
   Content-Type: application/rss+xml
-{% for key in collections %}
+{% assign feedKeys = collections | noTags %}
+{% for key in feedKeys %}
 /{{ key[0] }}/feed.xml
   Content-Type: application/rss+xml
 {% endfor %}

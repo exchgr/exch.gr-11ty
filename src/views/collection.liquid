@@ -17,9 +17,11 @@ permalink: "/{{ slug }}/"
 ---
 {% assign articles = collections[ slug ] %}
 {% assign collection = slug | categoryOrTag: articles[0] %}
+{% assign isTagPage = slug | isTag %}
 
 {% render 'collection',
   collection: collection,
   articles: articles,
+  isTagPage: isTagPage,
   class: "single"
 %}

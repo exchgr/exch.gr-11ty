@@ -3,7 +3,8 @@ const {
 	noTags,
 	noAll,
 	categoryOrTag,
-	categoryOrTagName
+	categoryOrTagName,
+	isTag
 } = require('../src/lib/filters')
 
 describe('filters', () => {
@@ -90,6 +91,22 @@ describe('filters', () => {
 
 		it('is falsy when there is no article', () => {
 			expect(categoryOrTagName("tags/cool-stuff", undefined)).to.be.undefined
+		})
+	})
+
+	describe('isTag', () => {
+		it('matches a tag', () => {
+			expect(isTag("tags/")).to.be.true
+			expect(isTag("tags/cool-stuff")).to.be.true
+		})
+
+		it("doesn't match a non-tag", () => {
+			expect(isTag("stags/cool-stuff")).to.be.false
+			expect(isTag("cool-stuff")).to.be.false
+		})
+
+		it("doesn't match an empty slug", () => {
+			expect(isTag("")).to.be.false
 		})
 	})
 })

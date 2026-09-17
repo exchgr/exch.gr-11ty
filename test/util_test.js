@@ -1,19 +1,7 @@
 const {expect} = require('chai')
-const {isTag, stripTagsPrefix} = require("../src/lib/util");
+const {stripTagsPrefix} = require('../src/lib/util')
 
 describe('util', () => {
-	describe('isTag', () => {
-		it('matches a tag', () => {
-			expect(isTag("tags/")).to.be.true
-			expect(isTag("tags/cool-stuff")).to.be.true
-		})
-
-		it("doesn't match a non-tag", () => {
-			expect(isTag("stags/cool-stuff")).to.be.false
-			expect(isTag("cool-stuff")).to.be.false
-		})
-	})
-
 	describe('stripTagsPrefix', () => {
 		it("removes 'tags/' from the beginning of a string", () => {
 			expect(stripTagsPrefix("tags/cool-stuff")).to.eq("cool-stuff")

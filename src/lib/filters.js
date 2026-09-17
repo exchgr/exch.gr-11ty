@@ -1,4 +1,6 @@
-const {isTag, stripTagsPrefix} = require("./util");
+const {stripTagsPrefix} = require("./util");
+
+const isTag = slug => slug !== stripTagsPrefix(slug);
 
 // given a slug that does or does not start with "tags/", extract the tag with
 // the matching slug or the category, respectively
@@ -37,5 +39,6 @@ module.exports = {
 	categoryOrTag,
 	categoryOrTagName,
 	extractTag,
-	extractCategory
+	extractCategory,
+	isTag
 }
