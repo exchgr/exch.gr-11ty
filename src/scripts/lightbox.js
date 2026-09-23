@@ -271,4 +271,33 @@ const loadLargeImage = (slide, photo) => {
 	if (largeUrl) slide.querySelector('img')?.setAttribute('src', largeUrl)
 }
 
+const isAtEdge = (position, scale, rest, view, direction) =>
+	direction * position >= Math.max(0, (rest * scale - view) / 2) - 0.5
+
+const ratio = (nextScale, prevScale) => nextScale / prevScale
+const rect = (img) => img.getBoundingClientRect()
+
+const computeZoomOriginOffset = ({clientX, clientY}, rect, ratio) => ({
+	dx: (clientX - (rect.left + rect.width / 2)) * (1 - ratio),
+	dy: (clientY - (rect.top + rect.height / 2)) * (1 - ratio)
+})
+
+const computeToggleTarget = (scale, img) => {
+	if (scale > 1) return {scale: 1, resetPan: true}
+	const hundred = img.clientWidth === 0 ? 1 : img.naturalWidth / img.clientWidth
+	return {scale: hundred > 1 ? hundred : 1.5, resetPan: false}
+}
+
+const scale = (nextScale) => Math.max(nextScale, 1)
+
+const clampCoordinateComponent = (distance, extent, current) =>
+	Math.min(Math.max(current + distance, -extent), extent)
+
+const applyZoom = (img, {scale, x, y}) => {
+	img.style.setProperty("--zoom-scale", `${scale}`)
+	img.style.setProperty("--zoom-x", `${x}px`)
+	img.style.setProperty("--zoom-y", `${y}px`)
+	img.classList.toggle("zoomed", scale !== 1 || x + y !== 0)
+}
+
 customElements.define("light-box", Lightbox)

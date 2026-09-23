@@ -75,15 +75,19 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, calc(-50% - 1.5rem));
+        transform: translate(-50%, calc(-50% - 1.5rem)) translate(var(--zoom-x, 0px), var(--zoom-y, 0px)) scale(var(--zoom-scale, 1));
         max-width: 98dvw;
         max-height: calc(100dvh - 5rem);
       }
 
       .slide img.dragging {
         transition: none;
-        transform: translate(-50%, calc(-50% - 1.5rem)) translateY(var(--drag-y, 0px));
+        transform: translate(-50%, calc(-50% - 1.5rem)) translate(var(--zoom-x, 0px), var(--zoom-y, 0px)) scale(var(--zoom-scale, 1)) translateY(var(--drag-y, 0px));
         opacity: var(--drag-opacity, 1);
+      }
+
+      .slide img.zoomed {
+        touch-action: none;
       }
 
       @media (orientation: landscape) {
@@ -94,11 +98,11 @@
           .slide img {
             max-width: calc(98dvw - 6rem);
             max-height: 98dvh;
-            transform: translate(-50%, calc(-50%));
+            transform: translate(-50%, calc(-50%)) translate(var(--zoom-x, 0px), var(--zoom-y, 0px)) scale(var(--zoom-scale, 1));
           }
 
           .slide img.dragging {
-            transform: translate(-50%, calc(-50%)) translateY(var(--drag-y, 0px));
+            transform: translate(-50%, calc(-50%)) translate(var(--zoom-x, 0px), var(--zoom-y, 0px)) scale(var(--zoom-scale, 1)) translateY(var(--drag-y, 0px));
           }
         }
       }
