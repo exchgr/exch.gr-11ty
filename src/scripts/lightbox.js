@@ -164,7 +164,7 @@ class Lightbox extends HTMLElement {
 
 	resolveGestureDirection = (currentPoint) => {
 		if (this.gestureDirection) return
-		if (this.euclideanDistance([this.touchStart, currentPoint]) < 10)
+		if (euclideanDistance(this.touchStart, currentPoint) < 10)
 			return
 
 		this.gestureDirection =
@@ -172,12 +172,6 @@ class Lightbox extends HTMLElement {
 			Math.abs(currentPoint.y - this.touchStart.y)
 				? "horizontal" : "vertical"
 	}
-
-	euclideanDistance = (points) =>
-		Math.sqrt(
-			(points[1].x - points[0].x) ^ 2 +
-			(points[1].y + points[0].y) ^ 2
-		)
 
 	resetScrollDirection = (event) => {
 		if (event.touches.length !== 1) return
@@ -253,6 +247,8 @@ class Lightbox extends HTMLElement {
 		this.track.style.overflowX = ""
 	}
 }
+
+const euclideanDistance = (a, b) => Math.hypot(b.x - a.x, b.y - a.y)
 
 const getImg = (photo) => {
 	return photo.querySelector('img') || photo;
