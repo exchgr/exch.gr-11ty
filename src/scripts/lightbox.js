@@ -16,10 +16,14 @@ class Lightbox extends HTMLElement {
 
 		this.currentPhoto = 0
 		this.maxTouches = 0
+		this.touchStarts = []
+		this.zoomScale = 1
+		this.gestureAction = ""
 
 		this.bindEvents()
 		this.buildSlides()
 		this.updateButtonStates()
+
 	}
 
 	bindEvents = () => {
@@ -58,8 +62,8 @@ class Lightbox extends HTMLElement {
 			slide.className = "slide"
 			const img = getImg(photo).cloneNode(true)
 			img.addEventListener("click", (event) => event.stopPropagation())
-			img.addEventListener("touchstart", this.resetScrollDirection, {passive: false})
-			img.addEventListener("touchmove", this.maybeApplyVerticalDrag, {passive: false})
+			img.addEventListener("touchstart", this.resetTouches, {passive: false})
+			img.addEventListener("touchmove", this.touchMoveRouter, {passive: false})
 			img.addEventListener("touchend", this.touchEndRouter)
 			slide.appendChild(img)
 			this.imageSlot.appendChild(slide)
@@ -165,30 +169,73 @@ class Lightbox extends HTMLElement {
 
 	resolveGestureDirection = (currentPoint) => {
 		if (this.gestureDirection) return
-		if (euclideanDistance(this.touchStart, currentPoint) < 10)
+		if (euclideanDistance(this.touchStarts[0], currentPoint) < 10)
 			return
 
 		this.gestureDirection =
-			Math.abs(currentPoint.x - this.touchStart.x) >
-			Math.abs(currentPoint.y - this.touchStart.y)
+			Math.abs(currentPoint.x - this.touchStarts[0].clientX) >
+			Math.abs(currentPoint.y - this.touchStarts[0].clientY)
 				? "horizontal" : "vertical"
 	}
 
-	resetScrollDirection = (event) => {
-		if (event.touches.length !== 1) return
+	resetTouches = (event) => {
+		this.touchStarts = []
 
-		this.touchStart = {
-			x: event.touches[0].clientX,
-			y: event.touches[0].clientY
+		for (const targetTouch of event.targetTouches) {
+			this.touchStarts.push(targetTouch)
 		}
 
+		this.gestureAction = this.getCurrentImg().className
+
+		if (this.touchStarts.length === 1) this.resetScrollDirection(event)
+	}
+
+	resetScrollDirection = (event) => {
 		this.gestureDirection = undefined
 	}
 
-	maybeApplyVerticalDrag = (event) => {
+	touchMoveRouter = (event) => {
 		this.maxTouches = Math.max(this.maxTouches, event.touches.length)
 
-		if (this.maxTouches !== 1) return
+		switch (this.maxTouches) {
+			case 1:
+				this.maybeApplyVerticalDrag(event)
+				break;
+			case 2:
+				this.pinchToZoom(event)
+				break;
+		}
+	}
+
+	pinchToZoom = (event) => {
+	  if (this.gestureAction === "dragging") return
+
+		const img = this.getCurrentImg()
+
+		event.preventDefault()
+
+		this.gestureAction = "zooming";
+		img.classList.add(this.gestureAction)
+
+		const distance = Math.hypot(
+			event.targetTouches[0].clientX - event.targetTouches[1].clientX,
+			event.targetTouches[0].clientY - event.targetTouches[1].clientY
+		)
+
+		if (this.startDistance == null) {
+			this.startDistance = Math.hypot(
+				this.touchStarts[0].clientX - this.touchStarts[1].clientX,
+				this.touchStarts[0].clientY - this.touchStarts[1].clientY
+			)
+			this.startScale = this.zoomScale || 1
+		}
+
+		this.zoomScale = Math.max(1, this.startScale * (distance / this.startDistance));
+		img.style.setProperty("--scale", this.zoomScale)
+	}
+
+	maybeApplyVerticalDrag = (event) => {
+		if (this.gestureAction === "zooming") return
 
 		this.resolveGestureDirection({
 			x: event.touches[0].clientX,
@@ -201,14 +248,15 @@ class Lightbox extends HTMLElement {
 		this.track.style.overflowX = "hidden"
 
 		event.preventDefault()
-		this.applyVerticalDrag(event.touches[0].clientY - this.touchStart.y)
+		this.applyVerticalDrag(event.touches[0].clientY - this.touchStarts[0].clientY)
 	}
 
 	applyVerticalDrag = (dy) => {
 		const img = this.getCurrentImg()
 		if (!img) return
 
-		img.classList.add("dragging")
+		this.gestureAction = "dragging"
+		img.classList.add(this.gestureAction)
 
 		const maxDrag = window.innerHeight * 0.5
 		const opacity = Math.max(0, Math.min(1, 1 - (Math.abs(dy) / maxDrag)))
@@ -218,15 +266,30 @@ class Lightbox extends HTMLElement {
 	}
 
 	touchEndRouter = (event) => {
-		// only act if no fingers are left touching the screen
 		if (event.touches.length === 0) {
-			// only close lightbox if it was single touch
-			if (this.maxTouches === 1) {
-				this.verticalGestureCloseLightbox(event)
+			switch (this.maxTouches) {
+				case 1:
+					this.verticalGestureCloseLightbox(event)
+					break;
+				case 2:
+					this.maybeEndZooming(event)
+					break;
 			}
 
 			this.maxTouches = 0
 		}
+	}
+
+	maybeEndZooming = (event) => {
+		if (this.zoomScale !== 1) {
+			this.startDistance = null
+
+			return
+		}
+
+		const img = this.getCurrentImg()
+
+		img.classList.remove("zooming")
 	}
 
 	verticalGestureCloseLightbox = (event) => {
@@ -234,7 +297,7 @@ class Lightbox extends HTMLElement {
 
 		const img = this.getCurrentImg()
 		img.style.transition = "transform 0.33s ease-out, opacity 0.33s ease-out"
-		const dy = event.changedTouches[0].clientY - this.touchStart.y
+		const dy = event.changedTouches[0].clientY - this.touchStarts[0].clientY
 
 		if (Math.abs(dy) < Math.min(window.innerHeight * 0.3, 150)) {
 			img.style.setProperty("--drag-y", "0")
