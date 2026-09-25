@@ -71,7 +71,7 @@
       }
 
       .slide img {
-        touch-action: pan-x pinch-zoom;
+        touch-action: pan-x;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -84,6 +84,11 @@
         transition: none;
         transform: translate(-50%, calc(-50% - 1.5rem)) translateY(var(--drag-y, 0px));
         opacity: var(--drag-opacity, 1);
+      }
+
+      .slide img.zooming {
+        transition: none;
+        transform: translate(-50%, calc(-50% - 1.5rem)) scale(var(--scale, 1));
       }
 
       @media (orientation: landscape) {
@@ -99,6 +104,12 @@
 
           .slide img.dragging {
             transform: translate(-50%, calc(-50%)) translateY(var(--drag-y, 0px));
+          }
+
+
+          .slide img.zooming {
+            transition: none;
+            transform: translate(-50%, -50%) scale(var(--scale, 1));
           }
         }
       }
