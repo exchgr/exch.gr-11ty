@@ -15,6 +15,7 @@ class Lightbox extends HTMLElement {
 		this.photos = document.querySelectorAll(".grid-gallery > *")
 
 		this.currentPhoto = 0
+		this.maxTouches = 0
 
 		this.bindEvents()
 		this.buildSlides()
@@ -59,7 +60,7 @@ class Lightbox extends HTMLElement {
 			img.addEventListener("click", (event) => event.stopPropagation())
 			img.addEventListener("touchstart", this.resetScrollDirection, {passive: false})
 			img.addEventListener("touchmove", this.maybeApplyVerticalDrag, {passive: false})
-			img.addEventListener("touchend", this.verticalGestureCloseLightbox)
+			img.addEventListener("touchend", this.touchEndRouter)
 			slide.appendChild(img)
 			this.imageSlot.appendChild(slide)
 		})
@@ -185,7 +186,9 @@ class Lightbox extends HTMLElement {
 	}
 
 	maybeApplyVerticalDrag = (event) => {
-		if (event.touches.length !== 1) return
+		this.maxTouches = Math.max(this.maxTouches, event.touches.length)
+
+		if (this.maxTouches !== 1) return
 
 		this.resolveGestureDirection({
 			x: event.touches[0].clientX,
@@ -214,8 +217,21 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--drag-opacity", opacity)
 	}
 
+	touchEndRouter = (event) => {
+		// only act if no fingers are left touching the screen
+		if (event.touches.length === 0) {
+			// only close lightbox if it was single touch
+			if (this.maxTouches === 1) {
+				this.verticalGestureCloseLightbox(event)
+			}
+
+			this.maxTouches = 0
+		}
+	}
+
 	verticalGestureCloseLightbox = (event) => {
 		if (this.gestureDirection !== "vertical") return
+
 		const img = this.getCurrentImg()
 		img.style.transition = "transform 0.33s ease-out, opacity 0.33s ease-out"
 		const dy = event.changedTouches[0].clientY - this.touchStart.y
@@ -245,6 +261,8 @@ class Lightbox extends HTMLElement {
 
 		this.track.style.scrollSnapType = ""
 		this.track.style.overflowX = ""
+
+		this.maxTouches = 0
 	}
 }
 
