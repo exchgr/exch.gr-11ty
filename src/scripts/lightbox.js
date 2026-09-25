@@ -164,7 +164,7 @@ class Lightbox extends HTMLElement {
 
 	resolveGestureDirection = (currentPoint) => {
 		if (this.gestureDirection) return
-		if (this.euclideanDistance([this.touchStart, currentPoint]) < 10)
+		if (euclideanDistance(this.touchStart, currentPoint) < 10)
 			return
 
 		this.gestureDirection =
@@ -172,12 +172,6 @@ class Lightbox extends HTMLElement {
 			Math.abs(currentPoint.y - this.touchStart.y)
 				? "horizontal" : "vertical"
 	}
-
-	euclideanDistance = (points) =>
-		Math.sqrt(
-			(points[1].x - points[0].x) ^ 2 +
-			(points[1].y + points[0].y) ^ 2
-		)
 
 	resetScrollDirection = (event) => {
 		if (event.touches.length !== 1) return
@@ -254,6 +248,8 @@ class Lightbox extends HTMLElement {
 	}
 }
 
+const euclideanDistance = (a, b) => Math.hypot(b.x - a.x, b.y - a.y)
+
 const getImg = (photo) => {
 	return photo.querySelector('img') || photo;
 }
@@ -273,6 +269,35 @@ const loadLargeImage = (slide, photo) => {
 	if (!window.matchMedia(`(min-width: ${LARGE_VIEWPORT_BREAKPOINT}px)`).matches) return
 	const largeUrl = getLargeUrl(photo)
 	if (largeUrl) slide.querySelector('img')?.setAttribute('src', largeUrl)
+}
+
+const isAtEdge = (position, scale, rest, view, direction) =>
+	direction * position >= Math.max(0, (rest * scale - view) / 2) - 0.5
+
+const ratio = (nextScale, prevScale) => nextScale / prevScale
+const rect = (img) => img.getBoundingClientRect()
+
+const computeZoomOriginOffset = ({clientX, clientY}, rect, ratio) => ({
+	dx: (clientX - (rect.left + rect.width / 2)) * (1 - ratio),
+	dy: (clientY - (rect.top + rect.height / 2)) * (1 - ratio)
+})
+
+const computeToggleTarget = (scale, img) => {
+	if (scale > 1) return {scale: 1, resetPan: true}
+	const hundred = img.clientWidth === 0 ? 1 : img.naturalWidth / img.clientWidth
+	return {scale: hundred > 1 ? hundred : 1.5, resetPan: false}
+}
+
+const scale = (nextScale) => Math.max(nextScale, 1)
+
+const clampCoordinateComponent = (distance, extent, current) =>
+	Math.min(Math.max(current + distance, -extent), extent)
+
+const applyZoom = (img, {scale, x, y}) => {
+	img.style.setProperty("--zoom-scale", `${scale}`)
+	img.style.setProperty("--zoom-x", `${x}px`)
+	img.style.setProperty("--zoom-y", `${y}px`)
+	img.classList.toggle("zoomed", scale !== 1 || x + y !== 0)
 }
 
 customElements.define("light-box", Lightbox)
