@@ -18,6 +18,10 @@ class Lightbox extends HTMLElement {
 		this.maxTouches = 0
 		this.touchStarts = []
 		this.zoomScale = 1
+		this.panX = 0
+		this.panY = 0
+		this.zoomAnchorPhotoX = 0
+		this.zoomAnchorPhotoY = 0
 		this.gestureAction = ""
 
 		this.bindEvents()
@@ -187,10 +191,10 @@ class Lightbox extends HTMLElement {
 
 		this.gestureAction = this.getCurrentImg().className
 
-		if (this.touchStarts.length === 1) this.resetScrollDirection(event)
+		if (this.touchStarts.length === 1) this.resetScrollDirection()
 	}
 
-	resetScrollDirection = (event) => {
+	resetScrollDirection = () => {
 		this.gestureDirection = undefined
 	}
 
@@ -221,17 +225,36 @@ class Lightbox extends HTMLElement {
 			event.targetTouches[0].clientX - event.targetTouches[1].clientX,
 			event.targetTouches[0].clientY - event.targetTouches[1].clientY
 		)
+		const previousScale = this.zoomScale
 
 		if (this.startDistance == null) {
 			this.startDistance = Math.hypot(
 				this.touchStarts[0].clientX - this.touchStarts[1].clientX,
 				this.touchStarts[0].clientY - this.touchStarts[1].clientY
 			)
-			this.startScale = this.zoomScale || 1
+			this.startScale = this.zoomScale
+
+			const startRect = img.getBoundingClientRect()
+			this.zoomAnchorPhotoX = ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - startRect.left) / previousScale
+			this.zoomAnchorPhotoY = ((event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2 - startRect.top) / previousScale
 		}
 
-		this.zoomScale = Math.max(1, this.startScale * (distance / this.startDistance));
+		this.zoomScale = Math.max(1, this.startScale * (distance / this.startDistance))
+
+		const rect = img.getBoundingClientRect()
+		const midpointX = (event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2
+		const midpointY = (event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2
+
+		this.panX +=
+			(midpointX - rect.left) - this.zoomScale * this.zoomAnchorPhotoX
+			+ (img.offsetWidth / 2) * (this.zoomScale - previousScale)
+		this.panY +=
+			(midpointY - rect.top) - this.zoomScale * this.zoomAnchorPhotoY
+			+ (img.offsetHeight / 2) * (this.zoomScale - previousScale)
+
 		img.style.setProperty("--scale", this.zoomScale)
+		img.style.setProperty("--pan-x", `${this.panX}px`)
+		img.style.setProperty("--pan-y", `${this.panY}px`)
 	}
 
 	maybeApplyVerticalDrag = (event) => {
@@ -290,6 +313,12 @@ class Lightbox extends HTMLElement {
 		const img = this.getCurrentImg()
 
 		img.classList.remove("zooming")
+		img.style.removeProperty("--scale")
+		img.style.removeProperty("--pan-x")
+		img.style.removeProperty("--pan-y")
+		this.zoomScale = 1
+		this.panX = 0
+		this.panY = 0
 	}
 
 	verticalGestureCloseLightbox = (event) => {
@@ -326,6 +355,7 @@ class Lightbox extends HTMLElement {
 		this.track.style.overflowX = ""
 
 		this.maxTouches = 0
+		this.startDistance = null
 	}
 }
 
