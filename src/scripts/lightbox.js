@@ -99,6 +99,8 @@ class Lightbox extends HTMLElement {
 	}
 
 	closeLightbox = () => {
+		if (this.gestureAction === "zooming") return
+
 		this.modal.classList.add("hidden")
 		this.getCurrentImg().addEventListener(
 			"transitionend",
@@ -379,6 +381,7 @@ class Lightbox extends HTMLElement {
 
 		this.startDistance = null
 
+		this.gestureAction = ""
 		img.classList.remove("zooming")
 		img.style.removeProperty("--scale")
 		img.style.removeProperty("--pan-x")
