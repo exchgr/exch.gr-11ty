@@ -36,6 +36,7 @@
         height: 2rem;
         position: relative;
         z-index: 1;
+        transition: opacity 0.25s, visibility 0.25s;
 
         &[disabled] {
           background: #eee;
@@ -59,6 +60,11 @@
 
       .track::-webkit-scrollbar {
         display: none;
+      }
+
+      &:has(.slide img.zooming) button {
+        visibility: hidden;
+        opacity: 0;
       }
 
       .slide {
