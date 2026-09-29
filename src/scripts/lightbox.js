@@ -46,7 +46,10 @@ class Lightbox extends HTMLElement {
 		this.previousButton.addEventListener("click", this.previous)
 
 		document.addEventListener("keydown", (event) => {
-			if (this.modal.classList.contains("hidden")) return
+			if (
+				this.modal.classList.contains("hidden") ||
+				this.getCurrentImg().classList.contains("zooming")
+			) return
 
 			const callback = {
 				"ArrowLeft": this.previous,
