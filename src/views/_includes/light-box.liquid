@@ -93,6 +93,14 @@
           translate(-50%, calc(-50% - 1.5rem))
           translate(var(--pan-x, 0px), var(--pan-y, 0px))
           scale(var(--scale, 1));
+
+        &.zooming-paused {
+          transition: transform 0.33s;
+
+          &.panning {
+            transition: none;
+          }
+        }
       }
 
       @media (orientation: landscape) {

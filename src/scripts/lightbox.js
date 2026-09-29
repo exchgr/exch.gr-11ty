@@ -23,6 +23,10 @@ class Lightbox extends HTMLElement {
 		this.zoomAnchorPhotoX = 0
 		this.zoomAnchorPhotoY = 0
 		this.gestureAction = ""
+		this.startPan = {
+			x: null,
+			y: null
+		}
 
 		this.bindEvents()
 		this.buildSlides()
@@ -189,6 +193,11 @@ class Lightbox extends HTMLElement {
 			this.touchStarts.push(targetTouch)
 		}
 
+		this.startPan = {
+			x: null,
+			y: null
+		}
+
 		this.gestureAction = this.getCurrentImg().className
 
 		if (this.touchStarts.length === 1) this.resetScrollDirection()
@@ -203,7 +212,14 @@ class Lightbox extends HTMLElement {
 
 		switch (this.maxTouches) {
 			case 1:
-				this.maybeApplyVerticalDrag(event)
+				switch (this.zoomScale) {
+					case 1:
+						this.maybeApplyVerticalDrag(event)
+						break;
+					default:
+						this.panZoomedImage(event)
+						break;
+				}
 				break;
 			case 2:
 				this.pinchToZoom(event)
@@ -220,6 +236,7 @@ class Lightbox extends HTMLElement {
 
 		this.gestureAction = "zooming";
 		img.classList.add(this.gestureAction)
+		img.classList.remove("zooming-paused")
 
 		const distance = Math.hypot(
 			event.targetTouches[0].clientX - event.targetTouches[1].clientX,
@@ -257,9 +274,30 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--pan-y", `${this.panY}px`)
 	}
 
-	maybeApplyVerticalDrag = (event) => {
-		if (this.gestureAction === "zooming") return
+	panZoomedImage = (event) => {
+		event.preventDefault()
+		const img = this.getCurrentImg()
+		const rect = img.getBoundingClientRect()
 
+		if (this.startPan.x == null || this.startPan.y == null) {
+			img.classList.add("panning")
+
+			this.startPan = {
+				x: (event.targetTouches[0].clientX - rect.left) / this.zoomScale,
+				y: (event.targetTouches[0].clientY - rect.top) / this.zoomScale
+			}
+		}
+
+		this.panX +=
+			(event.targetTouches[0].clientX - rect.left) - this.startPan.x * this.zoomScale
+		this.panY +=
+			(event.targetTouches[0].clientY - rect.top) - this.startPan.y * this.zoomScale
+
+		img.style.setProperty("--pan-x", `${this.panX}px`)
+		img.style.setProperty("--pan-y", `${this.panY}px`)
+	}
+
+	maybeApplyVerticalDrag = (event) => {
 		this.resolveGestureDirection({
 			x: event.touches[0].clientX,
 			y: event.touches[0].clientY
@@ -288,14 +326,27 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--drag-opacity", opacity)
 	}
 
+	/*
+	* suppressed because this is an integration method, where complexity lives.
+	* the responsibility of this method is to route to several other methods,
+	* each with its own single responsibility.
+	*/
+	// eslint-disable-next-line complexity
 	touchEndRouter = (event) => {
 		if (event.touches.length === 0) {
 			switch (this.maxTouches) {
 				case 1:
-					this.verticalGestureCloseLightbox(event)
+					switch (this.zoomScale) {
+						case 1:
+							this.verticalGestureCloseLightbox(event)
+							break;
+						default:
+							this.panningTouchEnd(event)
+							break;
+					}
 					break;
 				case 2:
-					this.maybeEndZooming(event)
+					this.zoomingTouchEnd(event)
 					break;
 			}
 
@@ -303,14 +354,28 @@ class Lightbox extends HTMLElement {
 		}
 	}
 
-	maybeEndZooming = (event) => {
+	panningTouchEnd = () => {
+		const img = this.getCurrentImg()
+
+		this.startPan = {
+			x: null,
+			y: null
+		}
+
+		img.classList.remove("panning")
+	}
+
+	zoomingTouchEnd = () => {
+		const img = this.getCurrentImg()
+
 		if (this.zoomScale !== 1) {
 			this.startDistance = null
+			img.classList.add("zooming-paused")
 
 			return
 		}
 
-		const img = this.getCurrentImg()
+		this.startDistance = null
 
 		img.classList.remove("zooming")
 		img.style.removeProperty("--scale")
