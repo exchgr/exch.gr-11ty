@@ -231,6 +231,7 @@ class Lightbox extends HTMLElement {
 	  if (this.gestureAction === "dragging") return
 
 		const img = this.getCurrentImg()
+		const rect = img.getBoundingClientRect()
 
 		event.preventDefault()
 
@@ -251,14 +252,12 @@ class Lightbox extends HTMLElement {
 			)
 			this.startScale = this.zoomScale
 
-			const startRect = img.getBoundingClientRect()
-			this.zoomAnchorPhotoX = ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - startRect.left) / previousScale
-			this.zoomAnchorPhotoY = ((event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2 - startRect.top) / previousScale
+			this.zoomAnchorPhotoX = ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - rect.left) / previousScale
+			this.zoomAnchorPhotoY = ((event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2 - rect.top) / previousScale
 		}
 
 		this.zoomScale = Math.max(1, this.startScale * (distance / this.startDistance))
 
-		const rect = img.getBoundingClientRect()
 		const midpointX = (event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2
 		const midpointY = (event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2
 
