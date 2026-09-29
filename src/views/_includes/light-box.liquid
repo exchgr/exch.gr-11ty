@@ -62,6 +62,10 @@
       }
 
       .slide {
+        &:has(img.zooming) {
+          touch-action: none;
+        }
+
         flex: 0 0 100%;
         scroll-snap-align: center;
         display: flex;
