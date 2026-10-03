@@ -441,8 +441,6 @@ const getLargeUrl = (photo) => {
 	return photo.querySelector('a')?.href || null
 }
 
-const LARGE_VIEWPORT_BREAKPOINT = 600
-
 const loadLargeImage = (slide, photo) => {
 	const largeUrl = getLargeUrl(photo)
 	if (largeUrl) slide.querySelector('img')?.setAttribute('src', largeUrl)
