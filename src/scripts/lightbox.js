@@ -335,25 +335,24 @@ class Lightbox extends HTMLElement {
 	*/
 	// eslint-disable-next-line complexity
 	touchEndRouter = (event) => {
-		if (event.targetTouches.length === 0) {
-			switch (this.maxTouches) {
-				case 1:
-					switch (this.zoomScale) {
-						case 1:
-							this.verticalGestureCloseLightbox(event)
-							break;
-						default:
-							this.panningTouchEnd(event)
-							break;
-					}
-					break;
-				case 2:
-					this.zoomingTouchEnd(event)
-					break;
-			}
+		if (event.targetTouches.length !== 0) return
 
-			this.maxTouches = 0
+		switch (true) {
+			case this.maxTouches === 1:
+				switch (this.zoomScale) {
+					case 1:
+						this.verticalGestureCloseLightbox(event)
+						break;
+					default:
+						this.panningTouchEnd(event)
+						break;
+				}
+				break;
+			case this.maxTouches >= 2:
+				this.zoomingTouchEnd(event)
+				break;
 		}
+		this.maxTouches = 0
 	}
 
 	panningTouchEnd = () => {
