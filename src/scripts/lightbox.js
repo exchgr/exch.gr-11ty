@@ -180,14 +180,14 @@ class Lightbox extends HTMLElement {
 		loadLargeImage(this.slides[this.currentPhoto], this.photos[this.currentPhoto])
 	}
 
-	resolveGestureDirection = (currentPoint) => {
+	resolveGestureDirection = (targetTouch) => {
 		if (this.gestureDirection) return
-		if (euclideanDistance(this.touchStarts[0], currentPoint) < 10)
+		if (euclideanDistance(this.touchStarts[0], targetTouch) < 10)
 			return
 
 		this.gestureDirection =
-			Math.abs(currentPoint.x - this.touchStarts[0].clientX) >
-			Math.abs(currentPoint.y - this.touchStarts[0].clientY)
+			Math.abs(targetTouch.clientX - this.touchStarts[0].clientX) >
+			Math.abs(targetTouch.clientY - this.touchStarts[0].clientY)
 				? "horizontal" : "vertical"
 	}
 
@@ -234,6 +234,7 @@ class Lightbox extends HTMLElement {
 
 	pinchToZoom = (event) => {
 	  if (this.gestureAction === "dragging") return
+		if (event.targetTouches.length === 1) return
 
 		const img = this.getCurrentImg()
 		const rect = img.getBoundingClientRect()
@@ -302,10 +303,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	maybeApplyVerticalDrag = (event) => {
-		this.resolveGestureDirection({
-			x: event.touches[0].clientX,
-			y: event.touches[0].clientY
-		})
+		this.resolveGestureDirection(event.targetTouches[0])
 
 		if (this.gestureDirection !== "vertical") return
 
@@ -313,7 +311,7 @@ class Lightbox extends HTMLElement {
 		this.track.style.overflowX = "hidden"
 
 		event.preventDefault()
-		this.applyVerticalDrag(event.touches[0].clientY - this.touchStarts[0].clientY)
+		this.applyVerticalDrag(event.targetTouches[0].clientY - this.touchStarts[0].clientY)
 	}
 
 	applyVerticalDrag = (dy) => {
@@ -429,7 +427,7 @@ class Lightbox extends HTMLElement {
 	}
 }
 
-const euclideanDistance = (a, b) => Math.hypot(b.x - a.x, b.y - a.y)
+const euclideanDistance = (a, b) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY)
 
 const getImg = (photo) => {
 	return photo.querySelector('img') || photo;
