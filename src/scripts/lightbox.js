@@ -22,7 +22,6 @@ class Lightbox extends HTMLElement {
 		this.panY = 0
 		this.zoomAnchorPhotoX = 0
 		this.zoomAnchorPhotoY = 0
-		this.gestureAction = ""
 		this.startPan = {
 			x: null,
 			y: null
@@ -99,7 +98,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	closeLightbox = () => {
-		if (this.gestureAction === "zooming") return
+		if (this.getCurrentImg()?.classList.contains("zooming")) return
 
 		this.modal.classList.add("hidden")
 		this.getCurrentImg().addEventListener(
@@ -203,8 +202,6 @@ class Lightbox extends HTMLElement {
 			y: null
 		}
 
-		this.gestureAction = this.getCurrentImg().className
-
 		if (this.touchStarts.length === 1) this.resetScrollDirection()
 	}
 
@@ -233,7 +230,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	pinchToZoom = (event) => {
-	  if (this.gestureAction === "dragging") return
+		if (this.getCurrentImg().classList.contains("dragging")) return
 		if (event.targetTouches.length === 1) return
 
 		const img = this.getCurrentImg()
@@ -241,8 +238,7 @@ class Lightbox extends HTMLElement {
 
 		event.preventDefault()
 
-		this.gestureAction = "zooming";
-		img.classList.add(this.gestureAction)
+		img.classList.add("zooming")
 		img.classList.remove("zooming-paused")
 
 		const distance = Math.hypot(
@@ -318,8 +314,7 @@ class Lightbox extends HTMLElement {
 		const img = this.getCurrentImg()
 		if (!img) return
 
-		this.gestureAction = "dragging"
-		img.classList.add(this.gestureAction)
+		img.classList.add("dragging")
 
 		const maxDrag = window.innerHeight * 0.5
 		const opacity = Math.max(0, Math.min(1, 1 - (Math.abs(dy) / maxDrag)))
@@ -378,7 +373,6 @@ class Lightbox extends HTMLElement {
 
 		this.startDistance = null
 
-		this.gestureAction = ""
 		img.classList.remove("zooming")
 		img.style.removeProperty("--scale")
 		img.style.removeProperty("--pan-x")
