@@ -213,7 +213,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	touchMoveRouter = (event) => {
-		this.maxTouches = Math.max(this.maxTouches, event.touches.length)
+		this.maxTouches = Math.max(this.maxTouches, event.targetTouches.length)
 
 		switch (this.maxTouches) {
 			case 1:
@@ -335,7 +335,7 @@ class Lightbox extends HTMLElement {
 	*/
 	// eslint-disable-next-line complexity
 	touchEndRouter = (event) => {
-		if (event.touches.length === 0) {
+		if (event.targetTouches.length === 0) {
 			switch (this.maxTouches) {
 				case 1:
 					switch (this.zoomScale) {
