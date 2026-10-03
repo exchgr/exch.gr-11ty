@@ -103,7 +103,8 @@ class Lightbox extends HTMLElement {
 		this.modal.classList.add("hidden")
 		this.getCurrentImg().addEventListener(
 			"transitionend",
-			this.resetGestureState
+			this.resetGestureState,
+			{once: true}
 		)
 	}
 
@@ -392,7 +393,7 @@ class Lightbox extends HTMLElement {
 		if (Math.abs(dy) < Math.min(window.innerHeight * 0.3, 150)) {
 			img.style.setProperty("--drag-y", "0")
 			img.style.setProperty("--drag-opacity", "1")
-			img.addEventListener("transitionend", this.resetGestureState)
+			img.addEventListener("transitionend", this.resetGestureState, {once: true})
 
 			return
 		}
