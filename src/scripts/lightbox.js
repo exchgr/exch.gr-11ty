@@ -1,3 +1,7 @@
+const DOUBLE_TAP_MAX_MS = 300
+const DOUBLE_TAP_MAX_DISTANCE = 30
+const DOUBLE_TAP_ZOOM_IN_SCALE = 2;
+
 class Lightbox extends HTMLElement {
 	constructor() {
 		super();
@@ -27,6 +31,7 @@ class Lightbox extends HTMLElement {
 			y: null
 		}
 
+		this.lastTap = null
 		this.bindEvents()
 		this.buildSlides()
 		this.updateButtonStates()
@@ -74,7 +79,7 @@ class Lightbox extends HTMLElement {
 			img.addEventListener("click", (event) => event.stopPropagation())
 			img.addEventListener("touchstart", this.resetTouches, {passive: false})
 			img.addEventListener("touchmove", this.touchMoveRouter, {passive: false})
-			img.addEventListener("touchend", this.touchEndRouter)
+			img.addEventListener("touchend", this.touchEndRouter, {passive: false})
 			slide.appendChild(img)
 			this.imageSlot.appendChild(slide)
 		})
@@ -332,23 +337,61 @@ class Lightbox extends HTMLElement {
 	// eslint-disable-next-line complexity
 	touchEndRouter = (event) => {
 		if (event.targetTouches.length !== 0) return
+		const img = this.getCurrentImg();
 
-		switch (true) {
-			case this.maxTouches === 1:
-				switch (this.zoomScale) {
-					case 1:
-						this.verticalGestureCloseLightbox(event)
-						break;
-					default:
-						this.panningTouchEnd(event)
-						break;
+		switch (this.zoomScale) {
+			case 1:
+				if (this.isDoubleTap(event)) {
+					this.doubleTapZoomIn(event)
+				} else if (this.maxTouches === 1) {
+					this.verticalGestureCloseLightbox(event)
+				} else if (this.maxTouches >= 2) {
+					this.resetZoomState(img)
 				}
 				break;
-			case this.maxTouches >= 2:
-				this.zoomingTouchEnd(event)
+			default:
+				if (this.isDoubleTap(event)) {
+					this.resetZoomState(img)
+				} else if (this.maxTouches === 1) {
+					this.panningTouchEnd(event)
+				} else if (this.maxTouches >= 2) {
+					this.pauseZooming(event)
+				}
 				break;
 		}
+
 		this.maxTouches = 0
+	}
+
+	isDoubleTap = (event) => {
+		const isDoubleTap = this.lastTap &&
+			event.timeStamp - this.lastTap.time < DOUBLE_TAP_MAX_MS &&
+			euclideanDistance(this.lastTap.targetTouch, event.changedTouches[0]) < DOUBLE_TAP_MAX_DISTANCE;
+
+		this.lastTap = isDoubleTap ? null : {
+			time: event.timeStamp,
+			targetTouch: event.changedTouches[0]
+		};
+
+		return isDoubleTap;
+	}
+
+	doubleTapZoomIn = (event) => {
+		event.preventDefault()
+		this.resetGestureState()
+
+		const img = this.getCurrentImg();
+		const rect = img.getBoundingClientRect()
+		this.lastTap = null
+
+		this.zoomScale = DOUBLE_TAP_ZOOM_IN_SCALE
+		this.panX += (1 - DOUBLE_TAP_ZOOM_IN_SCALE) * ((event.changedTouches[0].clientX - rect.left) - img.offsetWidth / 2)
+		this.panY += (1 - DOUBLE_TAP_ZOOM_IN_SCALE) * ((event.changedTouches[0].clientY - rect.top) - img.offsetHeight / 2)
+
+		img.classList.add("zooming", "zooming-paused")
+		img.style.setProperty("--scale", this.zoomScale)
+		img.style.setProperty("--pan-x", `${this.panX}px`)
+		img.style.setProperty("--pan-y", `${this.panY}px`)
 	}
 
 	panningTouchEnd = () => {
@@ -362,19 +405,14 @@ class Lightbox extends HTMLElement {
 		img.classList.remove("panning")
 	}
 
-	zoomingTouchEnd = () => {
+	pauseZooming = () => {
 		const img = this.getCurrentImg()
-
-		if (this.zoomScale !== 1) {
-			this.startDistance = null
-			img.classList.add("zooming-paused")
-
-			return
-		}
-
 		this.startDistance = null
+		img.classList.add("zooming-paused")
+	}
 
-		img.classList.remove("zooming")
+	resetZoomState = (img) => {
+		img.classList.remove("zooming", "zooming-paused")
 		img.style.removeProperty("--scale")
 		img.style.removeProperty("--pan-x")
 		img.style.removeProperty("--pan-y")
