@@ -412,6 +412,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	resetZoomState = (img) => {
+		this.startDistance = null
 		img.classList.remove("zooming", "zooming-paused")
 		img.style.removeProperty("--scale")
 		img.style.removeProperty("--pan-x")
