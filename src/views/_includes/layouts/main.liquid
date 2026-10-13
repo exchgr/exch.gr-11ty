@@ -5,50 +5,52 @@ base_url: https://exch.gr/
 {%- assign filteredCollections = collections | noAll | noTags -%}
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/images/favicon.png" type="image/png">
-		<link rel="stylesheet" href="/styles/bundle.css">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link rel="stylesheet" href="/styles/googleFonts.css">
+    <link rel="stylesheet" href="/styles/bundle.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/styles/googleFonts.css">
     <link rel="stylesheet" media="(prefers-color-scheme: light)" href="/styles/github.min.css">
     <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="/styles/monokai-sublime.min.css">
     <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="Process Things - All articles">
     {% for collection in filteredCollections %}
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      href="/{{ collection[0] }}/feed.xml"
-      title="Process Things - {{ collection[1][0].data.article.collection.name }}"
-    >
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        href="/{{ collection[0] }}/feed.xml"
+        title="Process Things - {{ collection[1][0].data.article.collection.name }}"
+      >
     {% endfor %}
     <script defer src="/scripts/imagesloaded.92de29b5a9a416bebeb6bb58a1882af8c5f76931.pkgd.min.js"></script>
     <script defer src="/scripts/lightbox.js"></script>
     <script defer src="/scripts/timestamp.js"></script>
     <script defer src="/scripts/masonry.js"></script>
-		<meta property="og:site_name" content="{{ blog_title }}">
-		<meta property="og:title" content="{{ page_title }} | {{ blog_title }}">
-		<meta property="og:url" content="{{ og_url | absoluteUrl: base_url }}">
-		<meta property="og:image" content="{{ og_image | default: 'https://imagedelivery.net/o13JSbSZsvRblBQcZyKHpg/7ff49036-7a21-4646-a179-f49aac9d0000/public' }}">
+    <script type="module" src="/scripts/safari-tint.js"></script>
+    <meta property="og:site_name" content="{{ blog_title }}">
+    <meta property="og:title" content="{{ page_title }} | {{ blog_title }}">
+    <meta property="og:url" content="{{ og_url | absoluteUrl: base_url }}">
+    <meta property="og:image" content="{{ og_image | default: 'https://imagedelivery.net/o13JSbSZsvRblBQcZyKHpg/7ff49036-7a21-4646-a179-f49aac9d0000/public' }}">
     <meta property="og:description" content="{{ og_description }}">
-		<meta property="og:type" content="{{ og_type }}">
-		{%- for extra_og_tag in extra_og_tags %}
-			<meta property="{{ extra_og_tag[0] }}" content="{{ extra_og_tag[1] }}">
-		{% endfor -%}
+    <meta property="og:type" content="{{ og_type }}">
+    {%- for extra_og_tag in extra_og_tags %}
+      <meta property="{{ extra_og_tag[0] }}" content="{{ extra_og_tag[1] }}">
+    {% endfor -%}
     <link href="https://mastodon.world/@exchgr" rel="me">
-    <meta name="fediverse:creator" content="@exchgr@mastodon.world" />
+    <meta name="fediverse:creator" content="@exchgr@mastodon.world"/>
     <link href="https://web.brid.gy/r/https://exch.gr/" rel="me">
-		<title>{{ blog_title }} | {{ page_title }}</title>
+    <title>{{ blog_title }} | {{ page_title }}</title>
     <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ env.CLOUDFLARE_WEB_ANALYTICS_TOKEN }}"}'></script><!-- End Cloudflare Web Analytics -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="hsl(200 67% 54%)" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="hsl(36 100% 50%)" />
   </head>
-	<body>
-	<header>
-		<div class="{{ extra_classes }}">
+  <body>
+  <div class="safari-tint" aria-hidden="true"></div>
+  <header>
+    <div class="{{ extra_classes }}">
       <h1>
         <a href="/">{{ blog_title }}</a>
         <nav>
@@ -59,10 +61,10 @@ base_url: https://exch.gr/
       </h1>
       <span class="site-byline">by <a href="/about">elle mundy</a></span>
     </div>
-	</header>
+  </header>
 
-	<div class="{{ extra_classes }}">
-		{{ content }}
-	</div>
-	</body>
+  <div class="{{ extra_classes }}">
+    {{ content }}
+  </div>
+  </body>
 </html>

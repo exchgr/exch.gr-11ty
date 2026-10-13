@@ -11,6 +11,7 @@
 	--h1-font-weight: normal;
 	--hover-accent-color: hsl(36 100% 50%);
 	--accent-color: hsl(200 67% 54%);
+	--safari-tint-accent-color: var(--accent-color);
 	--body-background-color: #fff;
 	--body-color: hsl(300 1% 13%);
 	--metadata-color: #666;
@@ -44,6 +45,27 @@ body {
 	text-align: justify;
 	hyphens: auto;
 	-webkit-hyphens: auto;
+}
+
+.safari-tint {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 11px;
+	background-color: var(--safari-tint-accent-color);
+	background-clip: text;
+	-webkit-background-clip: text;
+	pointer-events: none;
+	z-index: 2147483647;
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+	transition: none;
+}
+
+html[data-safari-tint-refresh] .safari-tint {
+	height: 12px;
 }
 
 .center {
@@ -228,8 +250,7 @@ article h2 + p, article h2 + ul,
 article h3 + p, article h3 + ul,
 article h4 + p, article h4 + ul,
 article h5 + p, article h5 + ul,
-article h6 + p, article h6 + ul
-{
+article h6 + p, article h6 + ul {
 	margin-block-start: .5rem;
 }
 
@@ -617,7 +638,7 @@ figure {
 /* 41rem is container-width + body-margin */
 @media screen and (min-width: 41rem) {
 	.grid-gallery {
-		margin-left: calc(-1 * (100vw - var(--container-width) - var(--body-margin))/2);
+		margin-left: calc(-1 * (100vw - var(--container-width) - var(--body-margin)) / 2);
 	}
 }
 
@@ -626,6 +647,7 @@ figure {
 		--body-background-color: black;
 		--body-color: white;
 		--accent-color: hsl(36 100% 50%);
+		--safari-tint-accent-color: hsl(36 100% 39%);
 		--hover-accent-color: hsl(200 67% 50%);
 		--metadata-color: #ccc;
 	}
