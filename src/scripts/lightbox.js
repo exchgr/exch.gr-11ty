@@ -232,7 +232,7 @@ class Lightbox extends HTMLElement {
 
 		switch (this.maxTouches) {
 			case 1:
-				if (this.doubleTapDragZoomActive || this.hasPendingDoubleTap(event)) {
+				if (this.doubleTapDragZoomActive || this.isDoubleTap(event)) {
 					this.doubleTapAndDragZoom(event)
 				} else {
 					switch (this.zoomScale) {
@@ -413,9 +413,12 @@ class Lightbox extends HTMLElement {
 				this.pauseZooming()
 			}
 		} else {
+			const isDoubleTap = this.isDoubleTap(event);
+			this.updateLastTap(event, isDoubleTap)
+
 			switch (this.zoomScale) {
 				case 1:
-					if (this.isDoubleTap(event)) {
+					if (isDoubleTap) {
 						this.doubleTapZoomIn(event)
 					} else if (this.maxTouches === 1) {
 						this.verticalGestureCloseLightbox(event)
@@ -424,7 +427,7 @@ class Lightbox extends HTMLElement {
 					}
 					break;
 				default:
-					if (this.isDoubleTap(event)) {
+					if (isDoubleTap) {
 						this.resetZoomState(img)
 					} else if (this.maxTouches === 1) {
 						this.panningTouchEnd(event)
@@ -443,18 +446,11 @@ class Lightbox extends HTMLElement {
 		this.lastTap = null
 	}
 
-	isDoubleTap = (event) => {
-		if (this.hasPendingDoubleTap(event)) {
-			this.lastTap = null
-			return true
-		}
-
-		this.lastTap = event
-
-		return false
+	updateLastTap = (event, isDoubleTap) => {
+		this.lastTap = isDoubleTap ? null : event
 	}
 
-	hasPendingDoubleTap = (event) =>
+	isDoubleTap = (event) =>
 		this.lastTap != null &&
 		event.timeStamp - this.lastTap.timeStamp < DOUBLE_TAP_MAX_MS &&
 		euclideanDistance(this.lastTap.changedTouches[0], event.changedTouches[0]) < DOUBLE_TAP_MAX_DISTANCE
