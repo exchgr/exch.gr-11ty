@@ -186,14 +186,16 @@ class Lightbox extends HTMLElement {
 	}
 
 	resolveGestureDirection = (targetTouch) => {
-		if (this.gestureDirection) return
+		if (this.gestureDirection) return this.gestureDirection
 		if (euclideanDistance(this.touchStarts[0], targetTouch) < 10)
-			return
+			return null
 
 		this.gestureDirection =
 			Math.abs(targetTouch.clientX - this.touchStarts[0].clientX) >
 			Math.abs(targetTouch.clientY - this.touchStarts[0].clientY)
 				? "horizontal" : "vertical"
+
+		return this.gestureDirection
 	}
 
 	resetTouches = (event) => {
@@ -305,9 +307,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	maybeApplyVerticalDrag = (event) => {
-		this.resolveGestureDirection(event.targetTouches[0])
-
-		if (this.gestureDirection !== "vertical") return
+		if (this.resolveGestureDirection(event.targetTouches[0]) !== "vertical") return
 
 		this.track.style.scrollSnapType = "none"
 		this.track.style.overflowX = "hidden"
