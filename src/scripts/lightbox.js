@@ -1,6 +1,7 @@
 const DOUBLE_TAP_MAX_MS = 300
 const DOUBLE_TAP_MAX_DISTANCE = 30
 const DOUBLE_TAP_ZOOM_IN_SCALE = 2;
+const DOUBLE_TAP_DRAG_ZOOM_PIXELS_PER_DOUBLING = 200
 
 class Lightbox extends HTMLElement {
 	constructor() {
@@ -24,14 +25,16 @@ class Lightbox extends HTMLElement {
 		this.zoomScale = 1
 		this.panX = 0
 		this.panY = 0
-		this.zoomAnchorPhotoX = 0
-		this.zoomAnchorPhotoY = 0
+		this.zoomAnchorPhoto = null
 		this.startPan = {
 			x: null,
 			y: null
 		}
 
 		this.lastTap = null
+		this.startScale = null
+		this.doubleTapDragZoomActive = false
+		this.doubleTapDragAnchor = null
 		this.bindEvents()
 		this.buildSlides()
 		this.updateButtonStates()
@@ -199,6 +202,7 @@ class Lightbox extends HTMLElement {
 	}
 
 	resetTouches = (event) => {
+		this.doubleTapDragZoomActive = false
 		this.touchStarts = []
 
 		for (const targetTouch of event.targetTouches) {
@@ -217,24 +221,81 @@ class Lightbox extends HTMLElement {
 		this.gestureDirection = undefined
 	}
 
+	/*
+	* suppressed because this is an integration method, where complexity lives.
+	* the responsibility of this method is to route to several other methods,
+	* each with its own single responsibility.
+	*/
+	// eslint-disable-next-line complexity
 	touchMoveRouter = (event) => {
 		this.maxTouches = Math.max(this.maxTouches, event.targetTouches.length)
 
 		switch (this.maxTouches) {
 			case 1:
-				switch (this.zoomScale) {
-					case 1:
-						this.maybeApplyVerticalDrag(event)
-						break;
-					default:
-						this.panZoomedImage(event)
-						break;
+				if (this.doubleTapDragZoomActive || this.hasPendingDoubleTap(event)) {
+					this.doubleTapAndDragZoom(event)
+				} else {
+					switch (this.zoomScale) {
+						case 1:
+							this.maybeApplyVerticalDrag(event)
+							break;
+						default:
+							this.panZoomedImage(event)
+							break;
+					}
 				}
 				break;
 			case 2:
 				this.pinchToZoom(event)
 				break;
 		}
+	}
+
+	doubleTapAndDragZoom = (event) => {
+		const targetTouch = event.targetTouches[0]
+		const direction = this.resolveGestureDirection(targetTouch)
+
+		if (direction === null) return
+
+		if (direction !== "vertical") {
+			this.doubleTapDragZoomActive = false
+			this.lastTap = null
+			return
+		}
+
+		event.preventDefault()
+
+		this.doubleTapDragZoomActive = true
+		const img = this.getCurrentImg()
+		const rect = img.getBoundingClientRect()
+
+		if (this.startScale == null) {
+			this.startScale = this.zoomScale
+			this.doubleTapDragAnchor = this.touchStarts[0]
+
+			this.zoomAnchorPhoto = {
+				clientX: (this.touchStarts[0].clientX - rect.left) / this.zoomScale,
+				clientY: (this.touchStarts[0].clientY - rect.top) / this.zoomScale
+			}
+
+			img.classList.add("zooming")
+			img.classList.remove("zooming-paused")
+		}
+
+		const previousScale = this.zoomScale
+		const distance = targetTouch.clientY - this.touchStarts[0].clientY
+		this.zoomScale = Math.max(1, this.startScale * 2 ** (-distance / DOUBLE_TAP_DRAG_ZOOM_PIXELS_PER_DOUBLING))
+
+		this.panX +=
+			(this.doubleTapDragAnchor.clientX - rect.left) - this.zoomScale * this.zoomAnchorPhoto.clientX
+			+ (img.offsetWidth / 2) * (this.zoomScale - previousScale)
+		this.panY +=
+			(this.doubleTapDragAnchor.clientY - rect.top) - this.zoomScale * this.zoomAnchorPhoto.clientY
+			+ (img.offsetHeight / 2) * (this.zoomScale - previousScale)
+
+		img.style.setProperty("--scale", this.zoomScale)
+		img.style.setProperty("--pan-x", `${this.panX}px`)
+		img.style.setProperty("--pan-y", `${this.panY}px`)
 	}
 
 	pinchToZoom = (event) => {
@@ -264,8 +325,10 @@ class Lightbox extends HTMLElement {
 
 			this.startScale = this.zoomScale
 
-			this.zoomAnchorPhotoX = ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - rect.left) / previousScale
-			this.zoomAnchorPhotoY = ((event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2 - rect.top) / previousScale
+			this.zoomAnchorPhoto = {
+				clientX: ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - rect.left) / previousScale,
+				clientY: ((event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2 - rect.top) / previousScale
+			}
 		}
 
 		this.zoomScale = Math.max(1, this.startScale * (distance / this.startDistance))
@@ -274,10 +337,10 @@ class Lightbox extends HTMLElement {
 		const midpointY = (event.targetTouches[0].clientY + event.targetTouches[1].clientY) / 2
 
 		this.panX +=
-			(midpointX - rect.left) - this.zoomScale * this.zoomAnchorPhotoX
+			(midpointX - rect.left) - this.zoomScale * this.zoomAnchorPhoto.clientX
 			+ (img.offsetWidth / 2) * (this.zoomScale - previousScale)
 		this.panY +=
-			(midpointY - rect.top) - this.zoomScale * this.zoomAnchorPhotoY
+			(midpointY - rect.top) - this.zoomScale * this.zoomAnchorPhoto.clientY
 			+ (img.offsetHeight / 2) * (this.zoomScale - previousScale)
 
 		img.style.setProperty("--scale", this.zoomScale)
@@ -341,42 +404,60 @@ class Lightbox extends HTMLElement {
 		if (event.targetTouches.length !== 0) return
 		const img = this.getCurrentImg();
 
-		switch (this.zoomScale) {
-			case 1:
-				if (this.isDoubleTap(event)) {
-					this.doubleTapZoomIn(event)
-				} else if (this.maxTouches === 1) {
-					this.verticalGestureCloseLightbox(event)
-				} else if (this.maxTouches >= 2) {
-					this.resetZoomState(img)
-				}
-				break;
-			default:
-				if (this.isDoubleTap(event)) {
-					this.resetZoomState(img)
-				} else if (this.maxTouches === 1) {
-					this.panningTouchEnd(event)
-				} else if (this.maxTouches >= 2) {
-					this.pauseZooming(event)
-				}
-				break;
+		if (this.doubleTapDragZoomActive) {
+			this.resetDoubleTapDragZoom();
+
+			if (this.zoomScale === 1) {
+				this.resetZoomState(img)
+			} else {
+				this.pauseZooming()
+			}
+		} else {
+			switch (this.zoomScale) {
+				case 1:
+					if (this.isDoubleTap(event)) {
+						this.doubleTapZoomIn(event)
+					} else if (this.maxTouches === 1) {
+						this.verticalGestureCloseLightbox(event)
+					} else if (this.maxTouches >= 2) {
+						this.resetZoomState(img)
+					}
+					break;
+				default:
+					if (this.isDoubleTap(event)) {
+						this.resetZoomState(img)
+					} else if (this.maxTouches === 1) {
+						this.panningTouchEnd(event)
+					} else if (this.maxTouches >= 2) {
+						this.pauseZooming(event)
+					}
+					break;
+			}
 		}
 
 		this.maxTouches = 0
 	}
 
-	isDoubleTap = (event) => {
-		const isDoubleTap = this.lastTap &&
-			event.timeStamp - this.lastTap.time < DOUBLE_TAP_MAX_MS &&
-			euclideanDistance(this.lastTap.targetTouch, event.changedTouches[0]) < DOUBLE_TAP_MAX_DISTANCE;
-
-		this.lastTap = isDoubleTap ? null : {
-			time: event.timeStamp,
-			targetTouch: event.changedTouches[0]
-		};
-
-		return isDoubleTap;
+	resetDoubleTapDragZoom = () => {
+		this.doubleTapDragZoomActive = false
+		this.lastTap = null
 	}
+
+	isDoubleTap = (event) => {
+		if (this.hasPendingDoubleTap(event)) {
+			this.lastTap = null
+			return true
+		}
+
+		this.lastTap = event
+
+		return false
+	}
+
+	hasPendingDoubleTap = (event) =>
+		this.lastTap != null &&
+		event.timeStamp - this.lastTap.timeStamp < DOUBLE_TAP_MAX_MS &&
+		euclideanDistance(this.lastTap.changedTouches[0], event.changedTouches[0]) < DOUBLE_TAP_MAX_DISTANCE
 
 	doubleTapZoomIn = (event) => {
 		event.preventDefault()
@@ -384,7 +465,6 @@ class Lightbox extends HTMLElement {
 
 		const img = this.getCurrentImg();
 		const rect = img.getBoundingClientRect()
-		this.lastTap = null
 
 		this.zoomScale = DOUBLE_TAP_ZOOM_IN_SCALE
 		this.panX += (1 - DOUBLE_TAP_ZOOM_IN_SCALE) * ((event.changedTouches[0].clientX - rect.left) - img.offsetWidth / 2)
@@ -410,11 +490,14 @@ class Lightbox extends HTMLElement {
 	pauseZooming = () => {
 		const img = this.getCurrentImg()
 		this.startDistance = null
+		this.startScale = null
 		img.classList.add("zooming-paused")
 	}
 
 	resetZoomState = (img) => {
 		this.startDistance = null
+		this.startScale = null
+		this.doubleTapDragZoomActive = false
 		img.classList.remove("zooming", "zooming-paused")
 		img.style.removeProperty("--scale")
 		img.style.removeProperty("--pan-x")
@@ -459,6 +542,8 @@ class Lightbox extends HTMLElement {
 
 		this.maxTouches = 0
 		this.startDistance = null
+		this.startScale = null
+		this.doubleTapDragZoomActive = false
 	}
 }
 
