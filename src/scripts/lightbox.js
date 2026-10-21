@@ -249,17 +249,19 @@ class Lightbox extends HTMLElement {
 		img.classList.add("zooming")
 		img.classList.remove("zooming-paused")
 
-		const distance = Math.hypot(
-			event.targetTouches[0].clientX - event.targetTouches[1].clientX,
-			event.targetTouches[0].clientY - event.targetTouches[1].clientY
+		const distance = euclideanDistance(
+			event.targetTouches[1],
+			event.targetTouches[0]
 		)
+
 		const previousScale = this.zoomScale
 
 		if (this.startDistance == null) {
-			this.startDistance = Math.hypot(
-				this.touchStarts[0].clientX - this.touchStarts[1].clientX,
-				this.touchStarts[0].clientY - this.touchStarts[1].clientY
+			this.startDistance = euclideanDistance(
+				this.touchStarts[1],
+				this.touchStarts[0]
 			)
+
 			this.startScale = this.zoomScale
 
 			this.zoomAnchorPhotoX = ((event.targetTouches[0].clientX + event.targetTouches[1].clientX) / 2 - rect.left) / previousScale
