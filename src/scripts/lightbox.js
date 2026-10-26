@@ -1,5 +1,6 @@
 const DOUBLE_TAP_MAX_MS = 300
 const DOUBLE_TAP_MAX_DISTANCE = 30
+const DOUBLE_TAP_DRAG_ZOOM_MAX_DISTANCE = 150
 const DOUBLE_TAP_ZOOM_IN_SCALE = 2;
 const DOUBLE_TAP_DRAG_ZOOM_PIXELS_PER_DOUBLING = 200
 
@@ -232,9 +233,9 @@ class Lightbox extends HTMLElement {
 
 		switch (this.maxTouches) {
 			case 1:
-				if (this.doubleTapDragZoomActive || this.isDoubleTap(event)) {
+				if (this.doubleTapDragZoomActive || this.isDoubleTap(event, DOUBLE_TAP_DRAG_ZOOM_MAX_DISTANCE)) {
 					this.doubleTapAndDragZoom(event)
-				} else {
+				}  else {
 					switch (this.zoomScale) {
 						case 1:
 							this.maybeApplyVerticalDrag(event)
@@ -268,6 +269,7 @@ class Lightbox extends HTMLElement {
 		this.doubleTapDragZoomActive = true
 		const img = this.getCurrentImg()
 		const rect = img.getBoundingClientRect()
+		this.resetDragging(img);
 
 		if (this.startScale == null) {
 			this.startScale = this.zoomScale
@@ -296,6 +298,13 @@ class Lightbox extends HTMLElement {
 		img.style.setProperty("--scale", this.zoomScale)
 		img.style.setProperty("--pan-x", `${this.panX}px`)
 		img.style.setProperty("--pan-y", `${this.panY}px`)
+	}
+
+	resetDragging = (img) => {
+		img.classList.remove("dragging")
+		img.style.removeProperty("--drag-y")
+		img.style.removeProperty("--drag-opacity")
+		img.style.removeProperty("transition")
 	}
 
 	pinchToZoom = (event) => {
@@ -413,7 +422,7 @@ class Lightbox extends HTMLElement {
 				this.pauseZooming()
 			}
 		} else {
-			const isDoubleTap = this.isDoubleTap(event);
+			const isDoubleTap = this.isDoubleTap(event, DOUBLE_TAP_MAX_DISTANCE);
 			this.updateLastTap(event, isDoubleTap)
 
 			switch (this.zoomScale) {
@@ -450,10 +459,10 @@ class Lightbox extends HTMLElement {
 		this.lastTap = isDoubleTap ? null : event
 	}
 
-	isDoubleTap = (event) =>
+	isDoubleTap = (event, maxDistance) =>
 		this.lastTap != null &&
 		event.timeStamp - this.lastTap.timeStamp < DOUBLE_TAP_MAX_MS &&
-		euclideanDistance(this.lastTap.changedTouches[0], event.changedTouches[0]) < DOUBLE_TAP_MAX_DISTANCE
+		euclideanDistance(this.lastTap.changedTouches[0], event.changedTouches[0]) < maxDistance
 
 	doubleTapZoomIn = (event) => {
 		event.preventDefault()
@@ -528,10 +537,7 @@ class Lightbox extends HTMLElement {
 		const img = this.getCurrentImg()
 		if (!img) return
 
-		img.classList.remove("dragging")
-		img.style.removeProperty("--drag-y")
-		img.style.removeProperty("--drag-opacity")
-		img.style.removeProperty("transition")
+		this.resetDragging(img)
 
 		this.track.style.scrollSnapType = ""
 		this.track.style.overflowX = ""
