@@ -3,6 +3,8 @@ const DOUBLE_TAP_MAX_DISTANCE = 30
 const DOUBLE_TAP_DRAG_ZOOM_MAX_DISTANCE = 150
 const DOUBLE_TAP_ZOOM_IN_SCALE = 2;
 const DOUBLE_TAP_DRAG_ZOOM_PIXELS_PER_DOUBLING = 200
+const ZOOM_EDGE_MARGIN_RATIO = 0.01
+const ZOOM_OVERSCROLL_RESISTANCE = 0.5
 
 class Lightbox extends HTMLElement {
 	constructor() {
@@ -235,7 +237,7 @@ class Lightbox extends HTMLElement {
 			case 1:
 				if (this.doubleTapDragZoomActive || this.isDoubleTap(event, DOUBLE_TAP_DRAG_ZOOM_MAX_DISTANCE)) {
 					this.doubleTapAndDragZoom(event)
-				}  else {
+				} else {
 					switch (this.zoomScale) {
 						case 1:
 							this.maybeApplyVerticalDrag(event)
@@ -307,6 +309,40 @@ class Lightbox extends HTMLElement {
 		img.style.removeProperty("transition")
 	}
 
+	getPanBaseCenter = (rect) => ({
+		x: (rect.left + rect.right) / 2 - this.panX,
+		y: (rect.top + rect.bottom) / 2 - this.panY
+	})
+
+	getPanBounds = (baseCenter, viewportSize, layoutSize) => {
+		const margin = window.innerWidth * ZOOM_EDGE_MARGIN_RATIO
+		const scaledSize = layoutSize * this.zoomScale
+
+		if (scaledSize <= viewportSize - margin * 2) {
+			const center = viewportSize / 2 - baseCenter
+			return {min: center, max: center}
+		}
+
+		return {
+			min: viewportSize - margin - scaledSize / 2 - baseCenter,
+			max: margin + scaledSize / 2 - baseCenter
+		}
+	}
+
+	getZoomPanBounds = (img, baseCenter) => ({
+		x: this.getPanBounds(baseCenter.x, window.innerWidth, img.offsetWidth),
+		y: this.getPanBounds(baseCenter.y, window.innerHeight, img.offsetHeight)
+	})
+
+	normalizeZoomPan = (img, baseCenter) => {
+		img.classList.add("zooming", "zooming-paused")
+		const bounds = this.getZoomPanBounds(img, baseCenter)
+		this.panX = Math.min(bounds.x.max, Math.max(bounds.x.min, this.panX))
+		this.panY = Math.min(bounds.y.max, Math.max(bounds.y.min, this.panY))
+		img.style.setProperty("--pan-x", `${this.panX}px`)
+		img.style.setProperty("--pan-y", `${this.panY}px`)
+	}
+
 	pinchToZoom = (event) => {
 		if (this.getCurrentImg().classList.contains("dragging")) return
 		if (event.targetTouches.length === 1) return
@@ -361,7 +397,6 @@ class Lightbox extends HTMLElement {
 		event.preventDefault()
 		const img = this.getCurrentImg()
 		const rect = img.getBoundingClientRect()
-
 		if (this.startPan.x == null || this.startPan.y == null) {
 			img.classList.add("panning")
 
@@ -371,10 +406,10 @@ class Lightbox extends HTMLElement {
 			}
 		}
 
-		this.panX +=
-			(event.targetTouches[0].clientX - rect.left) - this.startPan.x * this.zoomScale
-		this.panY +=
-			(event.targetTouches[0].clientY - rect.top) - this.startPan.y * this.zoomScale
+		const bounds = this.getZoomPanBounds(img, this.getPanBaseCenter(rect))
+
+		this.panX = resistPan(this.panX + (event.targetTouches[0].clientX - rect.left) - this.startPan.x * this.zoomScale, bounds.x)
+		this.panY = resistPan(this.panY + (event.targetTouches[0].clientY - rect.top) - this.startPan.y * this.zoomScale, bounds.y)
 
 		img.style.setProperty("--pan-x", `${this.panX}px`)
 		img.style.setProperty("--pan-y", `${this.panY}px`)
@@ -470,6 +505,7 @@ class Lightbox extends HTMLElement {
 
 		const img = this.getCurrentImg();
 		const rect = img.getBoundingClientRect()
+		const baseCenter = this.getPanBaseCenter(rect)
 
 		this.zoomScale = DOUBLE_TAP_ZOOM_IN_SCALE
 		this.panX += (1 - DOUBLE_TAP_ZOOM_IN_SCALE) * ((event.changedTouches[0].clientX - rect.left) - img.offsetWidth / 2)
@@ -477,19 +513,18 @@ class Lightbox extends HTMLElement {
 
 		img.classList.add("zooming", "zooming-paused")
 		img.style.setProperty("--scale", this.zoomScale)
-		img.style.setProperty("--pan-x", `${this.panX}px`)
-		img.style.setProperty("--pan-y", `${this.panY}px`)
+		this.normalizeZoomPan(img, baseCenter)
 	}
 
 	panningTouchEnd = () => {
 		const img = this.getCurrentImg()
+		img.classList.remove("panning")
+		this.normalizeZoomPan(img, this.getPanBaseCenter(img.getBoundingClientRect()))
 
 		this.startPan = {
 			x: null,
 			y: null
 		}
-
-		img.classList.remove("panning")
 	}
 
 	pauseZooming = () => {
@@ -497,6 +532,7 @@ class Lightbox extends HTMLElement {
 		this.startDistance = null
 		this.startScale = null
 		img.classList.add("zooming-paused")
+		this.normalizeZoomPan(img, this.getPanBaseCenter(img.getBoundingClientRect()))
 	}
 
 	resetZoomState = (img) => {
@@ -550,6 +586,12 @@ class Lightbox extends HTMLElement {
 }
 
 const euclideanDistance = (a, b) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY)
+
+const resistPan = (pan, {min, max}) => {
+	const bound = Math.min(max, Math.max(min, pan))
+	const overscroll = pan - bound
+	return overscroll === 0 ? pan : bound + overscroll * ZOOM_OVERSCROLL_RESISTANCE;
+}
 
 const getImg = (photo) => {
 	return photo.querySelector('img') || photo;
