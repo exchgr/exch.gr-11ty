@@ -64,6 +64,23 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v7
+      - name: "cache corepack"
+        id: cache-corepack
+        uses: actions/cache@v6
+        with:
+          key: ${{ env.NODE_VERSION }}-corepack-${{ hashFiles('package.json') }}
+          path: |
+            ~/.cache/node/corepack
+            ~/.npm
+            ~/.corepack
+      - name: "install corepack"
+        if: steps.cache-corepack.outputs.cache-hit != 'true'
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+        run: |
+          npm install --global --prefix "$HOME/.corepack" corepack
+          "$HOME/.corepack/bin/corepack" enable --install-directory "$HOME/.corepack/bin" yarn
+          echo "$HOME/.corepack/bin" >> "$GITHUB_PATH"
       - name: "cache packages"
         id: cache-packages
         uses: actions/cache@v6
@@ -112,6 +129,23 @@ jobs:
           path: |
             .yarn/cache
             node_modules/
+      - name: "cache corepack"
+        id: cache-corepack
+        uses: actions/cache@v6
+        with:
+          key: ${{ env.NODE_VERSION }}-corepack-${{ hashFiles('package.json') }}
+          path: |
+            ~/.cache/node/corepack
+            ~/.npm
+            ~/.corepack
+      - name: "install corepack"
+        if: steps.cache-corepack.outputs.cache-hit != 'true'
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+        run: |
+          npm install --global --prefix "$HOME/.corepack" corepack
+          "$HOME/.corepack/bin/corepack" enable --install-directory "$HOME/.corepack/bin" yarn
+          echo "$HOME/.corepack/bin" >> "$GITHUB_PATH"
       - name: yarn
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: "yarn"
